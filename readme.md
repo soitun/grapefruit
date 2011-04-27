@@ -4,6 +4,8 @@ CleanerGrape is a custom Grape Analytics installation that comes prebundled with
 The main goal of CleanerGrape is to keep everything that Grape has, but add a slightly cleaner
 and better laid out theme than a vanilla Grape install.
 
+I have a CleanerGrape install running on my own site, which is set to be visible for anyone if you want to see what it looks like when it's up and running.
+
 ## Installation Notes
 
 This is a development version, that means that I'm putting working files in the repo, so you need to clear out the `extensions/extensions.php` file until it becomes
