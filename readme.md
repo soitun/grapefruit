@@ -21,9 +21,9 @@ sample data (right now the tracking code is inside of the theme's index (as of t
 ### You Need To Install Extensions In This Order
 
 1. UserSpy
-2. GrapeOS
+2. GrapePages
 3. GrapeReferrers
-4. GrapePages
+4. GrapeOS
 
 If you don't install them in that order, you can uninstall/reinstall (which takes a lot of time) or change the order in `extensions/extensions.php` to match that.
 
