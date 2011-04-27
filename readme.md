@@ -6,7 +6,7 @@ and better laid out theme than a vanilla Grape install.
 
 ## Installation Notes
 
-This is a development version, that means that I'm putting working files in the repo, so you need to clear out the `extensions.php` file until it becomes
+This is a development version, that means that I'm putting working files in the repo, so you need to clear out the `extensions/extensions.php` file until it becomes
 
     <?php
     
@@ -22,7 +22,7 @@ sample data (right now the tracking code is inside of the theme's index (as of t
 3. GrapeReferrers
 4. GrapePages
 
-If you don't install them in that order, you can uninstall/reinstall (which takes a lot of time) or change the order in `extensions.php` to match that.
+If you don't install them in that order, you can uninstall/reinstall (which takes a lot of time) or change the order in `extensions/extensions.php` to match that.
 
 ## Additional Notes
 
