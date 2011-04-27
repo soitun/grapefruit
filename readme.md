@@ -12,6 +12,9 @@ This is a development version, that means that I'm putting working files in the 
     
     ?>
 
+You also need to delete the file `includes/installed`, otherwise the system reads as having
+been installed.
+
 I'm working on eventually adding a ready to use database and instructions after I have some
 sample data (right now the tracking code is inside of the theme's index (as of this commit on line 53 in `themes/default/index.php`)).
 
