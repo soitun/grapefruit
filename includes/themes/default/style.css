@@ -2,7 +2,6 @@ html,body {
 	color : #2e3436;
 	font-family : Verdana;
 	font-size : 12px;
-	background : #b9b9b9 url(images/bg.png);
 	margin : 15px 0;
 	padding : 0;
 }
@@ -46,10 +45,8 @@ li {
 	line-height : 1.5em;
 }
 .container {
-	background : #ffffff url(images/gradient.png) repeat-x;
-	border : 1px solid #2e3436;
-	padding : 6px 6px 4px 6px;
-	width : 750px;
+	padding :0 10px;
+	width : 1000px;
 	line-height : 1.25em;
 	margin: 0px auto;
 }
@@ -62,7 +59,6 @@ li {
 }
 .box {
 	border : 2px solid #333333;
-	margin : 0 10px 5px 0;
 }
 .box-content {
 	padding : 2px;
@@ -89,8 +85,7 @@ li {
 .box-float-small {
 	font-size : 10px;
 	float : left;
-	/* width : 275px; */
-	width : 225px;
+	width : 240px;
 }
 .main-box {
 	font-size : 12px;
@@ -155,4 +150,38 @@ a:hover {
 	margin : 5px;
 	border : 1px solid #666666;
 	color : #666666;
+}
+
+.box[rel="spy"] {
+	width:486px;
+}
+
+.box[rel="refer"] {
+}
+.box[rel="os"] {
+	margin-left:0px;
+	position:relative;
+	z-index:-3;
+}
+
+.main-box {
+	width:992px;
+	margin-bottom:5px;
+}
+
+.section[rel="middle"] {
+	width:500px;
+	float:left;
+	margin:0 5px;
+}
+.section[rel="middle"] .box {margin:0 0 5px; width:500px;}
+
+.section[rel="right"] {
+	width:240px;
+	float:right;
+	margin-right:3px;
+}
+.section[rel="right"] .box {
+	margin:0 0 5px;
+	padding:0;
 }
