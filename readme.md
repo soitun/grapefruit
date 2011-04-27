@@ -12,7 +12,17 @@ This is a development version, that means that I'm putting working files in the 
     
     ?>
 
+I'm working on eventually adding a ready to use database and instructions after I have some
+sample data (right now the tracking code is inside of the theme's index (as of this commit on line 53 in `themes/default/index.php`)).
 
+### You Need To Install Extensions In This Order
+
+1. UserSpy
+2. GrapeOS
+3. GrapeReferrers
+4. GrapePages
+
+If you don't install them in that order, you can uninstall/reinstall (which takes a lot of time) or change the order in `extensions.php` to match that.
 
 ## Additional Notes
 

@@ -50,6 +50,6 @@ if (isset($pg['title'])) {
 Developed by <a href="http://www.quate.net/" target="_blank">Quate.net</a>.
 </div>
 </div>
-<script src="http://localhost/grape/?js" type="text/javascript"></script>
+<script src="http://localhost/cleanerGrape/?js" type="text/javascript"></script>
 </body>
 </html>
