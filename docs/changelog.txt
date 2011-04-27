@@ -1,0 +1,121 @@
+GRAPE 0.2
+NOTE: Thanks to the Extreme Tux Racer community (www.extremetuxracer.com) for putting up with Quate software.
+The feedback I have been receiving has been quite helpful towards software features.
+
+TODO & IDEAS LIST:
++ Main application and extension updater.
+  Eventually the admin session and login process should be more secure. (hash salts, etc,.)
++ Change Settings. Eg how many referrers to display without expanding. Change admin password and theme.
+  Integrate into the admin panel... think QuateCMS 0.4 bridge.
++ The file structure for pages (login.php should be /login/ or /admin/login/)
++ Referrers: "sid=", etc? Remove #? maybe.. (for page title url's)
++ Show timezone and corresponding GMT+X?s
++ Problem: Someone could copy the javascript code and put it on their site, to screw up your stats!
+  There needs to be some detection.
+  subdomain.domain.com and www.domain.com should be okay, but example.com and domain.com should not. (Unless turned off?)
++ Error checker: Check for errors with the recorder page or javascript incase stats aren't recording for some reason.
++ Problem with averages: especially for month and year display, it assumes that the stats have been tracking since the start of that year/month.
+  Furthermore, when looking back on previous months, it seems to divide by the current day rather than the number of days in that month? (Or does it use the current day of the day selected...)
++ Could grab languages from useragent strings. ("ISO 639-1")
++ Google search terms?
+http://www.stargeek.com/usage_stats.php
+http://www.experts-exchange.com/Web_Development/Web_Languages-Standards/PHP/Q_22845188.html
++ Use a categories system for the admin panel. (Moving one more step towards the QuateCMS 0.4 framework.)
++ Future (CMS 0.4 framework), see mybb and drupal database class support...
++ Login should redirect you to the page you were trying to visit, if any. (Ie the referring url.)
++ Google Dork: "Developed by Quate.net" Could change it or convert it to an image, have an option to remove it in the settings. Same goes with the version number being publically displayed!
++ More secure admin login. See QuateCMS 0.3.x
++ Regarding the RFI exploit: http://www.owasp.org/index.php/Top_10_2007-A3
++ Use a PHP GD image for stats tracking as an alternative? Eh... probably wouldn't work.
++ Option to enable/disable showing errors?
++ TODO: The request_url "needs to be updated according to the extensions." This probably wouldn't be used much anyway.
++ Multidatabase? (SQLite2 support)
++ Really needs some sort of bug checker for fatal errors, etc!
++ Graphs at some point?
+
+CHANGELOG:
+Original changes to starting code-base:
++ [ADDED] Installer.
++ [ADDED] Admin panel/Admin links to login/out and access the extensions manager.
++ [ADDED] Extension order of appearance? Perhaps have an array or file with the extensions that are enabled, and in the specified order.
++ [ADDED] Extensions:
+  - Ability to add variables to the javascript file.
+  - Ability to have extensions give id's, and save them in the main GrapeStat table.
+    Example:
+    grapestat_ref
+    grapestat_page
+    grapestat_<extensionhere>
+    There needs to be a function to add/remove columns from the grapestat table for this.
+    Also note that not all extensions will need this.
+    (Currently table ids from the extensions do not save like they did in the non-api version!)
++ [MOSTLY DONE] Fix time according to the user's time zone.
+  See datetime.php for docs on how.
+  (Setting in configurations. Settable during install process.)
+  Needs support for PHP 4 & 5.
++ [MOSTLY DONE] Extension manager (enabler/disabler).
++ [MOSTLY DONE] Admin login option. There should be an admin interface for the extension manager anyway.
++ [MOSTLY DONE] Standardize CSS classes, divs and tables. XHTML compliant. (Use of <br /> tags, etc,.)
+Changes after the alpha-0.8.3.27 release:
++ [ADDED] Proper extensions installed/uninstalled CSS dialogue.
++ [PARTIALLY FIXED] GrapeReferrer: Remove PHPID (PHPSESSID=31cf6219ae9eb945f662b98114eb9bc8, or =31cf6219ae9eb945f662b98114eb9bc8)
++ [FIXED] No IP Bug.
++ [ADDED] "Show All" now has basic functionality for main stats and extensions.
+Changes after the alpha-0.8.3.30 release:
++ [FIXED] Days filter to display all 31 days, no matter what month, as the user may switch a month filter...
++ Layout: Improved the default layout display output: Displays almost identical on Safari 3, FF 2/3, and Opera 9.2
+  The most notably the layout is now centered.
+  Fixed CSS display issue with the extensions manager page.
++ Now Removed due to bugs ->->-> [ADDED] Main statistics now display average visitors.
++ [ADDED] Compatible version number check. Added proper dialogue GUI's to various extension errors.
++ [IMPROVED] Improved login/installer dialogue regarding sha1 password hashing and detection for no hashing.
++ [ADDED] Compressed default layout images for faster loading.
++ [ADDED] PHP Register Globals checker when installing.
+  Leaving Register Globals on means Grape is susceptible to at least two known exploits.
++ [ADDED] Settings manager. Painful Checkboxes work, but they need to be exploded into an array when the settings are being loaded.
++ [ADDED] Added a new work-in-progress theme "Halu."
++ [ADDED] Theme changing support from installer. New variable in the config file.
+Changes after the alpha-0.8.6.1 release:
++ [IMPROVED] Both layouts are valid XHTML 1.0 Traditional, and the rest of the system conforms with this standard.
++ [FIXED] The theme pages do a check to see if they are being accessed directly. If so, they will lock, instead of showing php errors.
++ [FIXED] Possible fix for the functions.php remote file include vulnerability when PHP's Register Global is on.
++ [ADDED] If the language variable is not specified for the functions.php page, an error will return.
+(This is another step towards a better framework.)
++ [ADDED] Added an updater for Grape. Needs testing.
++ [FIXED] Installer now selects a theme by default based on the config.php
++ [ADDED] A page has been added to display the simple javascript code as a reference.
++ [ADDED] The simple javascript code in the installer and code page will display the actual location to the grape install, rather than using the "location-to-grape-here" text.
+Changes after tha alpha-0.8.6.17 release:
++ [ADDED] Improved textcut(). A faster textcutsimple() function was added, which is now used in the GrapeReferrer page for displaying URLs.
++ [ADDED] Main stats and extensions can now have individual "Show All" links.
++ [ADDED] Officially added the GrapeOS extension. Still needs lots of testing and isn't perfect! Note that many Linux useragent strings do not define the distro.
++ [FIXED] Fixed small bug with the width of the main layout for smaller screen resolutions.
++ [ADDED] The simple_gui layout is now XHTML 1.0 Traditional compliant. The useless error descriptions have been removed.
++ [ADDED] Autofocus for login box.
++ [ADDED] Added basic UserSpy extension. (Experimental, but does not mess with data.)
++ [UPDATED] Updater now makes it more clear the user has the latest version. 
++ [FIXED] Shortened timeout time for the updater to 10 seconds max. (At the time of writing, Quate.net is down)
++ [FIXED] Installer not giving correct code url.
+Changes after the alpha-0.8.9.6 release:
++ [TODO] Extension options? Ie for OS extension, option for users to only find what os type, not the distro.
++ [FIXED] Small issue with GrapeOS extension saving the useragent string if a Windows version was deemed as "Unknown."
++ [WIP] Added a debugging tool. Note: Currently worthless as you could easily tell that it was working simply by running it.
+  Instead, use a $debug variable, and check both scripts. This is also less resource intensive/invasive.
++ [TODO] Upgrader?
++ [WIP] (Experimental) API. Needs: set initial dates area. Login checker if protected. Date changing.
++ [ADDED] Windows CE and Win 2k8 server detection for the GrapeOS extension.
++ [FIXED] Added "(This Month)" to the UserSpy like the other extensions have.
+
+Changes for Grape 0.2 Beta 2:
++ Script now stops executing after sending an http redirection header upon failed authentication.
+   http://dev.quate.net/board/showthread.php?tid=24
+Changes for Grape 0.2 Beta 3:
++ URL recording fix.
+   http://dev.quate.net/board/showthread.php?tid=19
+
+LATER VERSIONS:
++ Possible: text mode output for those who want to create widgets.
++ Graphs/charts
++ Little extension to keep notes.
++ Multiple database support.
++ Export as PDF.
++ Image counter as an alternative to including javascript. Could also display info!

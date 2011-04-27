@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+    <title>Grape - Documentation</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="stylesheet" href="../includes/themes/default/style.css" type="text/css">
+<link rel="shortcut icon" type="image/x-icon" href="../includes/themes/default/images/favicon.png">
+</head>
+
+<body>
+
+<div class="container">
+<div class="top">
+<div class="info">
+</div>
+<a href="./"><img src="../includes/themes/default/images/logo.png" border="0"></a>
+<div class="version">Version 0.2-alpha-8.6.17</div>
+</div>
+
+<div class="header">Grape Statistics - Documentation</div>
+Website: <a href="http://www.quate.net/grape">www.quate.net/grape</a><br />
+Support: <a href="http://www.quate.net/board/">www.quate.net/board/</a><br />
+<br />
+<b>About This Version</b><br />
+Grape Statistics 0.2 is currently in an alpha development stage.
+Being so, you will encounter incomplete or buggy features.
+There will be no offical upgrades for development versions.
+<br />
+<br />
+<b>Requirements</b><br />
+Development versions are poorly tested on a variety of software.
+We recommend using anything higher than PHP 4.3 and MySQL 4.x.
+<br />
+<br />
+<b>How To Install</b><br />
+Edit the values in quotation marks in the <code>/includes/connect.php</code> file.
+They should be edited to connect with your MySQL database.
+Then run <code>/includes/setup.php</code> to set up the databases.
+<br />
+<br />
+<b>How To Track Statistics</b><br />
+Place the following in all pages you want to track statistics:<br />
+<div class="code-box"><code>&lt;script src="insert-location-to-grape/?js" type="text/javascript"&gt;<br />
+&lt;/script&gt;<br /></code></div>
+Replace "$location" with the location of your grape install.
+<br />
+<br />
+<b>How It Works</b><br />
+There are two main parts to this program: the data collector, and the parser.
+As indicated by the names, the data collector saves user information to a database, and the parser displays the statistics as a whole.
+<br />
+<br />
+<b>Troubles with Timezone?</b><br />
+Check out this list and edit your <code>/includes/config.php</code> file.<br />
+<a href="http://us3.php.net/manual/en/timezones.others.php">http://us3.php.net/manual/en/timezones.others.php</a>
+<br />
+<br />
+<b>How To Manually Install Extensions</b><br />
+Most extensions will probably not need write permissions except database access.
+However, for an extension to be used in Grape, it must be added to the <code>/extensions/extensions.php</code> file, like so:
+<div class="code-box"><code>&lt;?php<br />
+$enabled_ext[] = "GrapePages";<br />
+$enabled_ext[] = "GrapeReferrers";<br />
+?&gt;</code></div>
+<br />
+<b>License</b><br />
+Grape Statistics 0.2 is currently licensed under the GNU GPLv2.
+See the License.txt for more licensing information.
+<div class="footer">Developed by <a href="http://www.quate.net/" target="_blank">Quate.net</a>.</div>
+</div>
+
+</body>
+</html>
