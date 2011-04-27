@@ -7,6 +7,7 @@ and better laid out theme than a vanilla Grape install.
 ## Installation Notes
 
 This is a development version, that means that I'm putting working files in the repo, so you need to clear out the `extensions.php` file until it becomes
+
     <?php
     
     ?>
