@@ -14,9 +14,6 @@ This is a development version, that means that I'm putting working files in the 
     
     ?>
 
-You also need to delete the file `includes/installed`, otherwise the system reads as having
-been installed.
-
 I'm working on eventually adding a ready to use database and instructions after I have some
 sample data (right now the tracking code is inside of the theme's index (as of this commit on line 53 in `themes/default/index.php`)).
 
@@ -28,6 +25,10 @@ sample data (right now the tracking code is inside of the theme's index (as of t
 4. GrapeOS
 
 If you don't install them in that order, you can uninstall/reinstall (which takes a lot of time) or change the order in `extensions/extensions.php` to match that.
+
+__CityFinder__
+
+If you want to use CityFinder with CleanerGrape, you need to put it between UserSpy and GrapePages, or you need to manually edit it yourself to make it fit properly.
 
 ## Additional Notes
 
