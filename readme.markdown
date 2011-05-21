@@ -22,12 +22,12 @@ After doing that, the only thing you need to do is run the install.
 If you've got an existing installation of CleanerGrape or Grape 0.2 Beta 3, all you need to do
 to upgrade is replace the following files and directories with the new ones:
 
- * index.php
- * extensions/GrapeOS/info.php
- * extensions/GrapePages/info.php
- * extensions/GrapeReferrers/info.php
- * extensions/UserSpy/info.php
- * includes/themes/default/* (the entire default folder)
+ * `index.php`
+ * `extensions/GrapeOS/info.php`
+ * `extensions/GrapePages/info.php`
+ * `extensions/GrapeReferrers/info.php`
+ * `extensions/UserSpy/info.php`
+ * `includes/themes/default/*` (the entire default folder)
 
 If you were using a different theme, you'll need to switch it to "default" (on line 13 in 
 `includes/config.php`).
