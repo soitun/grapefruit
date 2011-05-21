@@ -39,7 +39,7 @@ function UserSpyDisplay() {
 	<th>Hits</th>
 	<th>IP (This " .ucfirst($display). ")</th>";
 	if (function_exists("GrapePagesDisplay")) {
-		$content .= "<th>Page</th>";
+		$content .= "<th>Entry Page</th>";
 		$columns++;
 	}
 	if (function_exists("GrapeOSDisplay")) {
