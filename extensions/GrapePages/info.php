@@ -61,7 +61,7 @@ function GrapePagesDisplay() {
 		$href_url = "http://" .$row['grapepage_url'];
 		$content .= "\n<tr class=\"alt" .$alt. "\">
 	<td>" .$row['grapepage_hits']. "</td>
-	<td><a href=\"" .$href_url. "\" target=\"_blank\">" .textcut($row['grapepage_title'], 25). "</a></td>
+	<td><a href=\"" .$href_url. "\" target=\"_blank\">" .textcut($row['grapepage_title'], 50). "</a></td>
 </tr>";
 		if ($alt == 1) {
 			$alt = 2;

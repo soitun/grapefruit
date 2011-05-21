@@ -71,7 +71,7 @@ function UserSpyDisplay() {
 		$href_url = "http://" .$row['graperef_http'];
 		$content .= "\n<tr class=\"alt" .$alt. "\">
 	<td>" .$row['grapestat_hits']. "</td>
-	<td><a href=\"http://api.hostip.info/get_html.php?ip=" .$row['grapestat_ip']. "\" target=\"_blank\">" .$row['grapestat_ip']. "</a></td>";
+	<td><a href=\"http://freegeoip.appspot.com/xml/" .$row['grapestat_ip']. "\" target=\"_blank\">" .$row['grapestat_ip']. "</a></td>";
 		// If the GrapePages extensions exists. This is the only method that seems to work!
 		if (function_exists("GrapePagesDisplay")) {
 			$query2 = "SELECT grapepage_id, grapepage_title, grapepage_url FROM " .SQL_PREFIX. "grapepage WHERE grapepage_id = '" .$row['grapestat_page']. "'";
