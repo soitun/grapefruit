@@ -26,117 +26,139 @@ $ext['grapeStatColumn'] = ""; // Not needed!
 
 // Define functions.
 function SearchTermsDisplay() {
-
-}
-function SearchTermRecord() {
-	global $year, $month, $day, $hour, $minute, $record;
-	// Don't record self referring.
-	$referrer = $record['referrer']; // We don't want to tamper with the actual $record['referrer'] variable.
-	$host = $record['host']; // We don't want to tamper with the actual $record['host'] variable.
-
-	$host = str_replace("http://", "", $host);
-	$host = str_replace("www.", "", $host);
+	global $ext, $year, $month, $day, $hour, $minute, $display;
 	
-	if(substr($host, 0, 7) != "google" || substr($host, 0, 4) != "bing", || substr($host, 0, 5) != "yahoo" ) {
-		return false;
+	$content .= "<div class='section' rel='right'>\n<div class=\"box box-float-small\" rel=\"refer\">
+<div class=\"box-header\">Search Terms</div>
+<table cellspacing=\"0\">
+<tr class=\"subheader\">
+	<th>Hits</th>
+	<th>Term</th>
+</tr>";
+
+	$query = "SELECT *, sum(graperef_hits) AS graperef_hits FROM " .SQL_PREFIX. "graperef WHERE";
+	if ($display == "hour") {
+		$query .= " graperef_hour = '" .$hour. "' AND";
 	}
+	if ($display != "year" && $display != "month") {
+		$query .= " graperef_day = '" .$day. "' AND";
+	}
+	if ($display != "year") {
+		$query .= " graperef_month = '" .$month. "' AND";
+	}
+	$query .= " graperef_year = '" .$year. "' GROUP BY graperef_http ORDER BY graperef_hits DESC";
+	if (!$_GET[strtolower($ext['name'])]) {
+		$query .= " LIMIT 10";
+	}
+	$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+	$alt = 1;
+	while ($row = mysql_fetch_array($result)) {
+		$term = $row['graperef_http'];
+		$urls = array();
+		$s = false;
 
-	$term = "";
-	$provider = "";
-	// GOOGLE
-	if(substr($host, 0, 7) == "google") {
-		$provider = "Google";
-		$arr = explode("&", $host);
-
-		$q = -1;
-		for($i = 0; $i < count($arr); $i++) {
-			if (substr($arr[$i], 0, 1) == "q") {
-				$q = $i;
-				$i = count($arr) + 1;
+		if(substr($term, 0, 6) == "google") {
+			$urls = explode("&", substr($term, 0, 10));
+			$qr = -1;
+			for($i = 0; $i < count($urls); $i++) {
+				if(substr($urls[$i], 0, 2) == "q=") {$qr = $i;}
 			}
-		}
-
-		$term = $arr[$q];
-		$term = substr($term, 2, strlen($term));
-		$term = str_replace("+", " ", $term);
-	}
-	// YAHOO
-	elseif (substr($host, 0, 5) == "yahoo") {
-		$provider = "Yahoo";
-		$arr = explode("&", $host);
-
-		$q = -1;
-		for($i = 0; $i < count($arr); $i++) {
-			if (substr($arr[$i], 0, 1) == "p") {
-				$q = $i;
-				$i = count($arr) + 1;
+			if ($qr = -1) {
+				$term = "No Term Found";
 			}
-		}
-
-		$term = $arr[$q];
-		$term = substr($term, 2, strlen($term));
-		$term = str_replace("+", " ", $term);
-	}
-
-	else {
-		$provider = "Bing";
-		$arr = explode("&", $host);
-
-		$q = -1;
-		for($i = 0; $i < count($arr); $i++) {
-			if (substr($arr[$i], 0, 1) == "q") {
-				$q = $i;
-				$i = count($arr) + 1;
+			else {
+				$term = $urls[$qr];
+				$term = str_replace("+", " ", $term);
 			}
+			$s = true;
+		}
+		else if (substr($term, 0, 5) == "yahoo") {
+			$urls = explode("&", substr($term, 0, 9));
+			$qr = -1;
+			for($i = 0; $i < count($urls); $i++) {
+				if(substr($urls[$i], 0, 2) == "p=") {$qr = $i;}
+			}
+			if ($qr = -1) {
+				$term = "No Term Found";
+			}
+			else {
+				$term = $urls[$qr];
+				$term = str_replace("+", " ", $term);
+			}
+			$s = ture;
+		}
+		else if (substr($term, 0, 4) == "bing") {
+			$urls = explode("&", substr($term, 0, 10));
+			$qr = -1;
+			for($i = 0; $i < count($urls); $i++) {
+				if(substr($urls[$i], 0, 2) == "q=") {$qr = $i;}
+			}
+			if ($qr = -1) {
+				$term = "No Term Found";
+			}
+			else {
+				$term = $urls[$qr];
+				$term = str_replace("+", " ", $term);
+			}
+			$s = true;
 		}
 
-		$term = $arr[$q];
-		$term = substr($term, 2, strlen($term));
-		$term = str_replace("+", " ", $term);
-	}
+		if ($s) {
 
-	
 
-	/*if (strpos(strtolower(" " .$referrer. " "), $host)) {
-		$referrer = ""; // Set $referrer to zero so that it doesn't record it.
-	}
-	// Remove PHPSESSID from url.
-	$referrer = preg_replace('/\?PHPSESSID=[^&]+/',"",$referrer);  
-	$referrer = preg_replace('/\&PHPSESSID=[^&]+/',"",$referrer);
-
-	$ref_id = 0;
-	// In order to record, there must be a referrer. Otherwise recording will be skipped and no $ref_id will be recorded.
-	if ($referrer != "") {
-		$referrer = str_replace("http://www.", "", $referrer);
-		$referrer = str_replace("http://", "", $referrer);
-
-		$query = "SELECT * FROM " .SQL_PREFIX. "graperef WHERE
-	graperef_hour = '" .$hour. "' AND
-	graperef_day = '" .$day. "' AND
-	graperef_month = '" .$month. "' AND
-	graperef_year = '" .$year. "' AND
-	graperef_http = '" .$referrer. "'";
-		$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-		$num_rows = mysql_num_rows($result);
-
-		if ($num_rows == 1) {
-		
-			// Get id of entry.
-			$row = mysql_fetch_array($result);
-			$ref_id = $row['graperef_id'];
-		
-			// Edit ref grape entry.
-			$query = "UPDATE " .SQL_PREFIX. "graperef SET graperef_hits = (graperef_hits + 1) WHERE graperef_id = '" .$ref_id. "'";
-			$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-		
-		} else if ($num_rows == 0) {
-			$query = "INSERT INTO " .SQL_PREFIX. "graperef(graperef_http, graperef_hour, graperef_day, graperef_month, graperef_year, graperef_hits)
-	VALUES('" .$referrer. "', '" .$hour. "', '" .$day. "', '" .$month. "', '" .$year. "', '1')";
-			$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-			$ref_id = mysql_insert_id(); // Use LAST_INSERT_ID() instead?
+		$content .= "\n<tr class=\"alt" .$alt. "\">
+	<td>" .$row['graperef_hits']. "</td>
+	<td>" .textcutsimple($term, 25). "</a></td>
+</tr>";
+		if ($alt == 1) {
+			$alt = 2;
+		} else {
+			$alt = 1;
 		}
+		}
+	}
+	//$content .= "<div class=\"box-alt" .$alt. "\"><a href=\"\">Show All</a></div>";
+	/*
+	if (!$_GET['showall']) {
+		$content .= "<tr class=\"alt" .$alt. "\">
+	<td colspan=\"2\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;showall=1\">Show All</a></td>
+</tr>";
 	}*/
+	if (!$_GET[strtolower($ext['name'])]) {
+		$content .= "\n<tr class=\"alt" .$alt. "\">
+	<td colspan=\"2\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
+</tr>";
+	}
+	$content .= "\n</table>\n</div>\n";
+	return $content;
+}
+function SearchTermsJavascript() {
+	return false;
+}
+function SearchTermsRecord() {
+	return false;
+}
+function SearchTermsApi() {
+	return false;
+}
+function SearchTermsInstall() {
+	global $ext, $pg;
 
-	return $ref_id;
+	// Add extension to the enabled extensions file.
+	enableExtension($ext['location']);
+	
+	$pg['content'] .= "<img src=\"" .$location. "images/yes.png\" alt=\"\" /> " .$ext['name']. " added to enabled extensions list.<br />";
+	
+	return true;
+}
+function SearchTermsUninstall($keep = 1) {
+	global $ext, $pg;
+	
+	// Remove extension from the enabled extensions file.
+	disableExtension($ext['location']);
+	
+	$pg['content'] .= "<img src=\"" .$location. "images/yes.png\" alt=\"\" /> " .$ext['name']. " removed from the enabled extensions list.<br />";
+	
+	return true;
 }
 ?>

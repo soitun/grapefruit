@@ -28,12 +28,12 @@ $ext['grapeStatColumn'] = "page";
 // Define functions.
 function GrapePagesDisplay() {
 	global $ext, $year, $month, $day, $hour, $minute, $display;
-	$content .= "<div class=\"box box-float-small\" rel=\"pages\">
-<div class=\"box-header\">Pages</div>
+	$content .= "<div class=\"box\" rel=\"pages\">
+<div class=\"title\">Pages</div>
 <table cellspacing=\"0\">
 <tr class=\"subheader\">
 	<th>Hits</th>
-	<th>Page Title (This " .ucfirst($display). ")</th>
+	<th>Page Title</th>
 </tr>";
 
 	$query = "SELECT *, sum(grapepage_hits) AS grapepage_hits FROM " .SQL_PREFIX. "grapepage WHERE";
@@ -76,7 +76,7 @@ function GrapePagesDisplay() {
 </tr>";
 	}*/
 	if (!$_GET[strtolower($ext['name'])]) {
-		$content .= "\n<tr class=\"alt" .$alt. "\">
+		$content .= "\n<tr>
 	<td colspan=\"2\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
 </tr>";
 	}

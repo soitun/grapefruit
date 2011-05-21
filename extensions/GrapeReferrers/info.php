@@ -35,12 +35,12 @@ function GrapeReferrersDisplay() {
 <div class=\"mainc\">URL (This " .ucfirst($display). ")</div>
 </div>\n";
 */
-	$content .= "<div class='section' rel='right'>\n<div class=\"box box-float-small\" rel=\"refer\">
-<div class=\"box-header\">Referrers</div>
+	$content .= "<div class='grid3'>\n<div class=\"box\" rel=\"refer\">
+<div class=\"title\">Referrers</div>
 <table cellspacing=\"0\">
 <tr class=\"subheader\">
 	<th>Hits</th>
-	<th>URL (This " .ucfirst($display). ")</th>
+	<th>URL</th>
 </tr>";
 
 	$query = "SELECT *, sum(graperef_hits) AS graperef_hits FROM " .SQL_PREFIX. "graperef WHERE";
@@ -85,7 +85,7 @@ function GrapeReferrersDisplay() {
 </tr>";
 	}*/
 	if (!$_GET[strtolower($ext['name'])]) {
-		$content .= "\n<tr class=\"alt" .$alt. "\">
+		$content .= "\n<tr>
 	<td colspan=\"2\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
 </tr>";
 	}

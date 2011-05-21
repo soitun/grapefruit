@@ -10,4 +10,5 @@ $cms['timezone'] = "America/Chicago
 $cms['display_protect'] = "0";
 $cms['location'] = "http://localhost/cleanerGrape/";
 $cms['theme'] = "default";
+$cms['site'] = "dkuntz2.com"
 ?>

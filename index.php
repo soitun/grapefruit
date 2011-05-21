@@ -129,7 +129,7 @@ $pg['body'] .= "";
 $pg['notice'] .= "";
 $pg['content'] .= "";
 
-$pg['content'] .= "<div class=\"box main-box\">
+$pg['content'] .= "<div class=\"first bar\">
 <form action=\"./\" method=\"get\">
 <b>Filter</b>
 <span>
@@ -238,8 +238,8 @@ if ($_GET['year'] != "") {
 
 // MODULE: Display basic visit statistics.
 // Display stats within html box.
-$pg['content'] .= "<div class=\"box box-float-small\">
-<div class=\"box-header\">Visits</div>
+$pg['content'] .= "<div class='grid3 first'><div class=\"box\" rel='visits'>
+<div class=\"title\">Visits</div>
 <table cellspacing=\"0\">
 <tr class=\"subheader\">
 	<th>Past " .ucfirst($display). "</th>
@@ -418,11 +418,11 @@ if (!$_GET['showall']) {
 }
 */
 if (!$_GET['visits']) {
-	$pg['content'] .= "<tr class=\"alt" .$alt. "\">
+	$pg['content'] .= "<tr>
 	<td colspan=\"3\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;visits=1\">Show All</a></td>
 </tr>";
 }
-$pg['content'] .= "\n</table>\n</div>\n";
+$pg['content'] .= "\n</table>\n</div></div>\n";
 
 // Display Extensions:
 loadExtensions();

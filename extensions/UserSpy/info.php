@@ -32,12 +32,12 @@ function UserSpyDisplay() {
 	global $ext, $year, $month, $day, $hour, $minute, $display;
 	
 	$columns = 2;
-	$content .= "<div class='section' rel='middle'><div class=\"box box-float-small\" rel=\"spy\">
-<div class=\"box-header\">User Spy</div>
+	$content .= "<div class='grid6'><div class=\"box\" rel=\"spy\">
+<div class=\"title\">User Spy</div>
 <table cellspacing=\"0\">
 <tr class=\"subheader\">
 	<th>Hits</th>
-	<th>IP (This " .ucfirst($display). ")</th>";
+	<th>IP</th>";
 	if (function_exists("GrapePagesDisplay")) {
 		$content .= "<th>Entry Page</th>";
 		$columns++;
@@ -102,8 +102,8 @@ function UserSpyDisplay() {
 	}
 	*/
 	if (!$_GET[strtolower($ext['name'])]) {
-		$content .= "\n<tr class=\"alt" .$alt. "\">
-	<td colspan=\"" .$columns. "\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show More</a></td>
+		$content .= "\n<tr>
+	<td colspan=\"" .$columns. "\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
 </tr>";
 	}
 	$content .= "\n</table>\n</div>\n";

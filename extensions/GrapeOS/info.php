@@ -29,12 +29,12 @@ $ext['grapeStatColumn'] = "os";
 // Define functions.
 function GrapeOSDisplay() {
 	global $year, $month, $day, $hour, $minute, $display, $ext;
-	$content .= "<div class=\"box box-float-small\" rel=\"os\">
-<div class=\"box-header\">OS<!--<a href=\"./settings.php?view&" .$ext['name']. "\"><img src=\"images/pref.png\" hspace=\"3\"></a>--></div>
+	$content .= "<div class=\"box\" rel=\"os\">
+<div class=\"title\">OS<!--<a href=\"./settings.php?view&" .$ext['name']. "\"><img src=\"images/pref.png\" hspace=\"3\"></a>--></div>
 <table cellspacing=\"0\">
 <tr class=\"subheader\">
 	<th>Hits</th>
-	<th>OS (This " .ucfirst($display). ")</th>
+	<th>OS</th>
 	<th>Version</th>
 </tr>";
 
@@ -103,7 +103,7 @@ function GrapeOSDisplay() {
 	}
 	*/
 	if (!$_GET[strtolower($ext['name'])]) {
-		$content .= "\n<tr class=\"alt" .$alt. "\">
+		$content .= "\n<tr>
 	<td colspan=\"3\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
 </tr>";
 	}
@@ -122,7 +122,7 @@ function GrapeOSRecord() {
 	$os = "Unknown";
 	$version = "Unknown";
 	if (strstr($agent_temp, "Win")) {
-		$os = "Win";
+		$os = "Windows";
 		//$version = "Unknown - (" .$agent_temp. ")";
 		$version = "Unknown";
 		if (strstr($agent_temp, "NT 6.1")) {

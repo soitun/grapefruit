@@ -28,28 +28,20 @@ if (isset($pg['title'])) {
 <body<?php echo $pg['body']; ?>>
 
 <div class="container">
-<div class="top">
-<div class="version"><?php if (is_admin()) { echo "<a href=\"" .$location. "panel.php\">Admin Panel</a>"; } else { echo "<a href=\"" .$location. "login.php\">Login</a>"; } ?></div>
-<a href="<?php echo $location; ?>./"><img src="<?php echo $location; ?>includes/themes/default/images/logo.png" border="0" alt="Grape Web Statistics" /></a>
-</div>
+<header>
+	<div class="grid9 first"><a href="<?php echo $location; ?>./"><?php echo $cms['site']; ?> <span>analytics</span></a></div>
 
-<div class="subtop">Statistics for <b><?php echo $_SERVER['HTTP_HOST']; ?></b></div>
+	<div class="grid3"><?php if (is_admin()) { echo "<a href=\"" .$location. "panel.php\">Admin Panel</a>"; } else { echo "<a href=\"" .$location. "login.php\">Login</a>"; } ?></div>
+</header>
 
 <?php echo $pg['notice']; ?>
 
 <?php echo $pg['content']; ?>
 
-<div class="footer">
-<a href="http://validator.w3.org/check?uri=referer" target="_blank">
-<img src="<?php echo $location; ?>includes/themes/default/images/valid-xhtml.png" alt="Valid XHTML 1.0 Traditional" title="Valid XHTML 1.0 Traditional" />
-</a>
-<a href="http://jigsaw.w3.org/css-validator/check?uri=referer" target="_blank">
-<img src="<?php echo $location; ?>includes/themes/default/images/valid-css.png" alt="Valid CSS 2.1" title="Valid CSS 2.1" />
-</a>
-<br />
-Developed by <a href="http://www.quate.net/" target="_blank">Quate.net</a>.
+<footer>
+Designed and modified by <a href="http://dkuntz2.com">Don Kuntz</a>.
+Originally developed by <a href="http://www.quate.net/">Quate.net</a>.
+</footer>
 </div>
-</div>
-<script src="http://localhost/cleanerGrape/?js" type="text/javascript"></script>
 </body>
 </html>
