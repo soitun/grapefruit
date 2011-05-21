@@ -6,6 +6,11 @@ and better laid out theme than a vanilla Grape install.
 
 I have a CleanerGrape install running on my own site, which is set to be visible for anyone if you want to see what it looks like when it's up and running.
 
+## Differences Between CleanerGrape and Grape
+
+ * CleanerGrape uses a different theme, one that requires you to install the extensions in a certain order if you dont' want to break the entire design (I'm working on having them installed by default).
+ * CleanerGrape switches the link in the UserSpy extension from api.hostip.info to freegeoip.appspot.com, in reality, this doesn't do much for the end user, but the switch after being made in CityFinder made the results much better (visitors went from unknown to where they were from (specifically, me, so I know that it works better)).
+
 ## Installation Notes
 
 This is a development version, that means that I'm putting working files in the repo, so you need to clear out the `extensions/extensions.php` file until it becomes
