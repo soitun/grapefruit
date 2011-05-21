@@ -13,16 +13,41 @@ I have a CleanerGrape install running on my own site, which is set to be visible
 
 ## Installation Notes
 
-This is a development version, that means that I'm putting working files in the repo, so you need to clear out the `extensions/extensions.php` file until it becomes
+The only thing you need to do besides running the install is to replace 
+`extensions/extensions.php` with `extensions/extensions.empty.php`. 
+After doing that, the only thing you need to do is run the install.
 
-    <?php
-    
+### Upgrading CleanerGrape or moving from Grape to CleanerGrape
+
+If you've got an existing installation of CleanerGrape or Grape 0.2 Beta 3, all you need to do
+to upgrade is replace the following files and directories with the new ones:
+
+ * index.php
+ * extensions/GrapeOS/info.php
+ * extensions/GrapePages/info.php
+ * extensions/GrapeReferrers/info.php
+ * extensions/UserSpy/info.php
+ * includes/themes/default/* (the entire default folder)
+
+If you were using a different theme, you'll need to switch it to "default" (on line 13 in 
+`includes/config.php`).
+
+You'll also need to add a new line to your `includes/config.php` file. The end should look like this originally:
+    $cms['theme'] = "default";
     ?>
 
-I'm working on eventually adding a ready to use database and instructions after I have some
-sample data (right now the tracking code is inside of the theme's index (as of this commit on line 53 in `themes/default/index.php`)).
+change that to:
+    $cms['theme'] = "default";
+    $cms['site'] = "NAME OF SITE BEING ANALYZED"; // I use "dkuntz2.com"
+    ?>
 
-### You Need To Install Extensions In This Order
+If you do that, you should have a copy of CleanerGrape up and running. If the layout looks a 
+little broken, you probably need to change the order of your extensions (see below). If, even
+after changing the order you still have errors, email me, grape@dkuntz2.com
+
+### Extensions
+
+You Need To Install Extensions In This Order
 
 1. UserSpy
 2. GrapePages
