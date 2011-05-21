@@ -33,10 +33,12 @@ If you were using a different theme, you'll need to switch it to "default" (on l
 `includes/config.php`).
 
 You'll also need to add a new line to your `includes/config.php` file. The end should look like this originally:
+
     $cms['theme'] = "default";
     ?>
 
 change that to:
+
     $cms['theme'] = "default";
     $cms['site'] = "NAME OF SITE BEING ANALYZED"; // I use "dkuntz2.com"
     ?>
