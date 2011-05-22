@@ -15,3 +15,6 @@ DON'T WANT BUGS).
 
  * Update CityFinder to only show state (region code) if it's the US, otherwise, B3 comes in 
  for places like france.
+
+ * Change GrapeOS to display OS & Version together, instead of OS as a sub section and version
+ as an item in the section.
