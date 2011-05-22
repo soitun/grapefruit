@@ -129,11 +129,47 @@ $pg['body'] .= "";
 $pg['notice'] .= "";
 $pg['content'] .= "";
 
-$pg['content'] .= "<div class=\"first bar\">
+$pg['content'] .= "<div class='grid3 first'><div class=\"box\" rel='filter'>
 <form action=\"./\" method=\"get\">
-<b>Filter</b>
-<span>
-Year: <select name=\"year\">";
+<div class='title'>Filter</div>
+<table cellspacing='0'>
+<tbody>
+<tr><th>Day</th> <th>Month</th> <th>Year</th></tr>
+<tr class='alt1'>
+
+<td><select name=\"day\">";
+$k = 0;
+while ($k < 31) {
+	$k++;
+	
+	// Why get days in current month when all 31 days should be displayed. We don't know if the user will chose another month with a different max amount of days.
+	//$temp = date("j", mktime($hour, $minute, 0, $month, (0 + $k), $year));
+	$temp = $k;
+	if ($k == $day_selected) {
+		$pg['content'] .= "\n<option value=\"" .$temp. "\" selected=\"selected\">" .$temp. "</option>";
+	} else {
+		$pg['content'] .= "\n<option value=\"" .$temp. "\">" .$temp. "</option>";
+	}
+}
+$pg['content'] .= "</select>
+</td>
+
+<td><select name=\"month\">";
+$k = 0;
+while ($k < 12) {
+	$k++;
+	
+	$temp = date("n", mktime($hour, $minute, 0, (0 + $k), $day, $year));
+	if ($k == $month_selected) {
+		$pg['content'] .= "\n<option value=\"" .$temp. "\" selected=\"selected\">" .$temp. "</option>";
+	} else {
+		$pg['content'] .= "\n<option value=\"" .$temp. "\">" .$temp. "</option>";
+	}
+}
+$pg['content'] .= "</select>
+</td>
+
+<td><select name=\"year\">";
 
 // Get first entry in the database, which should give us the date (year) at which these statistics were started.
 $query = "SELECT grapestat_id, grapestat_year FROM " .SQL_PREFIX. "grapestat ORDER BY grapestat_id ASC";
@@ -151,68 +187,20 @@ while ($k <= $year) {
 $k++;
 }
 $pg['content'] .= "</select>
-</span>
-<span>
-Month: <select name=\"month\">";
-$k = 0;
-while ($k < 12) {
-	$k++;
-	
-	$temp = date("n", mktime($hour, $minute, 0, (0 + $k), $day, $year));
-	if ($k == $month_selected) {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\" selected=\"selected\">" .$temp. "</option>";
-	} else {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\">" .$temp. "</option>";
-	}
-}
-$pg['content'] .= "</select>
-</span>
-<span>
-Day: <select name=\"day\">";
-$k = 0;
-while ($k < 31) {
-	$k++;
-	
-	// Why get days in current month when all 31 days should be displayed. We don't know if the user will chose another month with a different max amount of days.
-	//$temp = date("j", mktime($hour, $minute, 0, $month, (0 + $k), $year));
-	$temp = $k;
-	if ($k == $day_selected) {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\" selected=\"selected\">" .$temp. "</option>";
-	} else {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\">" .$temp. "</option>";
-	}
-}
-$pg['content'] .= "</select>
-</span>
-<span>
-Hour: <select name=\"hour\">";
-$k = -1;
-while ($k < 23) {
-	$k++;
-	
-	$temp = date("G", mktime((0 + $k), $minute, 0, $month, $day, $year));
-	if ($k == $hour_selected) {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\" selected=\"selected\">" .$temp. "</option>";
-	} else {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\">" .$temp. "</option>";
-	}
-}
-$pg['content'] .= "</select>
-</span>";
-$pg['content'] .= "<span>
-Display By: <select name=\"display\">
-<option" .$display_hour_selected. ">Hour</option>
-<option" .$display_day_selected. ">Day</option>
-<option" .$display_month_selected. ">Month</option>
-<option" .$display_year_selected. ">Year</option>
-</select>
-</span>";
-$pg['content'] .= "<span>
-<input type=\"submit\" value=\"Filter\" />
-</span>
-<span>
-<input type=\"button\" value=\"Clear\" onclick=\"document.location = './';\" />
-</span>
+
+</td>
+
+</tr>";
+
+$pg['content'] .= "
+</tbody>
+</table>
+
+<div id='fbuttons'>
+	<input type=\"submit\" value=\"Filter\" class='fbut' />
+	<input type=\"button\" value=\"Clear\" class='fbut' onclick=\"document.location = './';\" />
+</div>
+
 </form>
 </div>";
 
@@ -238,7 +226,7 @@ if ($_GET['year'] != "") {
 
 // MODULE: Display basic visit statistics.
 // Display stats within html box.
-$pg['content'] .= "<div class='grid3 first'><div class=\"box\" rel='visits'>
+$pg['content'] .= "<div class=\"box\" rel='visits'>
 <div class=\"title\">Visits</div>
 <table cellspacing=\"0\">
 <tr class=\"subheader\">
