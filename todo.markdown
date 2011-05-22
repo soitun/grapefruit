@@ -18,3 +18,11 @@ DON'T WANT BUGS).
 
  * Change GrapeOS to display OS & Version together, instead of OS as a sub section and version
  as an item in the section.
+
+## Fun Things
+
+Fun things as defined as things that would be nice to ipliment but aren't needed.
+
+ * Create an API for getting data from CleanerGrape to another application. I mean, right now
+ you can essentially just use the database to get the data, but that's not always an option. 
+ Plus it could be used to add a number of visitors this DATERANGE to your own site.
