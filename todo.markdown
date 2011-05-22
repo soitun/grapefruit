@@ -1,0 +1,17 @@
+# Todo - Cleaner Grape
+
+This is a list of things that should be worked on for the first beta release of CleanerGrape
+(for those unaware, the current status of CleanerGrape is SUPER DEVELOPMENT, DON'T TRY IF YOU
+DON'T WANT BUGS).
+
+## Big Things
+
+ * Add the `$cms['site']` variable to the installer. This variable will be used to keep track 
+ of the actual site being analyzed (so if you have grape on a different domain or a subdomain, 
+ right now it checks to see )
+
+ * Create a SearchTerms extension (in progress. The referrer extension should now record what I 
+ need for it to work (because it's nice to know what search terms get people to your site)).
+
+ * Update CityFinder to only show state (region code) if it's the US, otherwise, B3 comes in 
+ for places like france.

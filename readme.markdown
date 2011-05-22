@@ -66,4 +66,5 @@ If you want to use CityFinder with CleanerGrape, you need to put it between User
 
 * CleanerGrape is licensed under the GPL like Grape itself.
 * CleanerGrape is under development right now, and may eventually move to being it's own program and not just a look and feel change to Grape.
+* If you're looking for information on what's coming up, check the todo list (`todo.markdown`).
 * If you have any questions on how or why I did certain things, feel free to email me grape@dkuntz2.com

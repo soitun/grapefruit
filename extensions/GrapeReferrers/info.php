@@ -106,15 +106,16 @@ function GrapeReferrersRecord() {
 	global $year, $month, $day, $hour, $minute, $record;
 	// Don't record self referring.
 	$referrer = $record['referrer']; // We don't want to tamper with the actual $record['referrer'] variable.
-	$host = $record['host']; // We don't want to tamper with the actual $record['host'] variable.
+	//$host = $record['host']; // We don't want to tamper with the actual $record['host'] variable.
+	$host = $cms['site'];
 	$host = str_replace("http://", "", $host);
 	$host = str_replace("www.", "", $host);
 	if (strpos(strtolower(" " .$referrer. " "), $host)) {
 		$referrer = ""; // Set $referrer to zero so that it doesn't record it.
 	}
 	// Remove PHPSESSID from url.
-	$referrer = preg_replace('/\?PHPSESSID=[^&]+/',"",$referrer);  
-	$referrer = preg_replace('/\&PHPSESSID=[^&]+/',"",$referrer);
+	//$referrer = preg_replace('/\?PHPSESSID=[^&]+/',"",$referrer);  
+	//$referrer = preg_replace('/\&PHPSESSID=[^&]+/',"",$referrer);
 
 	$ref_id = 0;
 	// In order to record, there must be a referrer. Otherwise recording will be skipped and no $ref_id will be recorded.
