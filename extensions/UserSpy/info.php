@@ -85,7 +85,12 @@ function UserSpyDisplay() {
 			$query2 = "SELECT grapeos_id, grapeos_os, grapeos_version FROM " .SQL_PREFIX. "grapeos WHERE grapeos_id = '" .$row['grapestat_os']. "'";
 			$result2 = mysql_query($query2) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
 			$row2 = mysql_fetch_array($result2);
-			$content .= "\n<td>" .$row2['grapeos_os']. " " .$row2['grapeos_version']. "</td>";
+			if ($row2['grapeos_os'] == "Unknown") {
+				$content .= "\n<td>" . $row2['grapeos_os'] . "</td>";
+			}
+			else {
+				$content .= "\n<td>" .$row2['grapeos_os']. " " .$row2['grapeos_version']. "</td>";
+			}
 		}
 		$content .= "\n</tr>";
 		if ($alt == 1) {
