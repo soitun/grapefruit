@@ -110,6 +110,10 @@ div[rel="refer"] tr td:nth-child(2) {
 	width:173px;
 }
 
+div[rel="finder"] td {
+	text-transform:capitalize;
+}
+
 div[rel="finder"] tr td:nth-child(2), div[rel="finder"] tr td:nth-child(3), div[rel="os"] tr td:nth-child(2), div[rel="os"] tr td:nth-child(3) {
 	width:82px;
 }

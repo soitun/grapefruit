@@ -106,8 +106,8 @@ function GrapeReferrersRecord() {
 	global $year, $month, $day, $hour, $minute, $record;
 	// Don't record self referring.
 	$referrer = $record['referrer']; // We don't want to tamper with the actual $record['referrer'] variable.
-	//$host = $record['host']; // We don't want to tamper with the actual $record['host'] variable.
-	$host = $cms['site'];
+	$host = $record['host']; // We don't want to tamper with the actual $record['host'] variable.
+	//$host = $cms['site'];
 	$host = str_replace("http://", "", $host);
 	$host = str_replace("www.", "", $host);
 	if (strpos(strtolower(" " .$referrer. " "), $host)) {
