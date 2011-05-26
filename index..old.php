@@ -129,8 +129,7 @@ $pg['body'] .= "";
 $pg['notice'] .= "";
 $pg['content'] .= "";
 
-$pg['content'] .= "<div class=\"containerblock\">
-<div class='grid3 first'><div class=\"box\" rel='filter'>
+$pg['content'] .= "<div class='grid3 first'><div class=\"box\" rel='filter'>
 <form action=\"./\" method=\"get\">
 <div class='title'>Filter</div>
 <table cellspacing='0'>
@@ -203,7 +202,6 @@ $pg['content'] .= "
 </div>
 
 </form>
-</div>
 </div>";
 
 // Set modified dates (a filter)
@@ -224,111 +222,195 @@ if ($_GET['year'] != "") {
 	$year = $_GET['year'];
 }
 
+//Debug: echo "Filter Date: " .$year. "." .$month. "." .$day. "." .$hour. "<br>\n";
 
-$pg['content'] .= '<div id="placeholder" class="graph grid9"></div>';
+// MODULE: Display basic visit statistics.
+// Display stats within html box.
+$pg['content'] .= "<div class=\"box\" rel='visits'>
+<div class=\"title\">Visits</div>
+<table cellspacing=\"0\">
+<tr class=\"subheader\">
+	<th>Past " .ucfirst($display). "</th>
+	<th>Unique</th>
+	<th>Total</th>
+</tr>";
 
+// Display overall statistics for the display type.
+if ($display == "hour") {
+	//if (!$_GET['showall']) {
+	if (!$_GET['visits']) {
+		$stat_display = 10;
+	} else {
+		$stat_display = 60;
+	}
+	$pg['content'] .= "\n<tr class=\"alt1\">
+	<td><b>This " .ucfirst($display). "</b></td>
+	<td><b>" .grape_hits_unique($year, $month, $day, $hour, ""). "</b></td>
+	<td><b>" .grape_hits_total($year, $month, $day, $hour, ""). "</b></td>
+</tr>";
+/*
+$pg['content'] .= "\n<tr class=\"alt2\">
+	<td>Average</td>
+	<td>" .round((grape_hits_unique($year, $month, $day, $hour, "") / $minute), 0). "</td>
+	<td>" .round((grape_hits_total($year, $month, $day, $hour, "") / $minute), 0). "</td>
+</tr>";
+*/
+} else if ($display == "day") {
+	//if (!$_GET['showall']) {
+	if (!$_GET['visits']) {
+		$stat_display = 12;
+	} else {
+		$stat_display = 24;
+	}
+	$pg['content'] .= "\n<tr class=\"alt1\">
+	<td><b>Today</b></td>
+	<td><b>" .grape_hits_unique($year, $month, $day, "", ""). "</b></td>
+	<td><b>" .grape_hits_total($year, $month, $day, "", ""). "</b></td>
+</tr>";
+/*
+$pg['content'] .= "\n<tr class=\"alt2\">
+	<td>Average</td>
+	<td>" .round((grape_hits_unique($year, $month, $day, "", "") / $hour), 0). "</td>
+	<td>" .round((grape_hits_total($year, $month, $day, "", "") / $hour), 0). "</td>
+</tr>";
+*/
+} else if ($display == "month") {
+	//if (!$_GET['showall']) {
+	if (!$_GET['visits']) {
+		$stat_display = 7;
+	} else {
+		$stat_display = 31;
+	}
+	$pg['content'] .= "\n<tr class=\"alt1\">
+	<td><b>This " .ucfirst($display). "</b></td>
+	<td><b>" .grape_hits_unique($year, $month, "", "", ""). "</b></td>
+	<td><b>" .grape_hits_total($year, $month, "", "", ""). "</b></td>
+</tr>";
+/*
+$pg['content'] .= "\n<tr class=\"alt2\">
+	<td>Average</td>
+	<td>" .round((grape_hits_unique($year, $month, "", "", "") / $day), 0). "</td>
+	<td>" .round((grape_hits_total($year, $month, "", "", "") / $day), 0). "</td>
+</tr>";
+*/
+} else {
+	//if (!$_GET['showall']) {
+	if (!$_GET['visits']) {
+		$stat_display = 6;
+	} else {
+		$stat_display = 12;
+	}
+	$pg['content'] .= "\n<tr class=\"alt1\">
+	<td><b>This " .ucfirst($display). "</b></td>
+	<td><b>" .grape_hits_unique($year, "", "", "", ""). "</b></td>
+	<td><b>" .grape_hits_total($year, "", "", "", ""). "</b></td>
+</tr>";
+/*
+$pg['content'] .= "\n<tr class=\"alt2\">
+	<td>Average</td>
+	<td>" .round((grape_hits_unique($year, "", "", "", "") / $month), 0). "</td>
+	<td>" .round((grape_hits_total($year, "", "", "", "") / $month), 0). "</td>
+</tr>";
+*/
+}
+$pg['content'] .= "
+<tr class=\"subheader\">
+	<th>Past " .ucfirst($display). "</th>
+	<th>Unique</th>
+	<th>Total</th>
+</tr>";
 
-$pg['content'] .= "<script type=\"text/javascript\">
-$(function () {
-	var total = [], unique = [];";
-	
 $temp_minute = $minute;
 $temp_hour = $hour;
 $temp_day = $day;
 $temp_month = $month;
 $temp_year = $year;
-
-$tfy = 2000 + $temp_year;
-
-$pg['content'] .= "\n	var lastDate = (new Date($tfy, $temp_month, $temp_day)).getTime()";
-
-	$maxVisits = 0;
-	$lastDate = date("U");
-	for ($i = 0; $i < 30; $i++) {
+$k = 0;
+$alt = 1;
+while ($k < $stat_display) {
+	if ($display == "hour") {
+		// Display visitor stats for this hour.
+		if ($temp_minute <= 0) {
+			$temp_minute += 60;
+			$temp_hour--; // Is only decreased in this specific case so as to not cause wrong results.
+		}
+		$temp_date = date("G\:i", mktime($temp_hour, $temp_minute, 0, $month, $day, $year));
+		$temp_unique = grape_hits_unique($year, $month, $day, $temp_hour, $temp_minute);
+		$temp_total = grape_hits_total($year, $month, $day, $temp_hour, $temp_minute);
+		
+		$temp_minute--;
+	} else if ($display == "day") {
+		// Display visitor stats for this day.
+		if ($temp_hour <= 0) {
+			$temp_hour += 24;
+			$temp_day--; // Is only decreased in this specific case so as to not cause wrong results.
+		}
+		$temp_date = date("G\:00", mktime($temp_hour, $minute, 0, $month, $temp_day, $year));
+		$temp_unique = grape_hits_unique($year, $month, $temp_day, $temp_hour, "");
+		$temp_total = grape_hits_total($year, $month, $temp_day, $temp_hour, "");
+		
+		$temp_hour--;
+	} else if ($display == "month") {
 		// Display visitor stats for this month.
 		if ($temp_day <= 0) {
 			$temp_day += date("t", mktime($hour, $minute, 0, $temp_month, $temp_day, $year)); // Depends on the number of days in the previous month!!!
 			$temp_month--; // Is only decreased in this specific case so as to not cause wrong results.
 		}
 		$temp_date = date("D j", mktime($hour, $minute, 0, $temp_month, $temp_day, $year));
-		$tempUE = mktime($hour, $minute, 0, $temp_month, $temp_day, $year);
 		$temp_unique = grape_hits_unique($year, $temp_month, $temp_day, "", "");
 		$temp_total = grape_hits_total($year, $temp_month, $temp_day, "", "");
 		
-		//echo $temp_day . "  " . mktime($hour, $minute, 0, $temp_month, $temp_day, $year) . "\n";
-
 		$temp_day--;
-		$maxVisits = $maxVisits < $temp_total ? $temp_total : $maxVisits;
-
-		$pg['content'] .= "\ntotal.push([$tempUE, $temp_total]);\nunique.push([$tempUE, $temp_unique]);";
+	} else {
+		// Display visitor stats for this year.
+		if ($temp_month <= 0) {
+			$temp_month += 12; // Depends on the number of days in the previous month!!!
+			$temp_year--; // Is only decreased in this specific case so as to not cause wrong results.
+		}
+		$temp_date = date("M", mktime($hour, $minute, 0, $temp_month, $day, $temp_year));
+		$temp_unique = grape_hits_unique($temp_year, $temp_month, "", "", "");
+		$temp_total = grape_hits_total($temp_year, $temp_month, "", "", "");
+	
+		$temp_month--;
 	}
-	$temp_day++;
-	$tfy = 2000 + $temp_year;
-	$pg['content'] .= "\n	var firstDate = (new Date($tfy, $temp_month, $temp_day)).getTime()";
+	/*
+	$pg['content'] .= "\n<div class=\"box-alt" .$alt. "\">
+<div class=\"leftc\">" .$temp_date. "</div>
+<div class=\"leftc2\">" .$temp_unique. "</div>
+<div class=\"mainc\">" .$temp_total. "</div>
+</div>";
+*/
+	$pg['content'] .= "\n<tr class=\"alt" .$alt. "\">
+	<td>" .$temp_date. "</td>
+	<td>" .$temp_unique. "</td>
+	<td>" .$temp_total. "</td>
+</tr>";
 
-
-$pg['content'] .= "\n\nvar plot = $.plot($(\"#placeholder\"),
-		   [ { data: total, label: \"Total Visits\"}, { data: unique, label: \"Unique Visitors\" } ], {
-			   series: {
-				   lines: { show: true },
-				   points: { show: true }
-			   },
-			   grid: { hoverable: true, clickable: true },
-			   yaxis: { min: 0, max: $maxVisits }, 
-			   xaxis: { mode: \"time\",  minTickSize: [1, \"day\"] }
-			 });
-
-	function showTooltip(x, y, contents) {
-		$('<div id=\"tooltip\">' + contents + '</div>').css( {
-			position: 'absolute',
-			display: 'none',
-			top: y + 5,
-			left: x + 5,
-			border: '1px solid #fdd',
-			padding: '2px',
-			'background-color': '#fee',
-			opacity: 0.80
-		}).appendTo(\"body\").fadeIn(200);
+	if ($alt == 1) {
+		$alt = 2;
+	} else {
+		$alt = 1;
 	}
-
-	var previousPoint = null;
-	$(\"#placeholder\").bind(\"plothover\", function (event, pos, item) {
-		$(\"#x\").text(pos.x.toFixed(0));
-		$(\"#y\").text(pos.y.toFixed(0));
-
-		if (item) {
-			if (previousPoint != item.dataIndex) {
-				previousPoint = item.dataIndex;
-					
-				$(\"#tooltip\").remove();
-				var x = item.datapoint[0],
-					y = item.datapoint[1];
-				
-				var date = new Date(x);
-				date = date.setUTCFullYear($temp_year);
-				var ti = new Date(date).toLocalString();
-					
-				showTooltip(item.pageX, item.pageY,
-							item.series.label + \" on \" + ti + \": \" + y);
-			}
-		}
-		else {
-			$(\"#tooltip\").remove();
-			previousPoint = null;			
-		}
-	});
-
-	$(\"#placeholder\").bind(\"plotclick\", function (event, pos, item) {
-		if (item) {
-			$(\"#clickdata\").text(\"You clicked point \" + item.dataIndex + \" in \" + item.series.label + \".\");
-			plot.highlight(item.series, item.datapoint);
-		}
-	});
-});
-</script>
-";
-
-$pg['content'] .= "</div>";
+	
+	$k++;
+}
+/*
+$pg['content'] .= "<div class=\"box-alt" .$alt. "\"><a href=\"\">Show All</a></div>
+</div>\n";
+*/
+/*
+if (!$_GET['showall']) {
+	$pg['content'] .= "<tr class=\"alt" .$alt. "\">
+	<td colspan=\"3\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;showall=1\">Show All</a></td>
+</tr>";
+}
+*/
+if (!$_GET['visits']) {
+	$pg['content'] .= "<tr>
+	<td colspan=\"3\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;visits=1\">Show All</a></td>
+</tr>";
+}
+$pg['content'] .= "\n</table>\n</div></div>\n";
 
 // Display Extensions:
 loadExtensions();
@@ -340,7 +422,7 @@ if (isset($extensions)) {
 	}
 }
 
-$pg['content'] .= "<br clear=\"both\">";
+$pg['content'] .= "<div class=\"clear\"></div>";
 
 require_once($template_location);
 ?>

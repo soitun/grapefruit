@@ -146,3 +146,13 @@ header .grid9 a {
 footer {
 	text-align:right;
 }
+
+.containerblock {
+	width: 978px;
+	margin: 0 auto;
+	display:inline-block;
+}
+
+.graph {
+	height:150px;
+}
