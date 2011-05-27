@@ -28,9 +28,8 @@ $ext['grapeStatColumn'] = "page";
 // Define functions.
 function GrapePagesDisplay() {
 	global $ext, $year, $month, $day, $hour, $minute, $display;
-	$content .= "<div class=\"box\" rel=\"pages\">
-<div class=\"title\">Pages</div>
-<table cellspacing=\"0\">
+	$content .= "<div class=\"title\">Pages</div>
+<table cellspacing=\"0\" class=\"twocol\">
 <tr class=\"subheader\">
 	<th>Hits</th>
 	<th>Page Title</th>
@@ -80,7 +79,7 @@ function GrapePagesDisplay() {
 	<td colspan=\"2\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
 </tr>";
 	}
-	$content .= "\n</table>\n</div>\n</div>\n";
+	$content .= "\n</table>";
 	return $content;
 }
 

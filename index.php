@@ -129,6 +129,7 @@ $pg['body'] .= "";
 $pg['notice'] .= "";
 $pg['content'] .= "";
 
+/*
 $pg['content'] .= "<div class=\"containerblock\">
 <div class='grid3 first'><div class=\"box\" rel='filter'>
 <form action=\"./\" method=\"get\">
@@ -223,9 +224,9 @@ if ($_GET['month'] != "") {
 if ($_GET['year'] != "") {
 	$year = $_GET['year'];
 }
+*/
 
-
-$pg['content'] .= '<div id="placeholder" class="graph grid9"></div>';
+$pg['content'] .= '<div id="placeholder" class="graph container"></div>';
 
 
 $pg['content'] .= "<script type=\"text/javascript\">
@@ -319,16 +320,24 @@ $pg['content'] .= "\n\nvar plot = $.plot($(\"#placeholder\"),
 </script>
 ";
 
-$pg['content'] .= "</div>";
 
 // Display Extensions:
 loadExtensions();
+$extCounter = 0;
+$numRow = 1;
 if (isset($extensions)) {
 	foreach ($extensions as $ext) {
+		$pg['content'] .= $extCounter % 2 == 0 ? "<div class=\"containerblock\" >" : "";
+
 		$alt = 1;
 		//$pg['content'] .= "<div class=\"clear\"></div>"; // Display all stats vertically.
-		$pg['content'] .= "\n" .$ext['display'](). "\n";
+		$pg['content'] .= "\n<div class=\"box grid6" . ($extCounter % 2 == 0 ? " first" : "") . "\" rel=\"" . $ext['name'] . "\">" .$ext['display'](). "\n</div>\n";
+
+		$pg['content'] .= $extCounter % 2 == 1 ? "</div>" : "";
+
+		$extCounter++;
 	}
+	$pg['content'] .= $extCounter % 2 == 1 ? "</div>" : "";
 }
 
 $pg['content'] .= "<br clear=\"both\">";

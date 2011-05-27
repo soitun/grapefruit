@@ -35,9 +35,8 @@ function GrapeReferrersDisplay() {
 <div class=\"mainc\">URL (This " .ucfirst($display). ")</div>
 </div>\n";
 */
-	$content .= "<div class='grid3'>\n<div class=\"box\" rel=\"refer\">
-<div class=\"title\">Referrers</div>
-<table cellspacing=\"0\">
+	$content .= "<div class=\"title\">Referrers</div>
+<table cellspacing=\"0\" class=\"twocol\">
 <tr class=\"subheader\">
 	<th>Hits</th>
 	<th>URL</th>
@@ -89,7 +88,7 @@ function GrapeReferrersDisplay() {
 	<td colspan=\"2\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
 </tr>";
 	}
-	$content .= "\n</table>\n</div>\n";
+	$content .= "\n</table>";
 	return $content;
 }
 /* Display parts:

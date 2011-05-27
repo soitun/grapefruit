@@ -29,42 +29,13 @@ $ext['grapeStatColumn'] = "os";
 // Define functions.
 function GrapeOSDisplay() {
 	global $year, $month, $day, $hour, $minute, $display, $ext;
-	$content .= "<div class=\"box\" rel=\"os\">
-<div class=\"title\">OS<!--<a href=\"./settings.php?view&" .$ext['name']. "\"><img src=\"images/pref.png\" hspace=\"3\"></a>--></div>
-<table cellspacing=\"0\">
+	$content .= "<div class=\"title\">OS</div>
+<table cellspacing=\"0\" class=\"twocol\">
 <tr class=\"subheader\">
 	<th>Hits</th>
 	<th>OS</th>
-	<th>Version</th>
 </tr>";
 
-	$query = "SELECT *, sum(grapeos_hits) AS grapeos_hits FROM " .SQL_PREFIX. "grapeos WHERE";
-	/*
-	//$query .= "\n grapeos_hour = '" .$hour. "' AND";
-	//$query .= "\n grapeos_day = '" .$day. "' AND";
-	$query .= "\n grapeos_month = '" .$month. "' AND";
-	*/
-	if ($display == "hour") {
-		$query .= " grapeos_hour = '" .$hour. "' AND";
-	}
-	if ($display != "year" && $display != "month") {
-		$query .= " grapeos_day = '" .$day. "' AND";
-	}
-	if ($display != "year") {
-		$query .= " grapeos_month = '" .$month. "' AND";
-	}
-	$query .= " grapeos_year = '" .$year. "' GROUP BY grapeos_os ORDER BY grapeos_hits DESC";
-	if (!$_GET[strtolower($ext['name'])]) {
-		$query .= " LIMIT 3";
-	}
-	$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-	$alt = 1;
-	while ($row = mysql_fetch_array($result)) {
-		$content .= "\n<tr class=\"alt" .$alt. "\">
-	<td>" .$row['grapeos_hits']. "</td>
-	<td>" .$row['grapeos_os']. "</td>
-	<td>-</td>
-</tr>";
 		// Show OS versions.
 		$query2 = "SELECT *, sum(grapeos_hits) AS grapeos_hits FROM " .SQL_PREFIX. "grapeos WHERE";
 		if ($display == "hour") {
@@ -76,7 +47,7 @@ function GrapeOSDisplay() {
 		if ($display != "year") {
 			$query2 .= " grapeos_month = '" .$month. "' AND";
 		}
-		$query2 .= " grapeos_year = '" .$year. "' AND grapeos_os = '" .$row['grapeos_os']. "' GROUP BY grapeos_version ORDER BY grapeos_hits DESC";
+		$query2 .= " grapeos_year = '" .$year. "' GROUP BY grapeos_version ORDER BY grapeos_hits DESC";
 		if (!$_GET[strtolower($ext['name'])]) {
 			$query2 .= " LIMIT 2";
 		}
@@ -84,17 +55,16 @@ function GrapeOSDisplay() {
 		while ($row2 = mysql_fetch_array($result2)) {
 			$content .= "\n<tr class=\"alt" .$alt. "\">
 	<td>" .$row2['grapeos_hits']. "</td>
-	<td>-</td>
-	<td>" .$row2['grapeos_version']. "</td>
+	<td>" . $row2['grapeos_os'] . " " .$row2['grapeos_version']. "</td>
 </tr>";
-		}
-		
 		if ($alt == 1) {
 			$alt = 2;
 		} else {
 			$alt = 1;
-		}
+		}	
 	}
+		
+		
 	/*
 	if (!$_GET['showall']) {
 		$content .= "<tr class=\"alt" .$alt. "\">
@@ -107,7 +77,7 @@ function GrapeOSDisplay() {
 	<td colspan=\"3\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
 </tr>";
 	}
-	$content .= "\n</table>\n</div>\n</div>\n";
+	$content .= "\n</table>\n";
 	return $content;
 }
 

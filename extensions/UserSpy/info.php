@@ -32,10 +32,9 @@ function UserSpyDisplay() {
 	global $ext, $year, $month, $day, $hour, $minute, $display;
 	
 	$columns = 2;
-	$content .= "<div class='grid6'><div class=\"box\" rel=\"spy\">
-<div class=\"title\">User Spy</div>
+	$content .= "<div class=\"title\">User Spy</div>
 <table cellspacing=\"0\">
-<tr class=\"subheader\">
+<tr class=\"subheader\" class=\"fourcol\">
 	<th>Hits</th>
 	<th>IP</th>";
 	if (function_exists("GrapePagesDisplay")) {
@@ -78,7 +77,7 @@ function UserSpyDisplay() {
 			$result2 = mysql_query($query2) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
 			$row2 = mysql_fetch_array($result2);
 			$href_url = "http://" .$row2['grapepage_url'];
-			$content .= "<td><a href=\"" .$href_url. "\" target=\"_blank\">" .textcutsimple($row2['grapepage_title'], 9). "</a></td>";
+			$content .= "<td><a href=\"" .$href_url. "\" target=\"_blank\">" .textcutsimple($row2['grapepage_title'], 20). "</a></td>";
 		}
 		// If the GrapeOS extensions exists. This is the only method that seems to work!
 		if (function_exists("GrapeOSDisplay")) {
@@ -111,7 +110,7 @@ function UserSpyDisplay() {
 	<td colspan=\"" .$columns. "\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
 </tr>";
 	}
-	$content .= "\n</table>\n</div>\n";
+	$content .= "\n</table>\n";
 	return $content;
 }
 function UserSpyJavascript() {
