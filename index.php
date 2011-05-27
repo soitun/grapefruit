@@ -238,20 +238,20 @@ $temp_day = $day;
 $temp_month = $month;
 $temp_year = $year;
 
-$tfy = 2000 + $temp_year;
+$nda = mktime(date("H"), date("i"), date("s"), $temp_month, $temp_day, $year) * 1000;
 
-$pg['content'] .= "\n	var lastDate = (new Date($tfy, $temp_month, $temp_day)).getTime()";
+$pg['content'] .= "\n	var lastDate = (new Date($nda));";
 
 	$maxVisits = 0;
 	$lastDate = date("U");
-	for ($i = 0; $i < 30; $i++) {
+	for ($i = 0; $i <= 30; $i++) {
 		// Display visitor stats for this month.
 		if ($temp_day <= 0) {
 			$temp_day += date("t", mktime($hour, $minute, 0, $temp_month, $temp_day, $year)); // Depends on the number of days in the previous month!!!
 			$temp_month--; // Is only decreased in this specific case so as to not cause wrong results.
 		}
 		$temp_date = date("D j", mktime($hour, $minute, 0, $temp_month, $temp_day, $year));
-		$tempUE = mktime($hour, $minute, 0, $temp_month, $temp_day, $year);
+		$tempUE = (mktime($hour, $minute, 0, $temp_month, $temp_day, $year)) * 1000;
 		$temp_unique = grape_hits_unique($year, $temp_month, $temp_day, "", "");
 		$temp_total = grape_hits_total($year, $temp_month, $temp_day, "", "");
 		
@@ -260,22 +260,25 @@ $pg['content'] .= "\n	var lastDate = (new Date($tfy, $temp_month, $temp_day)).ge
 		$temp_day--;
 		$maxVisits = $maxVisits < $temp_total ? $temp_total : $maxVisits;
 
+		//echo $tempUE . " \n";
 		$pg['content'] .= "\ntotal.push([$tempUE, $temp_total]);\nunique.push([$tempUE, $temp_unique]);";
 	}
 	$temp_day++;
 	$tfy = 2000 + $temp_year;
-	$pg['content'] .= "\n	var firstDate = (new Date($tfy, $temp_month, $temp_day)).getTime()";
+	$nda = mktime(date("H"), date("i"), date("s"), $temp_month, $temp_day, $year) * 1000;
+	$pg['content'] .= "\n	var firstDate = (new Date($nda));";
 
 
 $pg['content'] .= "\n\nvar plot = $.plot($(\"#placeholder\"),
 		   [ { data: total, label: \"Total Visits\"}, { data: unique, label: \"Unique Visitors\" } ], {
 			   series: {
-				   lines: { show: true },
-				   points: { show: true }
+				   lines: { show: true, fill: true },
+				   points: { show: false }
+				  
 			   },
-			   grid: { hoverable: true, clickable: true },
+			   grid: { hoverable: true, clickable: false },
 			   yaxis: { min: 0, max: $maxVisits }, 
-			   xaxis: { mode: \"time\",  minTickSize: [1, \"day\"] }
+			   xaxis: { mode: \"time\", min: firstDate, max: lastDate, minTickSize: [1, \"day\"] }
 			 });
 
 	function showTooltip(x, y, contents) {
@@ -301,27 +304,15 @@ $pg['content'] .= "\n\nvar plot = $.plot($(\"#placeholder\"),
 				previousPoint = item.dataIndex;
 					
 				$(\"#tooltip\").remove();
-				var x = item.datapoint[0],
-					y = item.datapoint[1];
 				
-				var date = new Date(x);
-				date = date.setUTCFullYear($temp_year);
-				var ti = new Date(date).toLocalString();
-					
-				showTooltip(item.pageX, item.pageY,
-							item.series.label + \" on \" + ti + \": \" + y);
+				var d = new Date(item.datapoint[0]);
+				
+				showTooltip(item.pageX, item.pageY, item.datapoint[1]);
 			}
 		}
 		else {
 			$(\"#tooltip\").remove();
 			previousPoint = null;			
-		}
-	});
-
-	$(\"#placeholder\").bind(\"plotclick\", function (event, pos, item) {
-		if (item) {
-			$(\"#clickdata\").text(\"You clicked point \" + item.dataIndex + \" in \" + item.series.label + \".\");
-			plot.highlight(item.series, item.datapoint);
 		}
 	});
 });

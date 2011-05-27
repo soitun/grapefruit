@@ -239,6 +239,10 @@ If write permissions are an issue with this server, you may need to manually edi
 	<td><input type=\"text\" name=\"config_location\" value=\"" .$grape_loc. "\" style=\"width:200px;\"></td>
 </tr>
 <tr>
+	<td>Analytics For:</td>
+	<td><input type=\"text\" name=\"config_site\" value=\"" .$grape_loc. "\" style=\"width:200px;\"></td>
+</tr>
+<tr>
 	<td>Timezone</td>
 	<td><select name=\"config_timezone\" id=\"timezone\" onchange=\"fetchTimezone();\" style=\"width:250px;\">
 <option value=\"\">-Select a timezone-";
@@ -316,6 +320,7 @@ if ($url['step'] == "4") {
 		writeconfig("cms['timezone']", $_POST['config_timezone'], $location. "includes/");
 		writeconfig("cms['display_protect']", $_POST['config_display_protect'], $location. "includes/");
 		writeconfig("cms['location']", $_POST['config_location'], $location. "includes/");
+		writeconfig("cms['site']", $_POST['config_site'], $location. "includes/");
 		writeconfig("cms['theme']", $_POST['config_theme'], $location. "includes/");
 		$pg['content'] .= "<p><img src=\"images/yes.png\" alt=\"\" /> Configurations have been saved.</p>";
 	} else {
@@ -413,6 +418,18 @@ VALUES('" .sql_protect($_POST['admin_user']). "', '" .sql_protect($_POST['admin_
 	
 	$pg['content'] .= "<p><img src=\"images/yes.png\" alt=\"\" /> Database tables were created.
 Administrator account was successfully created.</p>";
+	
+	require_once("./extensions/UserSpy/info.php");
+	require_once("./extensions/GrapePages/info.php");
+	require_once("./extensions/GrapeReferrers/info.php");
+	require_once("./extensions/CityFinder/info.php");
+	require_once("./extensions/GrapeOS/info.php");
+
+	UserSpyInstall();
+	GrapePagesInstall();
+	GrapeReferrersInstall();
+	CityFinderInstall();
+	GrapeOSInstall();
 
 	$pg['content'] .= "<p><img src=\"images/yes.png\" alt=\"\" /> Grape has finished installed. Place the following in all pages you want to track statistics for:
 	</p>
