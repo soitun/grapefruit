@@ -25,14 +25,7 @@ if (isset($pg['title'])) {
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.stack.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/masonry.js"></script>
-
-<script type="text/javascript">
-$('#container').masonry({
-  itemSelector: '.box',
-  columnWidth: 286
-})
-</script>
+<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.pie.js"></script>
 
 <?php echo $pg['head']; ?>
 </head>

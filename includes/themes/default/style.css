@@ -57,6 +57,13 @@ table tr td:nth-child(1) {
 	width: 24px;
 }
 
+#osPlaceholder {
+	height:350px;
+}
+
+#hover {
+	height:24px;
+}
 
 .box {
 	float:left;

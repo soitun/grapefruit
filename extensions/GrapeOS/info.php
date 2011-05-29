@@ -29,12 +29,7 @@ $ext['grapeStatColumn'] = "os";
 // Define functions.
 function GrapeOSDisplay() {
 	global $year, $month, $day, $hour, $minute, $display, $ext;
-	$content .= "<div class=\"title\">OS</div>
-<table cellspacing=\"0\" class=\"twocol\">
-<tr class=\"subheader\">
-	<th>Hits</th>
-	<th>OS</th>
-</tr>";
+	$content .= "<div class=\"title\">Operating Systmes</div>\n<div id=\"hover\"></div>\n<div id=\"osPlaceholder\"></div>\n\n<script type=\"text/javascript\">\n\tvar gfOS = [];\n";
 
 		// Show OS versions.
 		$query2 = "SELECT *, sum(grapeos_hits) AS grapeos_hits FROM " .SQL_PREFIX. "grapeos WHERE";
@@ -48,36 +43,47 @@ function GrapeOSDisplay() {
 			$query2 .= " grapeos_month = '" .$month. "' AND";
 		}
 		$query2 .= " grapeos_year = '" .$year. "' GROUP BY grapeos_version ORDER BY grapeos_hits DESC";
-		if (!$_GET[strtolower($ext['name'])]) {
-			$query2 .= " LIMIT 2";
-		}
+		
 		$result2 = mysql_query($query2) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+		$numL = 0;
 		while ($row2 = mysql_fetch_array($result2)) {
-			$content .= "\n<tr class=\"alt" .$alt. "\">
-	<td>" .$row2['grapeos_hits']. "</td>
-	<td>" . $row2['grapeos_os'] . " " .$row2['grapeos_version']. "</td>
-</tr>";
-		if ($alt == 1) {
-			$alt = 2;
-		} else {
-			$alt = 1;
-		}	
+			
+			$content .= "gfOS[$numL] = { label: \"" . ($row2['grapeos_os'] != "Unknown" ? $row2['grapeos_os'] . " " . $row2['grapeos_version'] : $row2['grapeos_version']) . "\", data: " . $row2['grapeos_hits'] . " };\n";
+			$numL++;
 	}
+
+	$content .= "
+$.plot($(\"#osPlaceholder\"), gfOS, 
+	{
+        series: {
+            pie: { 
+                show: true,
+                radius: 3/4
+            }
+        },
+        grid: {
+            hoverable: true,
+            clickable: true
+        }
+});
+$(\"#osPlaceholder\").bind(\"plothover\", pieHover);
+function pieHover(event, pos, obj) 
+
+{
+
+	if (!obj)
+
+                return;
+
+	percent = parseFloat(obj.series.percent).toFixed(2);
+
+	$(\"#hover\").html('<span style=\"font-weight: bold; color: '+obj.series.color+'\">'+obj.series.label+' ('+percent+'%)</span>');
+
+}
+
+
+</script>";
 		
-		
-	/*
-	if (!$_GET['showall']) {
-		$content .= "<tr class=\"alt" .$alt. "\">
-	<td colspan=\"3\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&showall=1\">Show All</a></td>
-</tr>";
-	}
-	*/
-	if (!$_GET[strtolower($ext['name'])]) {
-		$content .= "\n<tr>
-	<td colspan=\"3\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
-</tr>";
-	}
-	$content .= "\n</table>\n";
 	return $content;
 }
 
