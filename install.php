@@ -33,7 +33,7 @@ if ($url['step'] == "1") {
 <div class=\"box-content\">
 <img src=\"includes/themes/default/images/logo.png\" vspace=\"5\" hspace=\"5\" alt=\"\" />
 <p>
-Grape Statistics is available as open source software.
+Grapefruit is available as open source software.
 That is to say it is free to be used, modified, and redistributed as long as it stays within the scope of the <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GNU General Public License v2</a>, replicated below.
 </p>
 <textarea style=\"overflow:auto;height:300px;width:99%;margin:2px;\">";
@@ -115,7 +115,7 @@ if ($url['step'] == "2") {
 <div class=\"box-content\">
 <img src=\"includes/themes/default/images/logo.png\" vspace=\"5\" hspace=\"5\" alt=\"\" />
 <p>
-This application requires certain versions of PHP, MySQL, and write permissions are recommended.
+Grapefruit requires certain versions of PHP, MySQL, and write permissions are recommended.
 PHP's register globals setting should be turned off for security issues.
 </p>
 <table cellspacing=\"0\">
@@ -137,18 +137,18 @@ PHP's register globals setting should be turned off for security issues.
 </tr>
 </table>";
 	if ($meet_req == 0) {
-		$pg['content'] .= "<p>This server does not meet the minimum requirements to run Grape.
-If you can't change file/folder write permissions for Grape, you may eventually need to manually edit the <code>/includes/config.php</code> file.</p>
+		$pg['content'] .= "<p>Your server does not meet the minimum requirements to run Grapefruit.
+If you can't change file/folder write permissions for Grapefruit, you may eventually need to manually edit the <code>/includes/config.php</code> file.</p>
 <input type=\"button\" value=\"Continue Anyway\" onclick=\"document.location = '?3';\">";
 	} else {
 		if ($meet_maybe == 1) {
 			// Check again if Register Globals, because if it is, a message should be displayed regarding it.
 			if ($rg === true) {
 				$pg['content'] .= "<p>PHP's Register Globals are turned on but should be turned off in your PHP ini settings.
-Leaving this on creates a security risk for Grape and many other PHP programs.
+Leaving this on creates a security risk for Grapefruit and many other PHP programs.
 If editing your PHP settings is not an option, and if you have Apache, you can create a file called <i>.htaccess</i>, and within it place the following: <i><code>php_flag register_globals 0</code></i></p>";
 			}
-			$pg['content'] .= "<p>Grape has been tested very little and may not work properly with this server's configuration.</p>";
+			$pg['content'] .= "<p>Grapefruit hasn't had a lot of testing, and as such may not work properly with your server's configuration.</p>";
 			
 		}
 	$pg['content'] .= "
@@ -176,7 +176,7 @@ if ($url['step'] == "3") {
 	$grape_loc = "http://" .$_SERVER['HTTP_HOST']. "" .$file_loc;
 
 	$pg['content'] .= "<div class=\"box box-full\">
-<div class=\"box-header\">Install Grape</div>
+<div class=\"box-header\">Install Grapefruit</div>
 <div class=\"box-content\">
 <img src=\"includes/themes/default/images/logo.png\" vspace=\"5\" hspace=\"5\" alt=\"\" />
 <form method=\"post\" action=\"?4\">
@@ -240,7 +240,7 @@ If write permissions are an issue with this server, you may need to manually edi
 </tr>
 <tr>
 	<td>Analytics For:</td>
-	<td><input type=\"text\" name=\"config_site\" value=\"" .$grape_loc. "\" style=\"width:200px;\"></td>
+	<td><input type=\"text\" name=\"config_site\" value=\"" . substr(str_replace("http://", "", str_replace("www.", "", $grape_loc)), 0, strpos(str_replace("http://", "", str_replace("www.", "", $grape_loc)), "/")) . "\" style=\"width:200px;\"></td>
 </tr>
 <tr>
 	<td>Timezone</td>
@@ -431,16 +431,16 @@ Administrator account was successfully created.</p>";
 	GrapeOSInstall();
 
 
-	$pg['content'] .= "<p><img src=\"images/yes.png\" alt=\"\" /> Grape has finished installed. Place the following in all pages you want to track statistics for:
+	$pg['content'] .= "<p><img src=\"images/yes.png\" alt=\"\" /> Grapefruit has finished installed. Place the following in all pages you want to track statistics for:
 	</p>
 <div class=\"code-box\"><code>&lt;script src=\"" .$cms['location']. "?js\" type=\"text/javascript\"&gt;
 &lt;/script&gt;<br /></code></div>
-<p>If you misplace this code, don't worry. You may find it again in Grape admin panel as well as in the Grape documentation.
-If for some reason Grape is not tracking your statistics, post on <a href=\"http://www.quate.net/board/\" target=\"_blank\">Quate's forums</a> and someone should be able to help you.</p>";
+<p>If you misplace this code, don't worry. You may find it again in Grapefruit admin panel as well as in the Grapefruit documentation.
+If for some reason Grapefruit is not tracking your statistics, post on <a href=\"http://www.quate.net/board/\" target=\"_blank\">Quate's forums</a> and someone should be able to help you.</p>";
 
 	// Create 'installed' file
 	if (!$file_open = fopen($location. "includes/installed", "a")) {
-		$pg['content'] .= "<p><img src=\"images/no.png\" alt=\"\" /> Failed to create the <code>installed</code> file that tells Grape that it has been installed.
+		$pg['content'] .= "<p><img src=\"images/no.png\" alt=\"\" /> Failed to create the <code>installed</code> file that tells Grapefruit that it has been installed.
 While Grape has been successfully installed, this file still needs to be created.
 Create a file called <code>installed</code> within the <code>/includes/</code> directory.</p>";
 		// (Script is not to exit, but is to contine.)
@@ -461,7 +461,7 @@ $pg['content'] .= "<div class=\"box box-full\">
 <div class=\"box-header\">Install Grape</div>
 <div class=\"box-content\">
 <img src=\"includes/themes/default/images/logo-large.png\" vspace=\"5\" hspace=\"5\" alt=\"\" />
-<p>Grape Web Statistics is a web statistics recording and monitoring program.
+<p>Grapefruit is a web statistics recording and monitoring program.
 The goal of this application is to provide accurate visitor statistics.
 Statistics are recorded with a timestamp so they can be queried easily and accurately.
 </p>
@@ -469,7 +469,7 @@ Statistics are recorded with a timestamp so they can be queried easily and accur
 This means that every Grape user may choose what information to track according to their needs.
 </p>
 <input type=\"button\" value=\"Install\" onclick=\"document.location = '?1';\">
-<a href=\"http://www.quate.net/grape\" target=\"_blank\" style=\"font-size:10px;\">(Visit the Grape Statistics website)</a>
+<a href=\"http://www.quate.net/grape\" target=\"_blank\" style=\"font-size:10px;\">(Visit the Grapefruit Statistics website)</a>
 </div>
 </div>";
 
