@@ -48,5 +48,5 @@ after changing the order you still have errors, email me, grape@dkuntz2.com
 
 * Grapefruit is licensed under the GPL like Grape itself.
 * Grapefruit is under development right now, and may eventually move to being it's own program and not just a look and feel change to Grape.
-* If you're looking for information on what's coming up, check the (todo list)[todo.markdown].
+* If you're looking for information on what's coming up, check the [todo list](todo.markdown).
 * If you have any questions on how or why I did certain things, feel free to email me grape@dkuntz2.com
