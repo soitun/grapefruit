@@ -42,11 +42,10 @@ change that to:
 
 If you do that, you should have a copy of Grapefruit up and running. If the layout looks a 
 little broken, you probably need to change the order of your extensions (see below). If, even
-after changing the order you still have errors, email me, grape@dkuntz2.com
+after changing the order you still have errors, email me, [grapefruit@dkuntz2.com](mailto:grapefruit@dkuntz2.com)
 
 ## Additional Notes
 
 * Grapefruit is licensed under the GPL like Grape itself.
-* Grapefruit is under development right now, and may eventually move to being it's own program and not just a look and feel change to Grape.
-* If you're looking for information on what's coming up, check the [todo list](todo.markdown).
-* If you have any questions on how or why I did certain things, feel free to email me grape@dkuntz2.com
+* If you're looking for information on what's coming up, check the [todo list](grapefruit/blob/master/todo.markdown).
+* If you have any questions on how or why I did certain things, feel free to email me [grapefruit@dkuntz2.com](mailto:grapefruit@dkuntz2.com).
