@@ -11,6 +11,9 @@ The only thing you need to do besides running the install is to replace
 `extensions/extensions.php` with `extensions/extensions.empty.php`. 
 After doing that, the only thing you need to do is run the install.
 
+As soon as I determine Grapefruit to be ready for a beta release, this will be done for you (only on the download, not the 
+repository, that will continue to have that problem for a while).
+
 ### Upgrading Grapefruit or moving from Grape (or CleanerGrape) to Grapefruit
 
 If you've got an existing installation of Grapefruit or Grape 0.2 Beta 3, all you need to do
@@ -37,28 +40,13 @@ change that to:
     $cms['site'] = "NAME OF SITE BEING ANALYZED"; // I use "dkuntz2.com"
     ?>
 
-If you do that, you should have a copy of CleanerGrape up and running. If the layout looks a 
+If you do that, you should have a copy of Grapefruit up and running. If the layout looks a 
 little broken, you probably need to change the order of your extensions (see below). If, even
 after changing the order you still have errors, email me, grape@dkuntz2.com
-
-### Extensions
-
-You Need To Install Extensions In This Order
-
-1. UserSpy
-2. GrapePages
-3. GrapeReferrers
-4. GrapeOS
-
-If you don't install them in that order, you can uninstall/reinstall (which takes a lot of time) or change the order in `extensions/extensions.php` to match that.
-
-__CityFinder__
-
-If you want to use CityFinder with Grapefruit, you need to put it between UserSpy and GrapePages, or you need to manually edit it yourself to make it fit properly.
 
 ## Additional Notes
 
 * Grapefruit is licensed under the GPL like Grape itself.
 * Grapefruit is under development right now, and may eventually move to being it's own program and not just a look and feel change to Grape.
-* If you're looking for information on what's coming up, check the todo list (`todo.markdown`).
+* If you're looking for information on what's coming up, check the (todo list)[todo.markdown].
 * If you have any questions on how or why I did certain things, feel free to email me grape@dkuntz2.com
