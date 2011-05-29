@@ -22,16 +22,24 @@ if (isset($pg['title'])) {
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="<?php echo $location; ?>includes/themes/default/style.css" type="text/css" />
 <link rel="shortcut icon" type="image/x-icon" href="<?php echo $location; ?>includes/themes/default/images/favicon.png" />
-<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/flot/jquery.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/flot/jquery.flot.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/flot/jquery.flot.stack.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.stack.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/masonry.js"></script>
+
+<script type="text/javascript">
+$('#container').masonry({
+  itemSelector: '.box',
+  columnWidth: 286
+})
+</script>
 
 <?php echo $pg['head']; ?>
 </head>
 
 <body<?php echo $pg['body']; ?>>
 
-<div class="container">
+<div id="container">
 <header>
 	<div class="grid9 first"><a href="<?php echo $location; ?>./"><?php echo $cms['site']; ?> <span>analytics</span></a></div>
 

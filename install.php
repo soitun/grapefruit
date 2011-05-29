@@ -420,16 +420,16 @@ VALUES('" .sql_protect($_POST['admin_user']). "', '" .sql_protect($_POST['admin_
 Administrator account was successfully created.</p>";
 	
 	require_once("./extensions/UserSpy/info.php");
-	require_once("./extensions/GrapePages/info.php");
-	require_once("./extensions/GrapeReferrers/info.php");
-	require_once("./extensions/CityFinder/info.php");
-	require_once("./extensions/GrapeOS/info.php");
-
 	UserSpyInstall();
+	require_once("./extensions/GrapePages/info.php");
 	GrapePagesInstall();
+	require_once("./extensions/GrapeReferrers/info.php");
 	GrapeReferrersInstall();
+	require_once("./extensions/CityFinder/info.php");
 	CityFinderInstall();
+	require_once("./extensions/GrapeOS/info.php");
 	GrapeOSInstall();
+
 
 	$pg['content'] .= "<p><img src=\"images/yes.png\" alt=\"\" /> Grape has finished installed. Place the following in all pages you want to track statistics for:
 	</p>

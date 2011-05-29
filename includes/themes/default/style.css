@@ -42,15 +42,24 @@ footer {
 	display:inline-block;
 }
 
+#container {
+	width:978px;
+	margin:0 auto;
+}
+
 .graph {
 	height:200px;
+	width:938px;
+	padding:0 20px;
 }
 
 table tr td:nth-child(1) {
 	width: 24px;
 }
 
-/* Two Columns */
-table.twocol td:nth-child(2) {
-	width:440px;
+
+.box {
+	float:left;
+	margin:20px;
+	width:286px;
 }

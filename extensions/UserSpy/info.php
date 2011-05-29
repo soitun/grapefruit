@@ -34,9 +34,8 @@ function UserSpyDisplay() {
 	$columns = 2;
 	$content .= "<div class=\"title\">User Spy</div>
 <table cellspacing=\"0\">
-<tr class=\"subheader\" class=\"fourcol\">
-	<th>Hits</th>
-	<th>IP</th>";
+<tr class=\"subheader\" class=\"threecol\">
+	<th>Hits</th>";
 	if (function_exists("GrapePagesDisplay")) {
 		$content .= "<th>Entry Page</th>";
 		$columns++;
@@ -69,8 +68,7 @@ function UserSpyDisplay() {
 	while ($row = mysql_fetch_array($result)) {
 		$href_url = "http://" .$row['graperef_http'];
 		$content .= "\n<tr class=\"alt" .$alt. "\">
-	<td>" .$row['grapestat_hits']. "</td>
-	<td><a href=\"http://freegeoip.net/xml/" .$row['grapestat_ip']. "\" target=\"_blank\">" .$row['grapestat_ip']. "</a></td>";
+	<td>" .$row['grapestat_hits']. "</td>";
 		// If the GrapePages extensions exists. This is the only method that seems to work!
 		if (function_exists("GrapePagesDisplay")) {
 			$query2 = "SELECT grapepage_id, grapepage_title, grapepage_url FROM " .SQL_PREFIX. "grapepage WHERE grapepage_id = '" .$row['grapestat_page']. "'";

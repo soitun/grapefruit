@@ -265,6 +265,7 @@ $pg['content'] .= "\n	var lastDate = (new Date($nda));";
 		$pg['content'] .= "\ntotal.push([$tempUE, $temp_total]);\nunique.push([$tempUE, $temp_unique]);";
 	}
 	$temp_day++;
+	$maxVisits++;
 	$tfy = 2000 + $temp_year;
 	$nda = mktime(date("H"), date("i"), date("s"), $temp_month, $temp_day, $year) * 1000;
 	$pg['content'] .= "\n	var firstDate = (new Date($nda));";
@@ -327,17 +328,12 @@ $extCounter = 0;
 $numRow = 1;
 if (isset($extensions)) {
 	foreach ($extensions as $ext) {
-		$pg['content'] .= $extCounter % 2 == 0 ? "<div class=\"containerblock\" >" : "";
-
 		$alt = 1;
 		//$pg['content'] .= "<div class=\"clear\"></div>"; // Display all stats vertically.
-		$pg['content'] .= "\n<div class=\"box grid6" . ($extCounter % 2 == 0 ? " first" : "") . "\" rel=\"" . $ext['name'] . "\">" .$ext['display'](). "\n</div>\n";
-
-		$pg['content'] .= $extCounter % 2 == 1 ? "</div>" : "";
+		$pg['content'] .= "\n<div class=\"box" . "\" rel=\"" . $ext['name'] . "\">" .$ext['display'](). "\n</div>\n";
 
 		$extCounter++;
 	}
-	$pg['content'] .= $extCounter % 2 == 1 ? "</div>" : "";
 }
 
 $pg['content'] .= "<br clear=\"both\">";
