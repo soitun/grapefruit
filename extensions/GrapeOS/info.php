@@ -32,25 +32,48 @@ function GrapeOSDisplay() {
 	$content .= "<div class=\"title\">Operating Systmes</div>\n<div id=\"hover\"></div>\n<div id=\"osPlaceholder\"></div>\n\n<script type=\"text/javascript\">\n\tvar gfOS = [];\n";
 
 		// Show OS versions.
-		$query2 = "SELECT *, sum(grapeos_hits) AS grapeos_hits FROM " .SQL_PREFIX. "grapeos WHERE";
-		if ($display == "hour") {
-			$query2 .= " grapeos_hour = '" .$hour. "' AND";
-		}
-		if ($display != "year" && $display != "month") {
-			$query2 .= " grapeos_day = '" .$day. "' AND";
-		}
-		if ($display != "year") {
-			$query2 .= " grapeos_month = '" .$month. "' AND";
-		}
-		$query2 .= " grapeos_year = '" .$year. "' GROUP BY grapeos_version ORDER BY grapeos_hits DESC";
-		
-		$result2 = mysql_query($query2) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-		$numL = 0;
-		while ($row2 = mysql_fetch_array($result2)) {
+		$temp_minute = $minute;
+		$temp_hour = $hour;
+		$temp_day = $day;
+		$temp_month = $month;
+		$temp_year = $year;
+		$osArr = array();
+		for ($i = 0; $i <= 30; $i++) {
 			
-			$content .= "gfOS[$numL] = { label: \"" . ($row2['grapeos_os'] != "Unknown" ? $row2['grapeos_os'] . " " . $row2['grapeos_version'] : $row2['grapeos_version']) . "\", data: " . $row2['grapeos_hits'] . " };\n";
-			$numL++;
-	}
+			if ($temp_day <= 0) {
+				$temp_day += date("t", mktime($hour, $minute, 0, $temp_month, $temp_day, $year)); // Depends on the number of days in the previous month!!!
+				$temp_month--; // Is only decreased in this specific case so as to not cause wrong results.
+				$temp_month = $temp_month % 12 == 0 ? 12 : $temp_month % 12;
+			}
+
+			$q = "SELECT * FROM " . SQL_PREFIX . "grapeos WHERE grapeos_day = '"
+				 . $temp_day . "' AND grapeos_month = '" . $temp_month 
+				 . "' AND grapeos_year = '" . $temp_year . "'";
+			
+			$r = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+
+			for ($j = 0; $j < mysql_num_rows($r); $j++) {
+				$type = mysql_result($r, $j, "grapeos_os");
+				$version = mysql_result($r, $j, "grapeos_version");
+
+				$tmpName = strtolower($version) == "unknown" ? $type : $type . " " . $version;
+
+				if (!isset($osArr[$tmpName])) {
+					$osArr[$tmpName] = 1;
+				}
+				else {
+					$osArr[$tmpName]++;
+				}
+			}
+
+			$temp_day--;
+		}
+
+		$numL = 0;
+		foreach ($osArr as $k => $v) {
+			$content .= "\ngfOS.push( { label: \"$k\", data: $v } );";
+		}
+		$content .= "\n\n";
 
 	$content .= "
 $.plot($(\"#osPlaceholder\"), gfOS, 
