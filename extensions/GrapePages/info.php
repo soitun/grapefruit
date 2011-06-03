@@ -87,6 +87,7 @@ function GrapePagesDisplay() {
 	arsort($pgArr);
 	foreach ($pgArr as $k => $v) {
 		$tv = explode(":URL:", $k);
+		$tv[1] = "http://" . $tv[1];
 		$content .= "\n<tr class=\"alt$alt\">\n\t<td>$v</td>\n\t<td><a href=\"" . $tv[1] . "\">" . $tv[0] . "</a></td>\n</tr>";
 
 		$alt = (($alt + 1) % 2) + 1;
