@@ -68,5 +68,8 @@ table tr td:nth-child(1) {
 .box {
 	float:left;
 	margin:20px;
+	display:block;
 	width:286px;
 }
+
+#iso { clear:both; }

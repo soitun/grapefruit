@@ -22,7 +22,7 @@ if (isset($pg['title'])) {
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="<?php echo $location; ?>includes/themes/default/style.css" type="text/css" />
 <link rel="shortcut icon" type="image/x-icon" href="<?php echo $location; ?>includes/themes/default/images/favicon.png" />
-<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.stack.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.pie.js"></script>
@@ -47,6 +47,17 @@ if (isset($pg['title'])) {
 Designed and modified by <a href="http://dkuntz2.com">Don Kuntz</a>.
 Originally developed by <a href="http://www.quate.net/">Quate.net</a>.
 </footer>
+
+<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/isotope.js"></script>
+
+<script type="text/javascript">
+$('#iso').isotope({
+  // options
+  itemSelector : '.box',
+  layoutMode : 'fitRows'
+});
+</script>
+
 </div>
 </body>
 </html>

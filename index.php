@@ -327,16 +327,17 @@ loadExtensions();
 $extCounter = 0;
 $numRow = 1;
 if (isset($extensions)) {
+	$pg['content'] .= "<div id=\"iso\">";
 	foreach ($extensions as $ext) {
 		$alt = 1;
 		//$pg['content'] .= "<div class=\"clear\"></div>"; // Display all stats vertically.
-		$pg['content'] .= "\n<div class=\"box" . "\" rel=\"" . $ext['name'] . "\">" .$ext['display'](). "\n</div>\n";
+		$pg['content'] .= "\n<div class=\"box col1" . "\" rel=\"" . $ext['name'] . "\">" .$ext['display'](). "\n</div>\n";
 
 		$extCounter++;
 	}
 }
 
-$pg['content'] .= "<br clear=\"both\">";
+$pg['content'] .= "</div><br clear=\"both\">";
 
 require_once($template_location);
 ?>
