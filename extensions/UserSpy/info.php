@@ -33,8 +33,8 @@ function UserSpyDisplay() {
 	
 	$columns = 2;
 	$content .= "<div class=\"title\">User Spy</div>
-<table cellspacing=\"0\">
-<tr class=\"subheader\" class=\"threecol\">
+<table cellspacing=\"0\" class=\"threecol\">
+<tr class=\"subheader\">
 	<th>Hits</th>";
 	if (function_exists("GrapePagesDisplay")) {
 		$content .= "<th>Entry Page</th>";

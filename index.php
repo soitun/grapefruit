@@ -81,9 +81,9 @@ if ($cms['display_protect'] == 1) {
 }
 
 // Set initial dates.
-$minute = date("i");
+$minute = 59;
 $minute_selected = $minute;
-$hour = date("G");
+$hour = 23;
 $hour_selected = $hour;
 $day = date("j");
 $day_selected = $day;
@@ -129,103 +129,6 @@ $pg['body'] .= "";
 $pg['notice'] .= "";
 $pg['content'] .= "";
 
-/*
-$pg['content'] .= "<div class=\"containerblock\">
-<div class='grid3 first'><div class=\"box\" rel='filter'>
-<form action=\"./\" method=\"get\">
-<div class='title'>Filter</div>
-<table cellspacing='0'>
-<tbody>
-<tr><th>Day</th> <th>Month</th> <th>Year</th></tr>
-<tr class='alt1'>
-
-<td><select name=\"day\">";
-$k = 0;
-while ($k < 31) {
-	$k++;
-	
-	// Why get days in current month when all 31 days should be displayed. We don't know if the user will chose another month with a different max amount of days.
-	//$temp = date("j", mktime($hour, $minute, 0, $month, (0 + $k), $year));
-	$temp = $k;
-	if ($k == $day_selected) {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\" selected=\"selected\">" .$temp. "</option>";
-	} else {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\">" .$temp. "</option>";
-	}
-}
-$pg['content'] .= "</select>
-</td>
-
-<td><select name=\"month\">";
-$k = 0;
-while ($k < 12) {
-	$k++;
-	
-	$temp = date("n", mktime($hour, $minute, 0, (0 + $k), $day, $year));
-	if ($k == $month_selected) {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\" selected=\"selected\">" .$temp. "</option>";
-	} else {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\">" .$temp. "</option>";
-	}
-}
-$pg['content'] .= "</select>
-</td>
-
-<td><select name=\"year\">";
-
-// Get first entry in the database, which should give us the date (year) at which these statistics were started.
-$query = "SELECT grapestat_id, grapestat_year FROM " .SQL_PREFIX. "grapestat ORDER BY grapestat_id ASC";
-$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-$row = mysql_fetch_array($result);
-$k = $row['grapestat_year']; // First year...
-while ($k <= $year) {
-	$temp = date("y", mktime($hour, $minute, 0, $month, $day, $k));
-	$temp_full = date("Y", mktime($hour, $minute, 0, $month, $day, $k));
-	if ($k == $year_selected) {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\" selected=\"selected\">" .$temp_full. "</option>";
-	} else {
-		$pg['content'] .= "\n<option value=\"" .$temp. "\">" .$temp_full. "</option>";
-	}
-$k++;
-}
-$pg['content'] .= "</select>
-
-</td>
-
-</tr>";
-
-$pg['content'] .= "
-</tbody>
-</table>
-
-<div id='fbuttons'>
-	<input type=\"submit\" value=\"Filter\" class='fbut' />
-	<input type=\"button\" value=\"Clear\" class='fbut' onclick=\"document.location = './';\" />
-</div>
-
-</form>
-</div>
-</div>";
-
-// Set modified dates (a filter)
-if ($_GET['minute'] != "") {
-	// Minute filtering probably won't ever be used, but it is here incase someone wants to use it.
-	$minute = $_GET['minute'];
-}
-if ($_GET['hour'] != "") {
-	$hour = $_GET['hour'];
-}
-if ($_GET['day'] != "") {
-	$day = $_GET['day'];
-}
-if ($_GET['month'] != "") {
-	$month = $_GET['month'];
-}
-if ($_GET['year'] != "") {
-	$year = $_GET['year'];
-}
-*/
-
 $pg['content'] .= '<div id="placeholder" class="graph container"></div>';
 
 
@@ -239,20 +142,20 @@ $temp_day = $day;
 $temp_month = $month;
 $temp_year = $year;
 
-$nda = mktime(date("H"), date("i"), date("s"), $temp_month, $temp_day, $year) * 1000;
+$nda = mktime(00, 00, 00, $temp_month, $temp_day, $year) * 1000;
 
 $pg['content'] .= "\n	var lastDate = (new Date($nda));";
 
 	$maxVisits = 0;
-	$lastDate = date("U");
+	$lastDate = date("U", mktime(00, 00, 00, $temp_month, $temp_day, $year));
 	for ($i = 0; $i <= 30; $i++) {
 		// Display visitor stats for this month.
 		if ($temp_day <= 0) {
-			$temp_day += date("t", mktime($hour, $minute, 0, $temp_month, $temp_day, $year)); // Depends on the number of days in the previous month!!!
+			$temp_day += date("t", mktime(00, 00, 00, $temp_month, $temp_day, $year)); // Depends on the number of days in the previous month!!!
 			$temp_month--; // Is only decreased in this specific case so as to not cause wrong results.
 		}
-		$temp_date = date("D j", mktime($hour, $minute, 0, $temp_month, $temp_day, $year));
-		$tempUE = (mktime($hour, $minute, 0, $temp_month, $temp_day, $year)) * 1000;
+		$temp_date = date("D j", mktime(00, 00, 00, $temp_month, $temp_day, $year));
+		$tempUE = (mktime(00, 00, 00, $temp_month, $temp_day, $year)) * 1000;
 		$temp_unique = grape_hits_unique($year, $temp_month, $temp_day, "", "");
 		$temp_total = grape_hits_total($year, $temp_month, $temp_day, "", "");
 		
@@ -267,7 +170,7 @@ $pg['content'] .= "\n	var lastDate = (new Date($nda));";
 	$temp_day++;
 	$maxVisits++;
 	$tfy = 2000 + $temp_year;
-	$nda = mktime(date("H"), date("i"), date("s"), $temp_month, $temp_day, $year) * 1000;
+	$nda = mktime(00, 00, 00, $temp_month, $temp_day, $year) * 1000;
 	$pg['content'] .= "\n	var firstDate = (new Date($nda));";
 
 

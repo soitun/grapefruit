@@ -56,6 +56,15 @@ footer {
 table tr td:nth-child(1) {
 	width: 24px;
 }
+table.twocol tr td:nth-child(2) {
+	width:260px;
+	padding-left:2px;	
+}
+
+table.threecol tr td:nth-child(2), table.threecol tr td:nth-child(3) {
+	width:129px;
+	padding-left:2px;
+} 
 
 #osPlaceholder {
 	height:350px;
