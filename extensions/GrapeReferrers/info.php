@@ -42,52 +42,51 @@ function GrapeReferrersDisplay() {
 	<th>URL</th>
 </tr>";
 
-	$query = "SELECT *, sum(graperef_hits) AS graperef_hits FROM " .SQL_PREFIX. "graperef WHERE";
-	if ($display == "hour") {
-		$query .= " graperef_hour = '" .$hour. "' AND";
-	}
-	if ($display != "year" && $display != "month") {
-		$query .= " graperef_day = '" .$day. "' AND";
-	}
-	if ($display != "year") {
-		$query .= " graperef_month = '" .$month. "' AND";
-	}
-	$query .= " graperef_year = '" .$year. "' GROUP BY graperef_http ORDER BY graperef_hits DESC";
-	if (!$_GET[strtolower($ext['name'])]) {
-		$query .= " LIMIT 10";
-	}
-	$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-	$alt = 1;
-	while ($row = mysql_fetch_array($result)) {
-		$href_url = "http://" .$row['graperef_http'];
-		/*
-		$content .= "<div class=\"box-alt" .$alt. "\">
-<div class=\"leftc2\">" .$row['graperef_hits']. "</div>
-<div class=\"mainc\"><a href=\"" .$href_url. "\" target=\"_blank\">" .textcut($row['graperef_http'], 25). "</a></div>
-</div>\n";
-*/
-		$content .= "\n<tr class=\"alt" .$alt. "\">
-	<td>" .$row['graperef_hits']. "</td>
-	<td><a href=\"" .$href_url. "\" target=\"_blank\">" .textcutsimple($row['graperef_http'], 25). "</a></td>
-</tr>";
-		if ($alt == 1) {
-			$alt = 2;
-		} else {
-			$alt = 1;
+$temp_minute = $minute;
+	$temp_hour = $hour;
+	$temp_day = $day;
+	$temp_month = $month;
+	$temp_year = $year;
+	$rfArr = array();
+	for ($i = 0; $i <= 30; $i++) {
+		
+		if ($temp_day <= 0) {
+			$temp_day += date("t", mktime($hour, $minute, 0, $temp_month, $temp_day, $year)); // Depends on the number of days in the previous month!!!
+			$temp_month--; // Is only decreased in this specific case so as to not cause wrong results.
+			$temp_month = $temp_month % 12 == 0 ? 12 : $temp_month % 12;
 		}
+
+		$q = "SELECT * FROM " . SQL_PREFIX . "graperef WHERE graperef_day = '"
+			. $temp_day . "' AND graperef_month = '" . $temp_month 
+			. "' AND graperef_year = '" . $temp_year . "'";
+
+		$r = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+		$content .= "<!-- " . mysql_num_rows($r) . " -->";
+		for ($j = 0; $j < mysql_num_rows($r); $j++) {
+			$url = mysql_result($r, $j, "graperef_http");
+
+			$hits = mysql_result($r, $j, "graperef_hits");
+
+			if (substr($url, strlen($cms['site'])) != $cms['site'])
+			if (!isset($pgArr[$url])) {
+				$rfArr[$url] = $hits;
+			}
+			else {
+				$rfArr[$url] = $pgArr[$tmpK] + $hits;
+			}
+		}
+
+		$temp_day--;
+
 	}
-	//$content .= "<div class=\"box-alt" .$alt. "\"><a href=\"\">Show All</a></div>";
-	/*
-	if (!$_GET['showall']) {
-		$content .= "<tr class=\"alt" .$alt. "\">
-	<td colspan=\"2\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;showall=1\">Show All</a></td>
-</tr>";
-	}*/
-	if (!$_GET[strtolower($ext['name'])]) {
-		$content .= "\n<tr>
-	<td colspan=\"2\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
-</tr>";
+	arsort($rfArr);
+	foreach ($rfArr as $k => $v) {
+		$k = "http://" . $k;
+		$content .= "\n<tr class=\"alt$alt\">\n\t<td>$v</td>\n\t<td><a href=\"" . $k . "\">" . textcutsimple($k, 45) . "</a></td>\n</tr>";
+
+		$alt = (($alt + 1) % 2);
 	}
+	
 	$content .= "\n</table>";
 	return $content;
 }

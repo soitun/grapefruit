@@ -54,7 +54,7 @@ Originally developed by <a href="http://www.quate.net/">Quate.net</a>.
 $('#iso').isotope({
   // options
   itemSelector : '.box',
-  layoutMode : 'fitRows'
+  layoutMode : 'masonry'
 });
 </script>
 
