@@ -46,68 +46,72 @@ function UserSpyDisplay() {
 	}
 	$content .="\n</tr>";
 
-	$query = "SELECT *, sum(grapestat_hits) AS grapestat_hits FROM " .SQL_PREFIX. "grapestat WHERE";
-	if ($display == "hour") {
-		$query .= " grapestat_hour = '" .$hour. "' AND";
-	}
-	if ($display != "year" && $display != "month") {
-		$query .= " grapestat_day = '" .$day. "' AND";
-	}
-	if ($display != "year") {
-		$query .= " grapestat_month = '" .$month. "' AND";
-	}
-	// Group By grapestat_http
-	$query .= " grapestat_year = '" .$year. "' GROUP BY grapestat_ip ORDER BY grapestat_id DESC";
-	if (!$_GET[strtolower($ext['name'])]) {
-		$query .= " LIMIT 5";
-	} else {
-		$query .= " LIMIT 25";
-	}
-	$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-	$alt = 1;
-	while ($row = mysql_fetch_array($result)) {
-		$href_url = "http://" .$row['graperef_http'];
-		$content .= "\n<tr class=\"alt" .$alt. "\">
-	<td>" .$row['grapestat_hits']. "</td>";
-		// If the GrapePages extensions exists. This is the only method that seems to work!
-		if (function_exists("GrapePagesDisplay")) {
-			$query2 = "SELECT grapepage_id, grapepage_title, grapepage_url FROM " .SQL_PREFIX. "grapepage WHERE grapepage_id = '" .$row['grapestat_page']. "'";
-			$result2 = mysql_query($query2) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-			$row2 = mysql_fetch_array($result2);
-			$href_url = "http://" .$row2['grapepage_url'];
-			$content .= "<td><a href=\"" .$href_url. "\" target=\"_blank\">" .textcutsimple($row2['grapepage_title'], 20). "</a></td>";
+	$temp_minute = $minute;
+	$temp_hour = $hour;
+	$temp_day = $day;
+	$temp_month = $month;
+	$temp_year = $year;
+	$pgArr = array();
+	for ($i = 0; $i <= 30; $i++) {
+		
+		if ($temp_day <= 0) {
+			$temp_day += date("t", mktime($hour, $minute, 0, $temp_month, $temp_day, $year)); // Depends on the number of days in the previous month!!!
+			$temp_month--; // Is only decreased in this specific case so as to not cause wrong results.
+			$temp_month = $temp_month % 12 == 0 ? 12 : $temp_month % 12;
 		}
-		// If the GrapeOS extensions exists. This is the only method that seems to work!
-		if (function_exists("GrapeOSDisplay")) {
-			$query2 = "SELECT grapeos_id, grapeos_os, grapeos_version FROM " .SQL_PREFIX. "grapeos WHERE grapeos_id = '" .$row['grapestat_os']. "'";
-			$result2 = mysql_query($query2) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-			$row2 = mysql_fetch_array($result2);
-			if ($row2['grapeos_os'] == "Unknown") {
-				$content .= "\n<td>" . $row2['grapeos_os'] . "</td>";
+
+		$q = "SELECT * FROM " . SQL_PREFIX . "grapestat WHERE grapestat_day = '"
+			. $temp_day . "' AND grapestat_month = '" . $temp_month 
+			. "' AND grapestat_year = '" . $temp_year . "'";
+
+		$r = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+		for ($j = 0; $j < mysql_num_rows($r); $j++) {
+			$osNum = mysql_result($r, $j, "grapestat_os");
+			$pgNum = mysql_result($r, $j, "grapestat_page");
+
+			$hits = mysql_result($r, $j, "grapestat_hits");
+
+			if ($osNum != 0) {
+				$qOS = "SELECT * FROM " . SQL_PREFIX . "grapeos WHERE grapeos_id = '" . $osNum . "'";
+				$rOS = mysql_query($qOS) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+				$os = mysql_result($rOS, 0, "grapeos_os") . (strtolower(mysql_result($rOS, 0, "grapeos_version")) != "unknown" ? " " . mysql_result($rOS, 0, "grapeos_version") : "");
 			}
 			else {
-				$content .= "\n<td>" .$row2['grapeos_os']. " " .$row2['grapeos_version']. "</td>";
+				$os = "Not Recorded";
+			}
+
+			if ($pgNum != 0) {
+				$qPage = "SELECT * FROM " . SQL_PREFIX . "grapepage WHERE grapepage_id = '" . $pgNum . "'";
+				$rPage = mysql_query($qPage) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+				$page = mysql_result($rPage, 0, "grapepage_title") . ":URL:" . mysql_result($rPage, 0, "grapepage_url");
+			}
+			else {
+				$page = "Not Recorded:URL:#";
+			}
+
+			$tmpK = $os . ":PAGE:" . $page;
+
+			if (!isset($pgArr[$tmpK])) {
+				$pgArr[$tmpK] = $hits;
+			}
+			else {
+				$pgArr[$tmpK] = $pgArr[$tmpK] + $hits;
 			}
 		}
-		$content .= "\n</tr>";
-		if ($alt == 1) {
-			$alt = 2;
-		} else {
-			$alt = 1;
-		}
+
+		$temp_day--;
+
 	}
-	/*
-	if (!$_GET['showall']) {
-		$content .= "<tr class=\"alt" .$alt. "\">
-	<td colspan=\"2\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;showall=1\">Show All</a></td>
-</tr>";
+	arsort($pgArr);
+	foreach ($pgArr as $k => $v) {
+		$tv = explode(":PAGE:", $k);
+		$ps = explode(":URL:", $tv[1]);
+		$ps[1] = $ps[1] != "#" ? "http://" . $ps[1] : $ps[1];
+		$content .= "\n<tr class=\"alt$alt\">\n\t<td>$v</td>\n\t<td><a href=\"" . $ps[1] . "\">" . textcutsimple($ps[0], 15) . "</a></td>\n\t<td>" . $tv[0] . "</td>\n</tr>";
+
+		$alt = (($alt + 1) % 2);
 	}
-	*/
-	if (!$_GET[strtolower($ext['name'])]) {
-		$content .= "\n<tr>
-	<td colspan=\"" .$columns. "\"><a href=\"?" .$_SERVER['QUERY_STRING']. "&amp;" .strtolower($ext['name']). "=1\">Show All</a></td>
-</tr>";
-	}
+	
 	$content .= "\n</table>\n";
 	return $content;
 }
