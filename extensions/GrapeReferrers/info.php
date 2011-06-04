@@ -82,7 +82,7 @@ $temp_minute = $minute;
 	arsort($rfArr);
 	foreach ($rfArr as $k => $v) {
 		$k = "http://" . $k;
-		$content .= "\n<tr class=\"alt$alt\">\n\t<td>$v</td>\n\t<td><a href=\"" . $k . "\">" . textcutsimple($k, 45) . "</a></td>\n</tr>";
+		$content .= "\n<tr class=\"alt$alt\">\n\t<td>$v</td>\n\t<td><a href=\"" . $k . "\">" . textcutsimple($k, 40) . "</a></td>\n</tr>";
 
 		$alt = (($alt + 1) % 2);
 	}

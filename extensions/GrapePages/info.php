@@ -64,7 +64,6 @@ function GrapePagesDisplay() {
 			. "' AND grapepage_year = '" . $temp_year . "'";
 
 		$r = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-		$content .= "<!-- " . mysql_num_rows($r) . " -->";
 		for ($j = 0; $j < mysql_num_rows($r); $j++) {
 			$title = mysql_result($r, $j, "grapepage_title");
 			$url = mysql_result($r, $j, "grapepage_url");

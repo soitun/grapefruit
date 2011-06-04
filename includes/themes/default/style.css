@@ -53,16 +53,20 @@ footer {
 	padding:0 20px;
 }
 
+table tr th {
+	text-align:left;
+	font-weight:bold;
+}
 table tr td:nth-child(1) {
-	width: 24px;
+	width: 30px;
 }
 table.twocol tr td:nth-child(2) {
-	width:260px;
+	width:254px;
 	padding-left:2px;	
 }
 
 table.threecol tr td:nth-child(2), table.threecol tr td:nth-child(3) {
-	width:129px;
+	width:126px;
 	padding-left:2px;
 } 
 
