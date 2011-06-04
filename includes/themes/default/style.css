@@ -1,5 +1,4 @@
 @import "css/reset.css";
-@import "css/grid.css";
 
 body, p {
 	line-height:24px;
@@ -9,11 +8,12 @@ body, p {
 
 header {
 	margin:20px 0;
-	display:inline-block;
-	vertical-align:bottom;
+	display:block;
+	height:48px;
+	clear:both;
 }
 
-header .grid9 {
+header {
 	font-size:24px;
 }
 header a {
@@ -21,13 +21,13 @@ header a {
 	color:#000;
 	vertical-align:bottom;
 }
-header .grid9 a span {
+header a span {
 	font-weight:300;
 	text-transform:none;
 	font-size:.8em;
 	color:#aaa;
 }
-header .grid9 a {
+header a {
 	font-weight:bold;
 	text-transform:uppercase;
 }
@@ -37,20 +37,21 @@ footer {
 }
 
 .containerblock {
-	width: 978px;
+	width: 978px; 
 	margin: 0 auto;
 	display:inline-block;
 }
 
 #container {
-	width:978px;
 	margin:0 auto;
+}
+#mason {
+	width:100%;
 }
 
 .graph {
 	height:200px;
-	width:938px;
-	padding:0 20px;
+	width:690px;
 }
 
 table tr th {
@@ -60,15 +61,6 @@ table tr th {
 table tr td:nth-child(1) {
 	width: 30px;
 }
-table.twocol tr td:nth-child(2) {
-	width:254px;
-	padding-left:2px;	
-}
-
-table.threecol tr td:nth-child(2), table.threecol tr td:nth-child(3) {
-	width:126px;
-	padding-left:2px;
-} 
 
 #osPlaceholder {
 	height:350px;
@@ -80,9 +72,32 @@ table.threecol tr td:nth-child(2), table.threecol tr td:nth-child(3) {
 
 .box {
 	float:left;
-	margin:20px;
-	display:block;
-	width:286px;
+	margin:5px;
 }
 
-#iso { clear:both; }
+.col1 {
+	width:340px;
+}
+.col2 {
+	width:690px;
+}
+
+.col1 table.twocol tr td:nth-child(2) {
+	width:305px;
+	padding-left:5px;	
+}
+
+.col1 table.threecol tr td:nth-child(2), table.threecol tr td:nth-child(3) {
+	width:147px;
+	padding-left:5px;
+}
+
+.col2 table.twocol tr td:nth-child(2) {
+	width:655px;
+	padding-left:5px;	
+}
+
+.col2 table.threecol tr td:nth-child(2), table.threecol tr td:nth-child(3) {
+	width:327px;
+	padding-left:5px;
+}

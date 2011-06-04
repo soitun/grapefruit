@@ -129,7 +129,8 @@ $pg['body'] .= "";
 $pg['notice'] .= "";
 $pg['content'] .= "";
 
-$pg['content'] .= '<div id="placeholder" class="graph container"></div>';
+$pg['content'].="\n<div id=\"mason\">";
+$pg['content'] .= '<div id="placeholder" class="box graph col2"></div>';
 
 
 $pg['content'] .= "<script type=\"text/javascript\">
@@ -230,11 +231,15 @@ loadExtensions();
 $extCounter = 0;
 $numRow = 1;
 if (isset($extensions)) {
-	$pg['content'] .= "<div id=\"iso\">";
 	foreach ($extensions as $ext) {
 		$alt = 1;
 		//$pg['content'] .= "<div class=\"clear\"></div>"; // Display all stats vertically.
-		$pg['content'] .= "\n<div class=\"box col1" . "\" rel=\"" . $ext['name'] . "\">" .$ext['display'](). "\n</div>\n";
+
+		$numCol = 1;
+		if ( $ext['name'] == "UserSpy") { $numCol = 2; }
+		else if ( $ext['name'] == "GrapeReferrers") { $numCol = 2; }
+
+		$pg['content'] .= "\n<div class=\"box col" . $numCol . "\" rel=\"" . $ext['name'] . "\">" .$ext['display'](). "\n</div>\n";
 
 		$extCounter++;
 	}

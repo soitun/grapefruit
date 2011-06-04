@@ -26,6 +26,7 @@ if (isset($pg['title'])) {
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.stack.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.pie.js"></script>
+<script type="text/javascript" src="<?php echo $location; ?>includes/themes/default/dk.js"></script>
 
 <?php echo $pg['head']; ?>
 </head>
@@ -34,27 +35,22 @@ if (isset($pg['title'])) {
 
 <div id="container">
 <header>
-	<div class="grid9 first"><a href="<?php echo $location; ?>./"><?php echo $cms['site']; ?> <span>analytics</span></a></div>
+	<a href="<?php echo $location; ?>./"><?php echo $cms['site']; ?> <span>analytics</span></a>
 
-	<div class="grid3"><?php if (is_admin()) { echo "<a href=\"" .$location. "panel.php\">Admin Panel</a>"; } else { echo "<a href=\"" .$location. "login.php\">Login</a>"; } ?></div>
+	<?php if (is_admin()) { echo "<a href=\"" .$location. "panel.php\">Admin Panel</a>"; } else { echo "<a href=\"" .$location. "login.php\">Login</a>"; } ?>
 </header>
 
 <?php echo $pg['notice']; ?>
 
 <?php echo $pg['content']; ?>
 
-<footer>
-Designed and modified by <a href="http://dkuntz2.com">Don Kuntz</a>.
-Originally developed by <a href="http://www.quate.net/">Quate.net</a>.
-</footer>
 
-<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/isotope.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/masonry.js"></script>
 
 <script type="text/javascript">
-$('#iso').isotope({
-  // options
-  itemSelector : '.box',
-  layoutMode : 'masonry'
+$('#mason').masonry({
+	itemSelector : '.box',
+	columnWidth: 350
 });
 </script>
 

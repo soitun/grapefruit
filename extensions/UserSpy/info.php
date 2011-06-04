@@ -107,7 +107,7 @@ function UserSpyDisplay() {
 		$tv = explode(":PAGE:", $k);
 		$ps = explode(":URL:", $tv[1]);
 		$ps[1] = $ps[1] != "#" ? "http://" . $ps[1] : $ps[1];
-		$content .= "\n<tr class=\"alt$alt\">\n\t<td>$v</td>\n\t<td><a href=\"" . $ps[1] . "\">" . textcutsimple($ps[0], 15) . "</a></td>\n\t<td>" . $tv[0] . "</td>\n</tr>";
+		$content .= "\n<tr class=\"alt$alt\">\n\t<td>$v</td>\n\t<td><a href=\"" . $ps[1] . "\">" . $ps[0] . "</a></td>\n\t<td>" . $tv[0] . "</td>\n</tr>";
 
 		$alt = (($alt + 1) % 2);
 	}
