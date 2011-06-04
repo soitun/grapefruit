@@ -37,8 +37,12 @@ You'll also need to add a new line to your `includes/config.php` file. The end s
 change that to:
 
     $cms['theme'] = "default";
-    $cms['site'] = "NAME OF SITE BEING ANALYZED"; // I use "dkuntz2.com"
+    $cms['site'] = "NAME OF SITE BEING ANALYZED"; //. I use "dkuntz2.com"
     ?>
+
+**Do not put _http://_ or _www._ before the name of the site being analyzed.** This is
+because the referrer plugin references this variable for making sure that you aren't being
+shown referrals from your own site.
 
 If you do that, you should have a copy of Grapefruit up and running. If the layout looks a 
 little broken, you probably need to change the order of your extensions (see below). If, even
