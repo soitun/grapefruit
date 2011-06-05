@@ -29,7 +29,7 @@ $ext['grapeStatColumn'] = "os";
 // Define functions.
 function GrapeOSDisplay() {
 	global $year, $month, $day, $hour, $minute, $display, $ext;
-	$content .= "\n<div class=\"title\">Operating Systmes</div>\n<div id=\"hover\"></div>\n<div id=\"osPlaceholder\"></div>\n\n\n<script type=\"text/javascript\">\n\tvar gfOS = [];\n";
+	$content .= "\n<div class=\"title\">Operating Systems</div>\n<div id=\"hover\"></div>\n<div id=\"osPlaceholder\"></div>\n\n\n<script type=\"text/javascript\">\n\tvar gfOS = [];\n";
 
 		// Show OS versions.
 		$temp_minute = $minute;
