@@ -20,13 +20,14 @@ if (isset($pg['title'])) {
 <head>
     <title><?php echo $pg['title']; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="<?php echo $location; ?>includes/themes/default/style.css" type="text/css" />
+<link rel="stylesheet/less" href="<?php echo $location; ?>includes/themes/default/style.css" type="text/css" />
 <link rel="shortcut icon" type="image/x-icon" href="<?php echo $location; ?>includes/themes/default/images/favicon.png" />
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/jquery.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.stack.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.pie.js"></script>
 <script type="text/javascript" src="<?php echo $location; ?>includes/themes/default/dk.js"></script>
+<script type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/less.js"></script>
 
 <?php echo $pg['head']; ?>
 </head>

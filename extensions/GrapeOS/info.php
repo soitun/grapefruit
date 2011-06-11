@@ -38,6 +38,7 @@ function GrapeOSDisplay() {
 		$temp_month = $month;
 		$temp_year = $year;
 		$osArr = array();
+		$total = 0;
 		for ($i = 0; $i <= 30; $i++) {
 			
 			if ($temp_day <= 0) {
@@ -55,8 +56,17 @@ function GrapeOSDisplay() {
 			for ($j = 0; $j < mysql_num_rows($r); $j++) {
 				$type = mysql_result($r, $j, "grapeos_os");
 				$version = mysql_result($r, $j, "grapeos_version");
+				$version = $version == "(KHTML," ? "unknown" : $version;
 
-				$tmpName = strtolower($version) == "unknown" ? $type : $type . " " . $version;
+				if (strtolower($type) == "linux") {
+					$tmp = $type;
+					$type = $version;
+					$version = $tmp;
+					$tmpName = strtolower($type) == "unknown" ? $version : $type . " " . $version;
+				}
+				else {
+					$tmpName = strtolower($version) == "unknown" ? $type : $type . " " . $version;
+				}
 
 				if (!isset($osArr[$tmpName])) {
 					$osArr[$tmpName] = 1;
@@ -64,6 +74,7 @@ function GrapeOSDisplay() {
 				else {
 					$osArr[$tmpName]++;
 				}
+				$total++;
 			}
 
 			$temp_day--;
@@ -98,9 +109,9 @@ function pieHover(event, pos, obj)
 
                 return;
 
-	percent = parseFloat(obj.series.percent).toFixed(2);
+	percent = (parseFloat(obj.series.percent) / 100) * $total;
 
-	$(\"#hover\").html('<span style=\"font-weight: bold; color: '+obj.series.color+'\">'+obj.series.label+' ('+percent+'%)</span>');
+	$(\"#hover\").html('<span style=\"font-weight: bold; color: '+obj.series.color+'\">'+obj.series.label+' ('+percent+')</span>');
 
 }
 
