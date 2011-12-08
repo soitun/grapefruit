@@ -1,3 +1,7 @@
+# g1
+
+g1 is the first version of Grapefruit. g1 is no longer in active development, instead, please switch over to the newer version, g2.
+
 # Grapefruit
 
 Grapefruit is a complete overhaul to Grape Analytics. Grapefruit takes the basis of Grape and modifies some components to work
