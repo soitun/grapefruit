@@ -1,4 +1,0 @@
-The sha1 Javascript: (Unmodified script, only being redistributed for this program)
-"Distributed under the BSD License"
-
-That setting icon modified from the Tango Icons. (Creative Commons version/type x?)
