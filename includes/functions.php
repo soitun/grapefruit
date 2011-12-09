@@ -538,7 +538,6 @@ function sql_protect($value) {
 //
 // Function to support shorter URLs.
 function get_short_url($location) {
- return null;
  /*
  Description: Get a _GET variable from
  Why?: Normally, $_GET[''] does not work. This function allows you to use it.
@@ -560,17 +559,12 @@ function get_short_url($location) {
  $value = explode("=", $query_parts[$location]);
  
  // If the _GET variable that was split has no value, it means we put the value as the _GET variable name instead.
- if (count($value) > 1) {
-	 if ($value[1] == "") {
-	  // Give the resulting value.
-	  return $value[0];
-	 } else {
-	  // Give the resulting value.
-	  return $value[1];
-	 }
- }
- else {
- 	return $value[0];
+ if ($value[1] == "") {
+  // Give the resulting value.
+  return $value[0];
+ } else {
+  // Give the resulting value.
+  return $value[1];
  }
 }
 
