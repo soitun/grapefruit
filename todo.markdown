@@ -1,18 +1,7 @@
 # Todo - Grapefruit
 
 This is a list of things that should be worked on for the first beta release of Grapefruit
-(for those unaware, the current status of CleanerGrape is SUPER DEVELOPMENT, DON'T TRY IF YOU
-DON'T WANT BUGS).
-
-## Big Things
-
- 1. FIX the extensions to grab the last 30 days, like the main counter. All of them currently only do that if
- you're in the same month... PROBLEM!
-
- 2. Update the styles to fit "grapefruit" name, and in general too...
-
- 3. Create a SearchTerms extension (in progress. The referrer extension should now record what I 
- need for it to work (because it's nice to know what search terms get people to your site)).
+(for those unaware, the current status of CleanerGrape is SUPER DEVELOPMENT, DON'T TRY IF YOU DON'T WANT BUGS).
 
 ## Fun Things
 

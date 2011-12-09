@@ -42,9 +42,7 @@ if (isset($pg['title'])) {
 
 	<div id="container">
 	<header>
-		<h1><a href="<?php echo $location; ?>./"><?php echo $cms['site']; ?> <span>analytics</span></a></h1>
-
-		<?php if (is_admin()) { echo "<a href=\"" .$location. "panel.php\">Admin Panel</a>"; } else { echo "<a href=\"" .$location. "login.php\">Login</a>"; } ?>
+		<h1><a href="<?php echo $location; ?>./">Grapefruit <span>analytics</span></a></h1>
 	</header>
 
 	<section id="notice">

@@ -12,12 +12,12 @@ You may need to clear the database to preform a fresh Grape install.";
 	require("includes/simple_gui.php");
 	exit();
 }
-
-$pg['title'] .= "Install";
-$pg['head'] .= "";
-$pg['body'] .= "";
-$pg['notice'] .= "";
-$pg['content'] .= "<div class=\"location\">
+$pg = array();
+$pg['title'] = "Install";
+$pg['head'] = "";
+$pg['body'] = "";
+$pg['notice'] = "";
+$pg['content'] = "<div class=\"location\">
 <b>Admin</b>
 <span>&gt;</span>
 <span><a href=\"?\">Install</a></span>
@@ -96,22 +96,8 @@ if ($url['step'] == "2") {
 	// includes/ - To add the 'installed' lock file.
 	// includes/config.php - To write settings to.
 	// extensions/extensions.php - To enable/disable extensions.
-	//
-	// NEW - check to see if there is an extensions/extensions.php,
-	// and if not, check to see if there's an extensions/extensions.empty.php
 	if (is_writable($location. "includes/config.php") && is_writable($location. "includes/") && is_writable($location. "extensions/extensions.php")) {
-		if (file_exists($location. "extensions/extensions.empty.php")) {
-			if (copy($location. "extensions/extensions.php", $location. "extensions/extensions.empty.php")) {
-				$writable = "<img src=\"images/yes.png\" alt=\"\" /> Yes";
-			}
-			else {
-				$writable = "<img src=\"images/no.png\" alt=\"\" /> No";
-				$meet_req = 0;
-			}
-		}
-		else {
-			$writable = "<img src=\"images/yes.png\" alt=\"\" /> Yes";
-		}
+		$writable = "<img src=\"images/yes.png\" alt=\"\" /> Yes";
 	} else {
 		$writable = "<img src=\"images/no.png\" alt=\"\" /> No";
 		$meet_req = 0;
