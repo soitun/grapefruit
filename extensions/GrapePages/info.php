@@ -28,7 +28,7 @@ $ext['grapeStatColumn'] = "page";
 // Define functions.
 function GrapePagesDisplay() {
 	global $ext, $year, $month, $day, $hour, $minute, $display;
-	$content .= "<div class=\"title\">Pages</div>
+	$content .= "<h3>Pages</h3>
 <table cellspacing=\"0\" class=\"twocol\">
 <tr class=\"subheader\">
 	<th>Hits</th>

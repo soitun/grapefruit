@@ -96,8 +96,22 @@ if ($url['step'] == "2") {
 	// includes/ - To add the 'installed' lock file.
 	// includes/config.php - To write settings to.
 	// extensions/extensions.php - To enable/disable extensions.
+	//
+	// NEW - check to see if there is an extensions/extensions.php,
+	// and if not, check to see if there's an extensions/extensions.empty.php
 	if (is_writable($location. "includes/config.php") && is_writable($location. "includes/") && is_writable($location. "extensions/extensions.php")) {
-		$writable = "<img src=\"images/yes.png\" alt=\"\" /> Yes";
+		if (file_exists($location. "extensions/extensions.empty.php")) {
+			if (copy($location. "extensions/extensions.php", $location. "extensions/extensions.empty.php")) {
+				$writable = "<img src=\"images/yes.png\" alt=\"\" /> Yes";
+			}
+			else {
+				$writable = "<img src=\"images/no.png\" alt=\"\" /> No";
+				$meet_req = 0;
+			}
+		}
+		else {
+			$writable = "<img src=\"images/yes.png\" alt=\"\" /> Yes";
+		}
 	} else {
 		$writable = "<img src=\"images/no.png\" alt=\"\" /> No";
 		$meet_req = 0;
@@ -234,7 +248,7 @@ if ($url['step'] == "3") {
 	<section>
 		<h2>Configurations</h2>
 		
-		<div class=\"half\">
+		<div class=\"full\">
 			<label for=\"config_display_protect\">Stats Display Permissions</label><br />
 
 			<input type=\"radio\" name=\"config_display_protect\" value=\"0\" />
@@ -242,34 +256,6 @@ if ($url['step'] == "3") {
 			
 			<input type=\"radio\" name=\"config_display_protect\" value=\"0\" />
 			Login required to view.
-		</div>
-	
-		<div class=\"half\">
-			<label for=\"config_theme\">Grape Theme</label>
-			<br />
-
-			<select  / name=\"config_theme\">\n";
-				chdir("./includes/themes/"); // Move (cd) to another directory, relative to the directory of this file.
-				$dirpath = getcwd();
-				$dh = opendir($dirpath);
-				while (false !== ($file = readdir($dh))) {
-					if (is_dir("$dirpath/$file")) {
-						// Continue, but ignore these files (in if case below)
-						if ($file == "." || $file == ".." || $file == ".AppleDouble") {
-						} else {
-							// Have selected whatever is currently in the config file (should be "default" by default).
-							$selected = "";
-							if ($file == $cms['theme']) {
-								$selected = " selected=\"selected\"";
-							}
-
-							$pg['content'] .= "<option value=\"" .$file. "\"" .$selected. ">" .ucfirst($file). "\n";
-						}
-					}
-				}
-				chdir("../../");
-				$pg['content'] .= "
-			</select>
 		</div>
 
 		<div class=\"full\">
@@ -295,16 +281,16 @@ if ($url['step'] == "3") {
 						$pg['content'] .= "<option value=\"" .$line. "\">" .$line. "\n";
 					}
 			$pg['content'] .= "
-			</select> <span id=\"timezone_display\" style=\"font-size:11px;\"></span>
+			</select> <span id=\"timezone_display\">Current Time: </span>
 			
 		</div>
 
 
-		<td></td>
-		<td><input type=\"submit\" value=\"Continue\" onclick=\"sendpass('pass', 'pass_enc'); sendpass('pass2', 'pass2_enc');\">
-	<input type=\"button\" value=\"Previous Step\" onclick=\"document.location = '?2';\"></td>
-	</tr>
-	</table>
+		<div class=\"actionpane\">
+			<input type=\"button\" value=\"Previous Step\" onclick=\"document.location = '?2';\">
+			<input type=\"submit\" value=\"Continue\" onclick=\"sendpass('pass', 'pass_enc'); sendpass('pass2', 'pass2_enc');\">
+		</div>
+	</section>
 </form>
 </div>
 ";
@@ -314,10 +300,11 @@ if ($url['step'] == "3") {
 }
 
 if ($url['step'] == "4") {
-	$pg['content'] .= "<div class=\"box box-full\">
-<div class=\"box-header\">Install Grape</div>
-<div class=\"box-content\">
-<img src=\"includes/themes/default/logo-small.png\" vspace=\"5\" hspace=\"5\" alt=\"\" />";
+	$pg['content'] .= "
+<img src=\"includes/themes/default/logo-small.png\" class=\"installer logo\" alt=\"Grapefruit\" />
+
+<div class=\"installer s5\">
+<h2>Install Grape</h2>";
 
 	// DEBUG: Display _POST variables:
 	/*
@@ -439,14 +426,14 @@ Administrator account was successfully created.</p>";
 	
 	require_once("./extensions/UserSpy/info.php");
 	UserSpyInstall();
-	require_once("./extensions/GrapePages/info.php");
-	GrapePagesInstall();
-	require_once("./extensions/GrapeReferrers/info.php");
-	GrapeReferrersInstall();
 	require_once("./extensions/CityFinder/info.php");
 	CityFinderInstall();
 	require_once("./extensions/GrapeOS/info.php");
 	GrapeOSInstall();
+	require_once("./extensions/GrapePages/info.php");
+	GrapePagesInstall();
+	require_once("./extensions/GrapeReferrers/info.php");
+	GrapeReferrersInstall();
 
 
 	$pg['content'] .= "<p><img src=\"images/yes.png\" alt=\"\" /> Grapefruit has finished installed. Place the following in all pages you want to track statistics for:

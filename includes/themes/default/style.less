@@ -1,10 +1,15 @@
 @g1: rgb(240, 210, 220);
+@g2: rgb(220, 150, 180);
 
 body {
 	font-family:"PT Serif Caption", serif;
 	text-align:justify;
 	line-height:1.5em;
 	font-size:16px;
+}
+
+textarea:focus, input:focus{
+	outline: none;
 }
 
 .actionpane {
@@ -26,12 +31,26 @@ body {
 		}
 	}
 
+	&.s1, &.s2, &.s3, &.s4, &.s5 {
+		margin-bottom:50px;
+	}
+
 	section {
 		display:table;
 
 		.half, .full {
 			margin-bottom:25px;
 		}
+	}
+}
+
+.main {
+	width:100%;
+	margin-bottom:25px;
+
+	#placeholder {
+		width:100%;
+		height:250px;
 	}
 }
 
@@ -45,6 +64,9 @@ input[type="text"], input[type="password"] {
 	font-size:16px;
 	//min-width:(100%) - 10px;
 }
+input[type="text"]:focus, input[type="password"]:focus {
+	border-color:@g2;
+}
 
 textarea {
 	width:100%;
@@ -55,6 +77,48 @@ textarea {
 	font-size:16px;
 	font-family:"PT Serif Caption", serif;
 	height:9em;
+}
+
+code, .code-box {
+	text-align:left;
+}
+
+div[rel="UserSpy"], div[rel="CityFinder"] {
+	table {
+		width:100%;
+		padding:0;
+		margin:0;
+		border:0px solid @g1;
+		text-align:left;
+	}
+	td {
+		text-align:left;
+	}
+	td:nth-child(1) {
+		width:10%;
+	}
+	td:nth-child(2), td:nth-child(3) {
+		width:45%;
+	}
+}
+
+div [rel="GrapePages"], div[rel="GrapeReferrers"] {
+	table {
+		width:100%;
+		padding:0;
+		margin:0;
+		border:0px solid @g1;
+		text-align:left;
+	}
+	td {
+		text-align:left;
+	}
+	td:nth-child(1), th:nth-child(1) {
+		width:20%;
+	}
+	td:nth-child(2), th:nth-child(2) {
+		width:60%;
+	}
 }
 
 @media (min-width:320px) {
@@ -79,6 +143,10 @@ textarea {
 		}
 	}
 
+	#osPlaceholder {
+		width:320px;
+		height:320px;
+	}
 }
 
 @media (min-width:640px) {
@@ -87,6 +155,11 @@ textarea {
 	}
 	input[type="text"], input[type="password"] {
 		min-width:620px;
+	}
+
+	#osPlaceholder {
+		width:640px;
+		height:640px;
 	}
 }
 
@@ -99,7 +172,7 @@ textarea {
 		&.s1 {
 			width:640px;
 		}
-		&.s2, &.s3, &.s4 {
+		&.s2, &.s3, &.s4, &.s5 {
 			width:640px;
 			float:left;
 		}
@@ -128,8 +201,21 @@ textarea {
 				padding:10px;
 			}
 		}
-			
-
 	
+	}
+
+	.main, div[rel="UserSpy"], div[rel="CityFinder"] {
+		width:640px;
+		float:left;
+	}
+
+	.left, div[rel="GrapeReferrers"], div[rel="GrapePages"], div[rel="GrapeOS"] {
+		width:300px;
+		float:right;
+	}
+
+	#osPlaceholder {
+		width:300px;
+		height:300px;
 	}
 }

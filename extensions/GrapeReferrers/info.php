@@ -35,7 +35,7 @@ function GrapeReferrersDisplay() {
 <div class=\"mainc\">URL (This " .ucfirst($display). ")</div>
 </div>\n";
 */
-	$content .= "<div class=\"title\">Referrers</div>
+	$content .= "<h3>Referrers</h3>
 <table cellspacing=\"0\" class=\"twocol\">
 <tr class=\"subheader\">
 	<th>Hits</th>
@@ -61,7 +61,6 @@ $temp_minute = $minute;
 			. "' AND graperef_year = '" . $temp_year . "'";
 
 		$r = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-		$content .= "<!-- " . mysql_num_rows($r) . " -->";
 		for ($j = 0; $j < mysql_num_rows($r); $j++) {
 			$url = mysql_result($r, $j, "graperef_http");
 

@@ -127,10 +127,9 @@ $pg['title'] .= $_SERVER['HTTP_HOST'];
 $pg['head'] .= "";
 $pg['body'] .= "";
 $pg['notice'] .= "";
-$pg['content'] .= "";
+$pg['content'] .= "<div class=\"iso\"><div class=\"main box\">";
 
-$pg['content'].="\n<div id=\"mason\">";
-$pg['content'] .= '<div id="placeholder" class="box graph col2"></div>';
+$pg['content'] .= '<div id="placeholder" class="placeholder"></div>';
 
 
 $pg['content'] .= "<script type=\"text/javascript\">
@@ -232,20 +231,18 @@ $extCounter = 0;
 $numRow = 1;
 if (isset($extensions)) {
 	foreach ($extensions as $ext) {
-		$alt = 1;
-		//$pg['content'] .= "<div class=\"clear\"></div>"; // Display all stats vertically.
 
-		$numCol = 1;
-		if ( $ext['name'] == "UserSpy") { $numCol = 2; }
-		else if ( $ext['name'] == "GrapeReferrers") { $numCol = 2; }
+		$pg['content'] .= "\n<div class=\"box\" rel=\"" . $ext['name'] . "\">" .$ext['display'](). "\n</div>\n";
 
-		$pg['content'] .= "\n<div class=\"box col" . $numCol . "\" rel=\"" . $ext['name'] . "\">" .$ext['display'](). "\n</div>\n";
+		if ($extCounter == 1) { $pg['content'] .= "</div><div class=\"left\">"; }
 
 		$extCounter++;
+
 	}
+	$pg['content'] .= "</div>";
 }
 
-$pg['content'] .= "</div><br clear=\"both\">";
+$pg['content'] .= "</div></div><br clear=\"both\">";
 
 require_once($template_location);
 ?>

@@ -32,7 +32,7 @@ function UserSpyDisplay() {
 	global $ext, $year, $month, $day, $hour, $minute, $display;
 	
 	$columns = 2;
-	$content .= "<div class=\"title\">User Spy</div>
+	$content .= "<h3>User Spy</h3>
 <table cellspacing=\"0\" class=\"threecol\">
 <tr class=\"subheader\">
 	<th>Hits</th>";
@@ -74,7 +74,15 @@ function UserSpyDisplay() {
 			if ($osNum != 0) {
 				$qOS = "SELECT * FROM " . SQL_PREFIX . "grapeos WHERE grapeos_id = '" . $osNum . "'";
 				$rOS = mysql_query($qOS) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-				$os = mysql_result($rOS, 0, "grapeos_os") . (strtolower(mysql_result($rOS, 0, "grapeos_version")) != "unknown" ? " " . mysql_result($rOS, 0, "grapeos_version") : "");
+				//$os = mysql_result($rOS, 0, "grapeos_os") . (strtolower(mysql_result($rOS, 0, "grapeos_version")) != "unknown" || strtolower(mysql_result($rOS, 0, "grapeos_version")) != "khtml," ? " " . mysql_result($rOS, 0, "grapeos_version") : "");
+
+				$os = mysql_result($rOS, 0, "grapeos_os") . " ";
+				$os .= mysql_result($rOS, 0, "grapeos_version") == "(KHTML," ? "unknown" : mysql_result($rOS, 0, "grapeos_version");
+				/*
+				$type = mysql_result($r, $j, "grapeos_os");
+				$version = mysql_result($r, $j, "grapeos_version");
+				$version = $version == "(KHTML," ? "unknown" : $version;
+				*/
 			}
 			else {
 				$os = "Not Recorded";
