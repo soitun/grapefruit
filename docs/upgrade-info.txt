@@ -1,0 +1,7 @@
+If upgrading from a version earlier than 0.2-alpha-0.8.6.1, follow these instructions:
+1. Upload everything except for the /includes/config.php file and the /extensions/extensions.php file.
+2. Edit your config file on your server (/includes/config.php), find the "$cms['location']" line, and add the following:
+$cms['theme'] = "default";
+
+If upgrading from 0.2-alpha-0.8.6.1 or later, follow these instructions:
+1. Upload everything except for the /includes/config.php file and the /extensions/extensions.php file.

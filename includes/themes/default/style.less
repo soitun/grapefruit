@@ -1,0 +1,135 @@
+@g1: rgb(240, 210, 220);
+
+body {
+	font-family:"PT Serif Caption", serif;
+	text-align:justify;
+	line-height:1.5em;
+	font-size:16px;
+}
+
+.actionpane {
+	float:right;
+}
+
+.installer {
+	&.s3 {
+		table {
+			border:0px;
+			margin:0px;
+			padding:0px;
+			width:100%;
+		}
+		td {
+			width:50%;
+			margin:0px;
+			padding:0px;
+		}
+	}
+
+	section {
+		display:table;
+
+		.half, .full {
+			margin-bottom:25px;
+		}
+	}
+}
+
+input[type="text"], input[type="password"] {
+	border-width:0px 0px 3px;
+	border-style:solid;
+	border-color:@g1;
+	padding:10px;
+	font-family:"PT Serif Caption", serif;
+	line-height:1.5em;
+	font-size:16px;
+	//min-width:(100%) - 10px;
+}
+
+textarea {
+	width:100%;
+	margin:10px 0;
+	padding:0;
+	border:0px solid @g1;
+	line-height:1.5em;
+	font-size:16px;
+	font-family:"PT Serif Caption", serif;
+	height:9em;
+}
+
+@media (min-width:320px) {
+	#container {
+		width:320px;
+		margin:0 auto;
+	}
+
+	header {
+		border-bottom:1px solid @g1;
+		padding:10px 0;
+		margin:10px 0;
+	}
+
+	input[type="text"], input[type="password"] {
+		min-width:300px;
+	}
+
+	.installer {
+		h2 {
+			margin-top:10px;
+		}
+	}
+
+}
+
+@media (min-width:640px) {
+	#container {
+		width:640px;
+	}
+	input[type="text"], input[type="password"] {
+		min-width:620px;
+	}
+}
+
+@media (min-width:1020px) {
+	#container {
+		width:1020px;
+	}
+
+	.installer {
+		&.s1 {
+			width:640px;
+		}
+		&.s2, &.s3, &.s4 {
+			width:640px;
+			float:left;
+		}
+
+		&.logo {
+			float:right;
+		}
+
+		#gpl {
+			height:18em;
+		}
+
+		.full {
+			width:100%;
+		}
+
+		.half {
+			width:50%;
+			float:left;
+			padding:0px;
+			margin:0;
+			
+			input[type="text"], input[type="password"] {
+				min-width:290px;
+				margin:0px 10px 0px 0px;
+				padding:10px;
+			}
+		}
+			
+
+	
+	}
+}
