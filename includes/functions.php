@@ -1,8 +1,4 @@
 <?php
-	ini_set('display_errors', 1);
-	error_reporting(E_ALL|E_STRICT);
-
-
 /* Functions
 * This page is the framework called by all pages imediately before any actual php code, (with exception to the $location variable, which tells where a page is relative to the index directory).
 */

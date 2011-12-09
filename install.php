@@ -219,6 +219,7 @@ if ($url['step'] == "3") {
 			<label for=\"db_user\">Database Username</label><br />
 			<input type=\"text\" name=\"db_user\" value=\"" .$db['user']. "\"  />
 		</div>
+		<br clear=\"both\" />
 
 		<div class=\"half\">
 			<label for=\"db_pass\">Database Password</label><br />
@@ -234,7 +235,7 @@ if ($url['step'] == "3") {
 	<section>
 		<h2>Configurations</h2>
 		
-		<div class=\"full\">
+		<div class=\"half\">
 			<label for=\"config_display_protect\">Stats Display Permissions</label><br />
 
 			<input type=\"radio\" name=\"config_display_protect\" value=\"0\" />
@@ -243,6 +244,33 @@ if ($url['step'] == "3") {
 			<input type=\"radio\" name=\"config_display_protect\" value=\"0\" />
 			Login required to view.
 		</div>
+
+		<div class=\"half\">
+
+			<label for=\"config_theme\">Grape Theme</label><br />
+			<select name=\"config_theme\">\n";
+			chdir("./includes/themes/"); // Move (cd) to another directory, relative to the directory of this file.
+			$dirpath = getcwd();
+			$dh = opendir($dirpath);
+			while (false !== ($file = readdir($dh))) {
+				if (is_dir("$dirpath/$file")) {
+					// Continue, but ignore these files (in if case below)
+					if ($file == "." || $file == ".." || $file == ".AppleDouble") {
+					} else {
+						// Have selected whatever is currently in the config file (should be "default" by default).
+						$selected = "";
+						if ($file == $cms['theme']) {
+							$selected = " selected=\"selected\"";
+						}
+
+						$pg['content'] .= "<option value=\"" .$file. "\"" .$selected. ">" .ucfirst($file). "\n";
+					}
+				}
+			}
+			chdir("../../");
+			$pg['content'] .= "</select>
+		</div>
+		<br clear=\"both\" />
 
 		<div class=\"full\">
 			<label for=\"config_location\">Where are the Grapefruit files?</label><br />

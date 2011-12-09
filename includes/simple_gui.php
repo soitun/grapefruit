@@ -42,7 +42,7 @@ color : #663366;
 <br>
 <center>
 <div class="display">
-<img src="<?php echo $location; ?>includes/themes/grape/images/logo.png" hspace="4" vspace="4" alt="" />
+<img src="<?php echo $location; ?>includes/themes/default/logo-small.png" hspace="4" vspace="4" alt="" />
 <br>
 <div class="header"><?php echo $simple_gui['header']; ?></div>
 <div class="content">
