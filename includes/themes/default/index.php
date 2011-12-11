@@ -42,7 +42,8 @@ if (isset($pg['title'])) {
 
 	<div id="container">
 	<header>
-		<h1><a href="<?php echo $location; ?>./">Grapefruit <span>analytics</span></a></h1>
+		<?php /*<h1><a href="<?php echo $location; ?>./">Grapefruit <span>analytics</span></a></h1>*/ ?>
+		<a href="<?php echo $location; ?>./"><img src="<?php echo $location; ?>./includes/themes/default/logo-small.png" alt="Grapefruit Analytics" /></a>
 	</header>
 
 	<section id="notice">
