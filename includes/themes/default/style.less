@@ -6,6 +6,7 @@ body {
 	text-align:justify;
 	line-height:1.5em;
 	font-size:16px;
+	word-wrap:break-word;
 }
 
 textarea:focus, input:focus{
@@ -96,9 +97,13 @@ div[rel="UserSpy"], div[rel="CityFinder"] {
 	}
 	td:nth-child(1) {
 		width:10%;
+		min-width:10%;
+		max-width:10%;
 	}
 	td:nth-child(2), td:nth-child(3) {
 		width:45%;
+		min-width:45%;
+		max-width:45%;
 	}
 }
 
@@ -115,9 +120,13 @@ div [rel="GrapePages"], div[rel="GrapeReferrers"] {
 	}
 	td:nth-child(1), th:nth-child(1) {
 		width:20%;
+		min-width:20%;
+		max-width:20%;
 	}
 	td:nth-child(2), th:nth-child(2) {
-		width:60%;
+		width:225px;
+		min-width:225px;
+		max-width:225px;
 	}
 }
 
@@ -157,10 +166,17 @@ div [rel="GrapePages"], div[rel="GrapeReferrers"] {
 		min-width:620px;
 	}
 
-	#osPlaceholder {
-		width:640px;
-		height:640px;
+	#placeholder {
+		width:310px;
 	}
+
+	#osPlaceholder {
+		width:310px;
+		height:310px;
+	}
+
+	.main { float:left; width:310px; }
+	.left { float:right; width:310px; }
 }
 
 @media (min-width:1020px) {

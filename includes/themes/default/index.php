@@ -10,7 +10,7 @@ if ($temp[$count] == "themes") {
 }
 
 if (isset($pg['title'])) {
-	$pg['title'] = "Grape - ".$pg['title'];
+	$pg['title'] = $pg['title'] . " | Grapefruit";
 }
 ?>
 
@@ -54,7 +54,9 @@ if (isset($pg['title'])) {
 	</section>
 
 	</div>
-
-	<script src="http://127.0.0.1/grapefruit/?js" type="text/javascript"> </script>
+	<?php if ($cms['site'] == "127.0.0.1/grapefruit") {
+		
+		echo "\n" . '<script src="http://127.0.0.1/grapefruit/?js" type="text/javascript"> </script>';
+	}?>
 </body>
 </html>
