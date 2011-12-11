@@ -77,7 +77,7 @@ function UserSpyDisplay() {
 				//$os = mysql_result($rOS, 0, "grapeos_os") . (strtolower(mysql_result($rOS, 0, "grapeos_version")) != "unknown" || strtolower(mysql_result($rOS, 0, "grapeos_version")) != "khtml," ? " " . mysql_result($rOS, 0, "grapeos_version") : "");
 
 				$os = mysql_result($rOS, 0, "grapeos_os") . " ";
-				$os .= mysql_result($rOS, 0, "grapeos_version") == "(KHTML," ? "unknown" : mysql_result($rOS, 0, "grapeos_version");
+				$os .= mysql_result($rOS, 0, "grapeos_version") == "(KHTML," ? "Unknown" : mysql_result($rOS, 0, "grapeos_version");
 				/*
 				$type = mysql_result($r, $j, "grapeos_os");
 				$version = mysql_result($r, $j, "grapeos_version");
