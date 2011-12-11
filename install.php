@@ -96,8 +96,15 @@ if ($url['step'] == "2") {
 	// includes/ - To add the 'installed' lock file.
 	// includes/config.php - To write settings to.
 	// extensions/extensions.php - To enable/disable extensions.
+	//
+	// now it should EMPTY extensions too
 	if (is_writable($location. "includes/config.php") && is_writable($location. "includes/") && is_writable($location. "extensions/extensions.php")) {
 		$writable = "<img src=\"images/yes.png\" alt=\"\" /> Yes";
+		
+		$f = fopen($location. "extensions/extensions.php", 'w');
+		$fw = fwrite($f, "<?php\n\n?>");
+		fclose($f);
+
 	} else {
 		$writable = "<img src=\"images/no.png\" alt=\"\" /> No";
 		$meet_req = 0;
@@ -468,8 +475,11 @@ Create a file called <code>installed</code> within the <code>/includes/</code> d
 		//$pg['content'] .= "<p><img src=\"images/yes.png\" alt=\"\" /> Created a file called 'installed' for enhanced security authorization.</p>";
 	}
 
-	$pg['content'] .= "<input type=\"button\" value=\"Finish\" onclick=\"document.location = './';\">
+	$pg['content'] .= "
+<div class=\"actionpane\">
 <input type=\"button\" value=\"Previous Step\" onclick=\"document.location = '?3';\">
+<input type=\"button\" value=\"Finish\" onclick=\"document.location = './';\">
+</div>
 </div></div>";
 	require_once($template_location);
 	exit();
