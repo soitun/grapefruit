@@ -1,7 +1,5 @@
 ![Grapefruit](https://github.com/dkuntz2/grapefruit/raw/master/includes/themes/default/logo.png)
 
-# Grapefruit
-
 Grapefruit is a complete overhaul to Grape Analytics. Grapefruit takes the basis of Grape and modifies some components to work
 better, and adds new features.
 
