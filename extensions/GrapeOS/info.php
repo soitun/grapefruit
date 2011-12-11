@@ -110,7 +110,7 @@ function pieHover(event, pos, obj)
 
                 return;
 
-	percent = (parseFloat(obj.series.percent) / 100) * $total;
+	percent = parseInt((parseFloat(obj.series.percent) / 100) * $total);
 
 	$(\"#hover\").html('<span style=\"font-weight: bold; color: '+obj.series.color+'\">'+obj.series.label+' ('+percent+')</span>');
 
