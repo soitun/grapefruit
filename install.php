@@ -286,7 +286,7 @@ if ($url['step'] == "3") {
 
 		<div class=\"full\">
 			<label for=\"config_site\">What site is Grapefruit watching?</label><br />
-			<input type=\"text\" name=\"config_site\" value=\"" . substr(str_replace("http://", "", str_replace("www.", "", $grape_loc)), 0, strpos(str_replace("http://", "", str_replace("www.", "", $grape_loc)), "/")) . "\"  />
+			<input type=\"text\" name=\"config_site\" value=\"" . substr($grape_loc, -1) . "\"  />
 		</div>
 
 		<div class=\"full\">

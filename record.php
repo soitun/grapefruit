@@ -6,7 +6,8 @@ require_once($location. "includes/functions.php");
 
 $record['ip'] = $_SERVER['REMOTE_ADDR']; //getenv("REMOTE_ADDR"); getenv("HTTP_CLIENT_IP");  getenv("HTTP_X_FORWARDED_FOR");  http://www.4webhelp.net/scripts/php/ip.php
 $record['js_referrer'] = $_SERVER['HTTP_REFERER']; // Referrer to this page. It should be the javascript page. Note: referrer may still be spoofed.
-$record['host'] = $_SERVER['HTTP_HOST'];
+//$record['host'] = $_SERVER['HTTP_HOST'];
+$record['host'] = $cms['site'];
 $record['agent'] = $_SERVER['HTTP_USER_AGENT'];
 // Variables caught from javascript have been encodeURI.
 // (There's a slight difference between the PHP and javascript decode/encode functions, but this is good enough.)
