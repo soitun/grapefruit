@@ -1,4 +1,4 @@
-![Grapefruit](blob/master/includes/themes/default/logo.png)
+![Grapefruit](raw/master/includes/themes/default/logo.png)
 
 # Grapefruit
 
