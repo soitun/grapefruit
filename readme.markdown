@@ -1,4 +1,4 @@
-![Grapefruit](raw/master/includes/themes/default/logo.png)
+![Grapefruit](https://github.com/dkuntz2/grapefruit/raw/master/includes/themes/default/logo.png)
 
 # Grapefruit
 
