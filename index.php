@@ -129,7 +129,7 @@ $pg['body'] .= "";
 $pg['notice'] .= "";
 $pg['content'] .= "<div class=\"iso\"><div class=\"main box\">";
 
-$pg['content'] .= '<div id="placeholder" class="placeholder"></div>';
+$pg['content'] .= '<h3>Visitors</h3><div id="placeholder" class="placeholder"></div>';
 
 
 $pg['content'] .= "<script type=\"text/javascript\">
