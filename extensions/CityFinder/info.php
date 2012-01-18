@@ -31,12 +31,6 @@ function CityFinderDisplay() {
 	// okay, time for some *NEW* fun!
 	$content = "
 		<h3>User Locations</h3>
-		<table class'threecol'>
-			<tr>
-				<th>Hits</th>
-				<th>City, State</th>
-				<th>Country</th>
-			</tr>
 	";
 
 	// setup
@@ -73,22 +67,56 @@ function CityFinderDisplay() {
 
 	arsort($arr);
 
+
+	$i = 0;
+	$tmp = "<div class='pill-content'>";
 	foreach ($arr as $k => $hits) {
 		$e = explode(":::", $k);
 		$city = $e[0];
 		$country = $e[1];
 
-		$content .= "
+		if ($i % 15 == 0) {
+			$tmp .= "\n\t\t<div class='tab-pane" . ($i == 0 ? " active" : "") . "' id='cf" . (($i / 15) + 1) . "'>";
+
+			$tmp .= "\n\t\t\t<table class'threecol'>
+			<tr>
+				<th>Hits</th>
+				<th>City, State</th>
+				<th>Country</th>
+			</tr>";
+		}
+
+		$tmp .= "
 			<tr>
 				<td>$hits</td>
 				<td>$city</td>
 				<td>$country</td>
 			</tr>
 		";
+
+		if ($i % 15 == 14 && $i != 0) {
+			$tmp .= "</table></div>";
+		}
+
+		$i++;
 	}
 
+	if ($i % 15 != 14) {
+		$tmp .= "</table>\n\t</div>";
+	}
+
+	$i--;
+
+	$k = ($i / 15) + 1;
+	$t2 = "<ul class='tabs'>";
+	for ($e = 1; $e <= $k; $e++) {
+		$t2 .= "\n\t\t<li" . ($e == 1 ? " class='active'" : "") . "><a href='#cf$e'>$e</a></li>";
+	}
+	$t2 .= "\n\t</ul>\n\t";
+
+	$content .= $t2 . $tmp;
 	// close the table
-	$content .= "\n\t\t</table>";
+	$content .= "\n\t\t</div>";
 	
 	return $content;
 }
