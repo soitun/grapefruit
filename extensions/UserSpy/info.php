@@ -144,7 +144,7 @@ function UserSpyDisplay() {
 	$k = ($i / 15) + 1;
 	$t2 = "<ul class='tabs'>";
 	for ($e = 1; $e <= $k; $e++) {
-		$t2 .= "\n\t\t<li" . ($e == 1 ? " class='active'" : "") . "><a href='#us$e'>$e</a></li>";
+		$t2 .= "\n\t\t<li" . ($e == 1 ? " class='active'" : "") . "><a href='#us$e'>Page $e</a></li>";
 	}
 	$t2 .= "\n\t</ul>\n\t";
 

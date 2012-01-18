@@ -28,97 +28,52 @@ $ext['grapeStatColumn'] = "os";
 
 // Define functions.
 function GrapeOSDisplay() {
-	global $year, $month, $day, $hour, $minute, $display, $ext;
-	$content .= "\n<h3>Operating Systems</h3>
-<div id=\"hover\">&nbsp;</div>\n<div id=\"osPlaceholder\"></div>\n\n\n<script type=\"text/javascript\">\n\tvar gfOS = [];\n";
+	global $ext, $display;
+	
+	$content = '
+		<h3>Operating Systems</h3>
 
-		// Show OS versions.
-		$temp_minute = $minute;
-		$temp_hour = $hour;
-		$temp_day = $day;
-		$temp_month = $month;
-		$temp_year = $year;
-		$osArr = array();
-		$total = 0;
-		for ($i = 0; $i <= 30; $i++) {
-			
-			if ($temp_day <= 0) {
-				$temp_day += date("t", mktime($hour, $minute, 0, $temp_month, $temp_day, $year)); // Depends on the number of days in the previous month!!!
-				$temp_month--; // Is only decreased in this specific case so as to not cause wrong results.
-				$temp_month = $temp_month % 12 == 0 ? 12 : $temp_month % 12;
-			}
+		<div id="oshover">&nbsp;</div>
+		<div id="osgraph"></div>
+		<script>
+		var oss = [];
+		$(document).ready(function() {
+			$.getJSON("' . $cms['location'] . 'api.php?api=GrapeOS",
+				function(data) {
+					//var oss = [];
+					$.each(data.data, function(i, val) {
+						oss.push({ label: val.os, data: parseInt(val.hits)});
+						//alert("label: " + val.os + " // data: " + val.hits);
+					});
 
-			$q = "SELECT * FROM " . SQL_PREFIX . "grapeos WHERE grapeos_day = '"
-				 . $temp_day . "' AND grapeos_month = '" . $temp_month 
-				 . "' AND grapeos_year = '" . $temp_year . "'";
-			
-			$r = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-
-			for ($j = 0; $j < mysql_num_rows($r); $j++) {
-				$type = mysql_result($r, $j, "grapeos_os");
-				$version = mysql_result($r, $j, "grapeos_version");
-				$version = $version == "(KHTML," ? "unknown" : $version;
-
-				if (strtolower($type) == "linux") {
-					$tmp = $type;
-					$type = $version;
-					$version = $tmp;
-					$tmpName = strtolower($type) == "unknown" ? $version : $type . " " . $version;
+					$.plot(
+						$("#osgraph"),
+						oss,
+						{
+							series: { pie: { show: true, radius: 3/4 } },
+							grid: { hoverable: true, clickable: true }
+						}
+					);
+					
+					
 				}
-				else {
-					$tmpName = strtolower($version) == "unknown" ? $type : $type . " " . $version;
+			);
+			$("#osgraph").bind("plotclick", 
+				function(event, pos, obj) {
+					console.log("clicked");
+
+					if (!obj)
+						return;
+					
+					$("#oshover").html(
+						"<span style=\"font-weight: bold; color: " + obj.series.color + "\">" + obj.series.label + " (" + Math.round(parseFloat(obj.series.percent)) + ")</span>"
+					);
 				}
+			);
+		});
+		</script>
+	';
 
-				if (!isset($osArr[$tmpName])) {
-					$osArr[$tmpName] = 1;
-				}
-				else {
-					$osArr[$tmpName]++;
-				}
-				$total++;
-			}
-
-			$temp_day--;
-		}
-
-		$numL = 0;
-		foreach ($osArr as $k => $v) {
-			$content .= "\ngfOS.push( { label: \"$k\", data: $v } );";
-		}
-		$content .= "\n\n";
-
-	$content .= "
-$.plot($(\"#osPlaceholder\"), gfOS, 
-	{
-        series: {
-            pie: { 
-                show: true,
-                radius: 3/4
-            }
-        },
-        grid: {
-            hoverable: true,
-            clickable: true
-        }
-});
-$(\"#osPlaceholder\").bind(\"plothover\", pieHover);
-function pieHover(event, pos, obj) 
-
-{
-
-	if (!obj)
-
-                return;
-
-	percent = parseFloat((parseFloat(obj.series.percent) / 100) * $total).toFixed(0);
-
-	$(\"#hover\").html('<span style=\"font-weight: bold; color: '+obj.series.color+'\">'+obj.series.label+' ('+percent+')</span>');
-
-}
-
-
-</script>";
-		
 	return $content;
 }
 
@@ -271,6 +226,84 @@ VALUES('" .$os. "', '" .$version. "', '" .$hour. "', '" .$day. "', '" .$month. "
 	return $os_id;
 }
 function GrapeOSApi() {
+	
+	$day = date('j');
+	$month = date('n');
+	$year = date('y');
+
+	$date = mktime(00, 00, 00, $month, $day, $year);
+	$cdate = mktime(00, 00, 00, $month, $day, $year);
+	$arr = array();
+	$total = 0;
+	for ($i = 0; $i < 30; $i++) {
+		$cdate = mktime(00, 00, 00, $month, $day - $i, $year);
+
+		$query  =  "SELECT * FROM " . SQL_PREFIX . "grapeos WHERE ";
+		$query .= " grapeos_year = '" . date('y', $cdate) . "' AND";
+		$query .= " grapeos_month = '" . date('n', $cdate) . "' AND";
+		$query .= " grapeos_day = '" . date('j', $cdate) . "'";
+
+		$r = mysql_query($query) or die (report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+
+		while ($row = mysql_fetch_array($r)) {
+			$type = $row["grapeos_os"];
+			$version = $row["grapeos_version"];
+			$version = $version == "(KHTML," ? "unknown" : $version;
+
+			$tmpName = "";
+			if (strtolower($type) == "linux") {
+				$tmp = $type;
+				$type = $version;
+				$version = $tmp;
+				$tmpName = strtolower($type) == "unknown" ? $version : $type . " " . $version;
+			}
+			else {
+				$tmpName = strtolower($version) == "unknown" ? $type : $type . " " . $version;
+			}
+
+			if (isset($arr[$tmpName])) {
+				$arr[$tmpName] += $row['grapeos_hits'];
+			}
+			else {
+				$arr[$tmpName] = $row['grapeos_hits'];
+			}
+			$total += $row['grapeos_hits'];
+		}
+	}
+	arsort($arr);
+
+	$first = date('y-m-d', $date);
+	$last = date('y-m-d', $cdate);
+
+	$data = array();
+
+	foreach ($arr as $v => $hits) {
+		array_push($data, 
+			"
+			{
+				\"os\": \"$v\",
+				\"hits\": \"$hits\"
+			}
+			"
+		);
+
+	}
+
+	$cont = '
+	"title": "Operating Systems",
+	"first": "' . $first . '",
+	"last": "' . $last . '",
+	"total": "' . $total . '",
+	"data": [
+	';
+
+	for ($i = 0; $i < count($data); $i++) {
+		$cont .= $data[$i] . ($i < count($data) - 1 ? ',' : '');
+	}
+
+	$cont .= "\n\t]";
+
+	return $cont;
 	return false;
 }
 function GrapeOSInstall() {

@@ -50,7 +50,7 @@ function CityFinderDisplay() {
 		$query .= " grapecity_month = '" . date('n', $cdate) . "' AND";
 		$query .= " grapecity_day = '" . date('j', $cdate) . "'";
 
-		$r = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+		$r = mysql_query($query) or die (report_error("E_DB", mysql_error(), __LINE__, __FILE__));
 
 		while ($row = mysql_fetch_array($r)) {
 			$city = $row['grapecity_city'];
@@ -110,7 +110,7 @@ function CityFinderDisplay() {
 	$k = ($i / 15) + 1;
 	$t2 = "<ul class='tabs'>";
 	for ($e = 1; $e <= $k; $e++) {
-		$t2 .= "\n\t\t<li" . ($e == 1 ? " class='active'" : "") . "><a href='#cf$e'>$e</a></li>";
+		$t2 .= "\n\t\t<li" . ($e == 1 ? " class='active'" : "") . "><a href='#cf$e'>Page $e</a></li>";
 	}
 	$t2 .= "\n\t</ul>\n\t";
 
