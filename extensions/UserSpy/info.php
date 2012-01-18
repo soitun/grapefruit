@@ -109,9 +109,9 @@ function UserSpyDisplay() {
 		$url = $k[3];
 
 		if ($i % 15 == 0) {
-			$tmp .= "<div" . ($i == 0 ? " class='active'" : "") . " id='us" . (($i / 15) + 1) . "'>";
+			$tmp .= "<div class='tab-pane" . ($i == 0 ? " active" : "") . "'' id='us" . (($i / 15) + 1) . "'>";
 
-			$tmp .= "<table class='threecol '>
+			$tmp .= "<table class='threecol'>
 			<tr>
 				<th>Hits</th>
 				<th>Entry Page</th>
@@ -128,7 +128,7 @@ function UserSpyDisplay() {
 			</tr>
 		";
 
-		if ($i % 14 == 0 && $i != 0) {
+		if ($i % 15 == 14 && $i != 0) {
 			$tmp .= "</table></div>";
 		}
 
@@ -136,7 +136,7 @@ function UserSpyDisplay() {
 	}
 	$i--;
 
-	$k = ($i % 15) + 1;
+	$k = ($i / 15) + 1;
 	$t2 = "<ul class='tabs'>";
 	for ($e = 1; $e <= $k; $e++) {
 		$t2 .= "<li" . ($e == 1 ? " class='active'" : "") . "><a href='#us$e'>$e</a></li>";
