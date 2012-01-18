@@ -37,6 +37,7 @@ function GrapeOSDisplay() {
 		<div id="osgraph"></div>
 		<script>
 		var oss = [];
+		var total = 1;
 		$(document).ready(function() {
 			$.getJSON("' . $cms['location'] . 'api.php?api=GrapeOS",
 				function(data) {
@@ -45,6 +46,8 @@ function GrapeOSDisplay() {
 						oss.push({ label: val.os, data: parseInt(val.hits)});
 						//alert("label: " + val.os + " // data: " + val.hits);
 					});
+
+					total = parseInt(data.total);
 
 					$.plot(
 						$("#osgraph"),
@@ -58,15 +61,18 @@ function GrapeOSDisplay() {
 					
 				}
 			);
-			$("#osgraph").bind("plotclick", 
+			$("#osgraph").bind("plothover", 
 				function(event, pos, obj) {
 					console.log("clicked");
 
 					if (!obj)
 						return;
 					
+					var percent = Math.round(parseFloat(obj.series.percent));
+					var num = Math.round((parseFloat(obj.series.percent) / 100) * total);
+
 					$("#oshover").html(
-						"<span style=\"font-weight: bold; color: " + obj.series.color + "\">" + obj.series.label + " (" + Math.round(parseFloat(obj.series.percent)) + ")</span>"
+						"<span style=\"font-weight: bold; color: " + obj.series.color + "\">" + obj.series.label + " - " + num + " (" + percent + "%)</span>"
 					);
 				}
 			);
