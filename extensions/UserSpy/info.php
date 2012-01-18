@@ -36,12 +36,7 @@ function UserSpyDisplay() {
 	// initial contents
 	$content .= "
 	<h3>User Spy</h3>
-	<table class='threecol'>
-		<tr>
-			<th>Hits</th>
-			<th>Entry Page</th>
-			<th>OS</th>
-		</tr>
+	
 	";
 
 	// start with today?
@@ -103,24 +98,56 @@ function UserSpyDisplay() {
 	
 	arsort($arr);
 	// display content
+
+	$i = 0;
+	$tmp = "<div class='pill-content'>";
 	foreach ($arr as $v => $hits) {
 		$k = explode(":::", $v);
 		$ip = $k[0];
 		$os = $k[1];
 		$page = $k[2];
 		$url = $k[3];
-		$content .= "
+
+		if ($i % 15 == 0) {
+			$tmp .= "<div" . ($i == 0 ? " class='active'" : "") . " id='us" . (($i / 15) + 1) . "'>";
+
+			$tmp .= "<table class='threecol '>
+			<tr>
+				<th>Hits</th>
+				<th>Entry Page</th>
+				<th>OS</th>
+			</tr>";
+		}
+
+
+		$tmp .= "
 			<tr>
 				<td>$hits</td>
 				<td><a href='http://$url'>$page</a></td>
 				<td>$os</td>
 			</tr>
-		";		
+		";
+
+		if ($i % 14 == 0 && $i != 0) {
+			$tmp .= "</table></div>";
+		}
+
+		$i++;
 	}
+	$i--;
+
+	$k = ($i % 15) + 1;
+	$t2 = "<ul class='tabs'>";
+	for ($e = 1; $e <= $k; $e++) {
+		$t2 .= "<li" . ($e == 1 ? " class='active'" : "") . "><a href='#us$e'>$e</a></li>";
+	}
+	$t2 .= "</ul>";
 
 
+
+	$content .= $t2 . $tmp;
 	// close the table
-	$content .= "\n\t</table>";
+	$content .= "\n\t</div>";
 
 	return $content;
 }

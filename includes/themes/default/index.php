@@ -28,6 +28,7 @@ if (isset($pg['title'])) {
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo $location; ?>includes/themes/default/images/favicon.png" />
 
 	<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/jquery.js"></script>
+	<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/bootstrap-tabs.js"></script>
 
 	<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.js"></script>
 	<script language="javascript" type="text/javascript" src="<?php echo $location; ?>includes/themes/default/js/flot/jquery.flot.stack.js"></script>
@@ -59,5 +60,9 @@ if (isset($pg['title'])) {
 		
 		echo "\n" . '<script src="http://127.0.0.1/grapefruit/grapefruit/?js" type="text/javascript"> </script>';
 	}?>
+
+	<script>
+		$('.tabs').tabs();
+	</script>
 </body>
 </html>
