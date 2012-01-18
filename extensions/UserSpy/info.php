@@ -29,98 +29,99 @@ $ext['grapeStatColumn'] = ""; // Not needed!
 
 // Define functions.
 function UserSpyDisplay() {
-	global $ext, $year, $month, $day, $hour, $minute, $display;
-	
-	$columns = 2;
-	$content .= "<h3>User Spy</h3>
-<table cellspacing=\"0\" class=\"threecol\">
-<tr class=\"subheader\">
-	<th>Hits</th>";
-	if (function_exists("GrapePagesDisplay")) {
-		$content .= "<th>Entry Page</th>";
-		$columns++;
-	}
-	if (function_exists("GrapeOSDisplay")) {
-		$content .= "<th>OS</th>";
-		$columns++;
-	}
-	$content .="\n</tr>";
+	global $ext, $display;
 
-	$temp_minute = $minute;
-	$temp_hour = $hour;
-	$temp_day = $day;
-	$temp_month = $month;
-	$temp_year = $year;
-	$pgArr = array();
-	for ($i = 0; $i <= 30; $i++) {
-		
-		if ($temp_day <= 0) {
-			$temp_day += date("t", mktime($hour, $minute, 0, $temp_month, $temp_day, $year)); // Depends on the number of days in the previous month!!!
-			$temp_month--; // Is only decreased in this specific case so as to not cause wrong results.
-			$temp_month = $temp_month % 12 == 0 ? 12 : $temp_month % 12;
-		}
+	// starting from scratch here
 
-		$q = "SELECT * FROM " . SQL_PREFIX . "grapestat WHERE grapestat_day = '"
-			. $temp_day . "' AND grapestat_month = '" . $temp_month 
-			. "' AND grapestat_year = '" . $temp_year . "'";
+	// initial contents
+	$content .= "
+	<h3>User Spy</h3>
+	<table class='threecol'>
+		<tr>
+			<th>Hits</th>
+			<th>Entry Page</th>
+			<th>OS</th>
+		</tr>
+	";
 
-		$r = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-		for ($j = 0; $j < mysql_num_rows($r); $j++) {
-			$osNum = mysql_result($r, $j, "grapestat_os");
-			$pgNum = mysql_result($r, $j, "grapestat_page");
+	// start with today?
+	$day = date('j');
+	$month = date('n');
+	$year = date('y');
 
-			$hits = mysql_result($r, $j, "grapestat_hits");
+	$cdate = mktime(00, 00, 00, $month, $day, $year);
+	$arr = array();
 
-			if ($osNum != 0) {
-				$qOS = "SELECT * FROM " . SQL_PREFIX . "grapeos WHERE grapeos_id = '" . $osNum . "'";
-				$rOS = mysql_query($qOS) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-				//$os = mysql_result($rOS, 0, "grapeos_os") . (strtolower(mysql_result($rOS, 0, "grapeos_version")) != "unknown" || strtolower(mysql_result($rOS, 0, "grapeos_version")) != "khtml," ? " " . mysql_result($rOS, 0, "grapeos_version") : "");
+	// 30 days
+	for ($i = 0; $i < 30; $i++) {
+		// temp date
+		$date = mktime(00, 00, 00, $month, $day - $i, $year);
 
-				$os = mysql_result($rOS, 0, "grapeos_os") . " ";
-				$os .= mysql_result($rOS, 0, "grapeos_version") == "(KHTML," ? "Unknown" : mysql_result($rOS, 0, "grapeos_version");
-				/*
-				$type = mysql_result($r, $j, "grapeos_os");
-				$version = mysql_result($r, $j, "grapeos_version");
-				$version = $version == "(KHTML," ? "unknown" : $version;
-				*/
-			}
-			else {
-				$os = "Not Recorded";
-			}
+		// grabby grabby and display, with multiple queries
+		$query = "SELECT * FROM " . SQL_PREFIX . "grapestat WHERE ";
+		$query .= " grapestat_year = '" . date('y', $date) . "' AND";
+		$query .= " grapestat_month = '" . date('n', $date) . "' AND";
+		$query .= " grapestat_day = '" . date('j', $date) . "'";
 
-			if ($pgNum != 0) {
-				$qPage = "SELECT * FROM " . SQL_PREFIX . "grapepage WHERE grapepage_id = '" . $pgNum . "'";
-				$rPage = mysql_query($qPage) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
-				$page = mysql_result($rPage, 0, "grapepage_title") . ":URL:" . mysql_result($rPage, 0, "grapepage_url");
-			}
-			else {
-				$page = "Not Recorded:URL:#";
-			}
+		$r = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
 
-			$tmpK = $os . ":PAGE:" . $page;
+		while ($row = mysql_fetch_array($r)) {
+			$osn = $row['grapestat_os'];
+			$pg = $row['grapestat_page'];
+			$hits = $row['grapestat_hits'];
 
-			if (!isset($pgArr[$tmpK])) {
-				$pgArr[$tmpK] = $hits;
-			}
-			else {
-				$pgArr[$tmpK] = $pgArr[$tmpK] + $hits;
+			$os = "";
+			$page = "";
+			$url = "";
+
+			$ip = $row['grapestat_ip'];
+
+			if ($osn != 0 && $pg != 0) {
+				$q = "SELECT * FROM " . SQL_PREFIX . "grapeos WHERE grapeos_id = '$osn'";
+				$res = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+				
+				$os = mysql_result($res, 0, "grapeos_os") . ' ';
+				$os .= mysql_result($res, 0, "grapeos_version") == "(KHTML," ? "Unknown" : mysql_result($res, 0, "grapeos_version");
+
+
+				$q = "SELECT * FROM " . SQL_PREFIX . "grapepage WHERE grapepage_id = '$pg'";
+				$res = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+
+				$page = mysql_result($res, 0, "grapepage_title");
+				$url = mysql_result($res, 0, "grapepage_url");
+				
+				if (isset($arr["$ip:::$os:::$page:::$url"])) {
+					$arr["$ip:::$os:::$page:::$url"] += $hits;
+				}
+				else {
+					$arr["$ip:::$os:::$page:::$url"] = $hits;			
+				}
+
 			}
 		}
-
-		$temp_day--;
-
-	}
-	arsort($pgArr);
-	foreach ($pgArr as $k => $v) {
-		$tv = explode(":PAGE:", $k);
-		$ps = explode(":URL:", $tv[1]);
-		$ps[1] = $ps[1] != "#" ? "http://" . $ps[1] : $ps[1];
-		$content .= "\n<tr class=\"alt$alt\">\n\t<td>$v</td>\n\t<td><a href=\"" . $ps[1] . "\">" . $ps[0] . "</a></td>\n\t<td>" . $tv[0] . "</td>\n</tr>";
-
-		$alt = (($alt + 1) % 2);
 	}
 	
-	$content .= "\n</table>\n";
+	arsort($arr);
+	// display content
+	foreach ($arr as $v => $hits) {
+		$k = explode(":::", $v);
+		$ip = $k[0];
+		$os = $k[1];
+		$page = $k[2];
+		$url = $k[3];
+		$content .= "
+			<tr>
+				<td>$hits</td>
+				<td><a href='http://$url'>$page</a></td>
+				<td>$os</td>
+			</tr>
+		";		
+	}
+
+
+	// close the table
+	$content .= "\n\t</table>";
+
 	return $content;
 }
 function UserSpyJavascript() {
@@ -129,8 +130,106 @@ function UserSpyJavascript() {
 function UserSpyRecord() {
 	return false;
 }
-function GrapeSpyApi() {
-	return false;
+function UserSpyApi() {
+	// first api, FUN!
+	$cont = "";
+
+	$day = date('j');
+	$month = date('n');
+	$year = date('y');
+	echo $day;
+	echo date('j') . "-----";
+
+	$cdate = mktime(00, 00, 00, $month, $day, $year);
+	$last = date('y-m-d');
+	$arr = array();
+	$data = array();
+
+	// 30 days
+	for ($i = 0; $i < 30; $i++) {
+		// temp date
+		$date = mktime(00, 00, 00, $month, $day - $i, $year);
+
+		// grabby grabby and display, with multiple queries
+		$query = "SELECT * FROM " . SQL_PREFIX . "grapestat WHERE ";
+		$query .= " grapestat_year = '" . date('y', $date) . "' AND";
+		$query .= " grapestat_month = '" . date('n', $date) . "' AND";
+		$query .= " grapestat_day = '" . date('j', $date) . "'";
+
+		$r = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+
+		while ($row = mysql_fetch_array($r)) {
+			$osn = $row['grapestat_os'];
+			$pg = $row['grapestat_page'];
+			$hits = $row['grapestat_hits'];
+
+			$os = "";
+			$page = "";
+			$url = "";
+
+			$ip = $row['grapestat_ip'];
+
+			if ($osn != 0 && $pg != 0) {
+				$q = "SELECT * FROM " . SQL_PREFIX . "grapeos WHERE grapeos_id = '$osn'";
+				$res = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+				
+				$os = mysql_result($res, 0, "grapeos_os") . ' ';
+				$os .= mysql_result($res, 0, "grapeos_version") == "(KHTML," ? "Unknown" : mysql_result($res, 0, "grapeos_version");
+
+
+				$q = "SELECT * FROM " . SQL_PREFIX . "grapepage WHERE grapepage_id = '$pg'";
+				$res = mysql_query($q) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+
+				$page = mysql_result($res, 0, "grapepage_title");
+				$url = mysql_result($res, 0, "grapepage_url");
+				
+				if (isset($arr["$ip:::$os:::$page:::$url"])) {
+					$arr["$ip:::$os:::$page:::$url"] += $hits;
+				}
+				else {
+					$arr["$ip:::$os:::$page:::$url"] = $hits;			
+				}
+
+			}
+		}
+	}
+	$first = date('y-m-d', $day);
+
+	// display content
+	foreach ($arr as $v => $hits) {
+		$k = explode(":::", $v);
+		$ip = $k[0];
+		$os = $k[1];
+		$page = $k[2];
+		$url = $k[3];	
+		array_push($data,
+			"
+			{
+				\"hits\": \"$hits\",
+				\"os\": \"$os\",
+				\"page\": \"$page\",
+				\"url\": \"http://$url\"
+			}"
+		);
+	}
+
+
+
+	// things you need to know
+	$cont .= '
+	"title": "User Spy",
+	"first": "' . $first . '",
+	"last": "' . $last . '",
+	"data" : [
+	';
+
+	for ($i = 0; $i < count($data); $i++) {
+		$cont .= $data[$i] . ($i < count($data) - 1 ? ',' : '');
+	}
+
+	$cont .= "\n\t]";
+
+	return $cont;
 }
 function UserSpyInstall() {
 	global $ext, $pg;

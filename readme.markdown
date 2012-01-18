@@ -1,9 +1,13 @@
 ![Grapefruit](https://github.com/dkuntz2/grapefruit/raw/master/includes/themes/default/logo.png)
 
+**Development Branch**
+
 Grapefruit is a complete overhaul to Grape Analytics. Grapefruit takes the basis of Grape and modifies some components to work
 better, and adds new features.
 
 Grapefruit was formerly known as CleanerGrape, and references to CleanerGrape may be found in the code right now (same as references to Grape itself).
+
+This branch contains a few things I'm working on, but gets all of the updates to bog-standard Grapefruit too. Mostly, this is where I'm testing out fun stuff, like new extensions and other cool things.
 
 ## Installer Error
 

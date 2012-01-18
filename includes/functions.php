@@ -56,14 +56,14 @@ if (phpversion() >= "5.1.0") {
 
 // ****************
 // Globally used variables.
-$session_name = "grape";
+$session_name = "grapefruit";
 $template_location = $location. "includes/themes/" .$cms['theme']. "/index.php";
 
-$cms['name'] = "Grape Web Statistics";
-$cms['version'] = "0126"; // (0200 is for 0.2 final.)
-$cms['versionFull'] = "0.2.0.5 Beta 3";
+$cms['name'] = "Grapefruit Analytics";
+$cms['version'] = "1000"; // 1000 is start of grapefrui
+$cms['versionFull'] = "Beta One";
 $cms['versionType'] = "beta"; // dev, rc, full
-$cms['updateUrl'] = "http://www.quate.net/updates.php";
+$cms['updateUrl'] = "http://dkuntz2.com/grapefruit/updates.php";
 
 // ****************
 /* Grape Statistics Functions */
@@ -125,6 +125,55 @@ function grape_hits_unique($fyear = "", $fmonth = "", $fday = "", $fhour = "", $
 	$query .= "-+-";
 	$query = str_replace("AND-+-", "", $query);
 	$query = str_replace("-+-", "", $query);
+	
+	$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+	$count_unique = mysql_fetch_array($result);
+	if ($count_unique[0] == "") {
+		$count_unique[0] = "0";
+	}
+	return $count_unique[0];
+}
+
+
+// GRAPEFRUIT_FUNCTION - total hits for a day - this is slightly different and parses
+// something different
+
+function grapefruit_total($day) {
+	$query = "SELECT SUM(grapestat_hits) FROM " .SQL_PREFIX. "grapestat WHERE";
+
+	// year
+	$query .= " grapestat_year = '" . date('y', $day) . "' AND";
+
+	// month
+	$query .= " grapestat_month = '" . date('n', $day) . "' AND";
+
+	// day
+	$query .= " grapestat_day = '" . date('j', $day) . "'";
+
+	
+	$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+	$count = mysql_fetch_array($result);
+	if ($count[0] == "") {
+		$count[0] = "0";
+	}
+	return $count[0];
+}
+
+// GRAPEFRUIT_FUNCTION - unique hits for a day - this is slightly different and parses
+// something different
+
+function grapefruit_unique($day) {
+	$query = "SELECT COUNT(DISTINCT grapestat_ip) FROM " .SQL_PREFIX. "grapestat WHERE";
+
+	// year
+	$query .= " grapestat_year = '" . date('y', $day) . "' AND";
+
+	// month
+	$query .= " grapestat_month = '" . date('n', $day) . "' AND";
+
+	// day
+	$query .= " grapestat_day = '" . date('j', $day) . "'";
+
 	
 	$result = mysql_query($query) or die(report_error("E_DB", mysql_error(), __LINE__, __FILE__));
 	$count_unique = mysql_fetch_array($result);

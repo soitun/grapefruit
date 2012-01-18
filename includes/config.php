@@ -8,7 +8,7 @@ $db['pass'] = "";
 $cms['timezone'] = "America/Chicago
 ";
 $cms['display_protect'] = "0";
-$cms['location'] = "http://127.0.0.1/grapefruit/";
+$cms['location'] = "http://127.0.0.1/grapefruit/grapefruit/";
 $cms['theme'] = "default";
-$cms['site'] = "127.0.0.1/grapefruit";
+$cms['site'] = "127.0.0.1/grapefruit/grapefruit";
 ?>

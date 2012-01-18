@@ -55,9 +55,9 @@ if (isset($pg['title'])) {
 	</section>
 
 	</div>
-	<?php if ($cms['site'] == "127.0.0.1/grapefruit") {
+	<?php if ($cms['site'] == "127.0.0.1/grapefruit/grapefruit") {
 		
-		echo "\n" . '<script src="http://127.0.0.1/grapefruit/?js" type="text/javascript"> </script>';
+		echo "\n" . '<script src="http://127.0.0.1/grapefruit/grapefruit/?js" type="text/javascript"> </script>';
 	}?>
 </body>
 </html>

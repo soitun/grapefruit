@@ -80,48 +80,6 @@ if ($cms['display_protect'] == 1) {
 	}
 }
 
-// Set initial dates.
-$minute = 59;
-$minute_selected = $minute;
-$hour = 23;
-$hour_selected = $hour;
-$day = date("j");
-$day_selected = $day;
-$month = date("n");
-$month_selected = $month;
-$year = date("y");
-$year_selected = $year;
-$display = "month";
-//Debug: echo "Real Date: " .$year. "." .$month. "." .$day. "." .$hour. "<br>\n";
-
-// Set modified dates to be used as the default selector for the filter (aka "last settings").
-if ($_GET['hour'] != "") {
-	$hour_selected = $_GET['hour'];
-}
-if ($_GET['day'] != "") {
-	$day_selected = $_GET['day'];
-}
-if ($_GET['month'] != "") {
-	$month_selected = $_GET['month'];
-}
-if ($_GET['year'] != "") {
-	$year_selected = $_GET['year'];
-}
-if ($_GET['display'] != "") {
-	$display = strtolower($_GET['display']);
-}
-if ($display == "hour") {
-	$display_hour_selected = " selected=\"selected\"";
-} else if ($display == "day") {
-	$display_day_selected = " selected=\"selected\"";
-} else if ($display == "month") {
-	$display_month_selected = " selected=\"selected\"";
-} else if ($display == "year") {
-	$display_year_selected = " selected=\"selected\"";
-} else {
-	$display = "month";
-	$display_month_selected = " selected=\"selected\"";
-}
 
 $pg['title'] .= $_SERVER['HTTP_HOST'];
 $pg['head'] .= "";
@@ -133,93 +91,92 @@ $pg['content'] .= '<h3>Visitors</h3><div id="placeholder" class="placeholder"></
 
 
 $pg['content'] .= "<script type=\"text/javascript\">
+var maxData = 0;
 $(function () {
-	var total = [], unique = [];";
+	var total = [], unique = [];
+	var firstDate = \"\", lastDate = \"\";
+	//var maxData = \"\";";
 	
-$temp_minute = $minute;
-$temp_hour = $hour;
-$temp_day = $day;
-$temp_month = $month;
-$temp_year = $year;
+// so, this is the new, api fun stuff that I implemented. It's in JSON, which is SWEET
+// ref: total.push([$tempUE, $temp_total]);\nunique.push([$tempUE, $temp_unique])
 
-$nda = mktime(00, 00, 00, $temp_month, $temp_day, $year) * 1000;
+$pg['content'] .= "
+	$.getJSON(\"" . $cms['location'] . "api.php\",
+		function(data) {
+			var theDate;
+			$.each(data.visitors, function(i, val) {
+				d = val.date.split('-');
+				var day = new Date(parseInt(d[0]) + 2000, parseInt(d[1]) - 1, parseFloat(d[2]));
 
-$pg['content'] .= "\n	var lastDate = (new Date($nda));";
+				total.push([day.getTime(), val.total]);
+				unique.push([day.getTime(), val.unique]);
+			});
 
-	$maxVisits = 0;
-	$lastDate = date("U", mktime(00, 00, 00, $temp_month, $temp_day, $year));
-	for ($i = 0; $i <= 30; $i++) {
-		// Display visitor stats for this month.
-		if ($temp_day <= 0) {
-			$temp_day += date("t", mktime(00, 00, 00, $temp_month, $temp_day, $year)); // Depends on the number of days in the previous month!!!
-			$temp_month--; // Is only decreased in this specific case so as to not cause wrong results.
+			maxData = data.max;
+
+			d = data.first.split('-');
+			firstDate = new Date(parseInt(d[0]) + 2000, parseInt(d[1]) - 1, parseInt(d[2]));
+
+			d = data.last.split('-');
+			lastDate = new Date(parseInt(d[0]) + 2000, parseInt(d[1]) - 1, parseInt(d[2]));
+			
+
+			$.plot($(\"#placeholder\"),
+           [ { data: total, label: \"Total Visits\"}, { data: unique, label: \"Unique Visitors\" } ], {
+               series: {
+                   lines: { show: true, fill: true },
+                   points: { show: false }
+                  
+               },
+               grid: { hoverable: true, clickable: false },
+               yaxis: { min: 0, max: maxData }, 
+               xaxis: { mode: \"time\", min: firstDate, max: lastDate, minTickSize: [1, \"day\"] }
+             });
+
+function showTooltip(x, y, contents) {
+        $('<div id=\"tooltip\">' + contents + '</div>').css( {
+            position: 'absolute',
+            display: 'none',
+            top: y + 5,
+            left: x + 5,
+            border: '1px solid #fdd',
+            padding: '2px',
+            'background-color': '#fee',
+            opacity: 0.80
+        }).appendTo(\"body\").fadeIn(200);
+    }
+
+    var previousPoint = null;
+    $(\"#placeholder\").bind(\"plothover\", function (event, pos, item) {
+        $(\"#x\").text(pos.x.toFixed(0));
+        $(\"#y\").text(pos.y.toFixed(0));
+
+        if (item) {
+            if (previousPoint != item.dataIndex) {
+                previousPoint = item.dataIndex;
+                    
+                $(\"#tooltip\").remove();
+                
+                var d = new Date(item.datapoint[0]);
+                
+                showTooltip(item.pageX, item.pageY, item.datapoint[1]);
+            }
+        }
+        else {
+            $(\"#tooltip\").remove();
+            previousPoint = null;           
+        }
+    });
+
 		}
-		$temp_date = date("D j", mktime(00, 00, 00, $temp_month, $temp_day, $year));
-		$tempUE = (mktime(00, 00, 00, $temp_month, $temp_day, $year)) * 1000;
-		$temp_unique = grape_hits_unique($year, $temp_month, $temp_day, "", "");
-		$temp_total = grape_hits_total($year, $temp_month, $temp_day, "", "");
+	);
+
+";
+
+$pg['content'] .= "
+
+
 		
-		//echo $temp_day . "  " . mktime($hour, $minute, 0, $temp_month, $temp_day, $year) . "\n";
-
-		$temp_day--;
-		$maxVisits = $maxVisits < $temp_total ? $temp_total : $maxVisits;
-
-		//echo $tempUE . " \n";
-		$pg['content'] .= "\ntotal.push([$tempUE, $temp_total]);\nunique.push([$tempUE, $temp_unique]);";
-	}
-	$temp_day++;
-	$maxVisits++;
-	$tfy = 2000 + $temp_year;
-	$nda = mktime(00, 00, 00, $temp_month, $temp_day, $year) * 1000;
-	$pg['content'] .= "\n	var firstDate = (new Date($nda));";
-
-
-$pg['content'] .= "\n\nvar plot = $.plot($(\"#placeholder\"),
-		   [ { data: total, label: \"Total Visits\"}, { data: unique, label: \"Unique Visitors\" } ], {
-			   series: {
-				   lines: { show: true, fill: true },
-				   points: { show: false }
-				  
-			   },
-			   grid: { hoverable: true, clickable: false },
-			   yaxis: { min: 0, max: $maxVisits }, 
-			   xaxis: { mode: \"time\", min: firstDate, max: lastDate, minTickSize: [1, \"day\"] }
-			 });
-
-	function showTooltip(x, y, contents) {
-		$('<div id=\"tooltip\">' + contents + '</div>').css( {
-			position: 'absolute',
-			display: 'none',
-			top: y + 5,
-			left: x + 5,
-			border: '1px solid #fdd',
-			padding: '2px',
-			'background-color': '#fee',
-			opacity: 0.80
-		}).appendTo(\"body\").fadeIn(200);
-	}
-
-	var previousPoint = null;
-	$(\"#placeholder\").bind(\"plothover\", function (event, pos, item) {
-		$(\"#x\").text(pos.x.toFixed(0));
-		$(\"#y\").text(pos.y.toFixed(0));
-
-		if (item) {
-			if (previousPoint != item.dataIndex) {
-				previousPoint = item.dataIndex;
-					
-				$(\"#tooltip\").remove();
-				
-				var d = new Date(item.datapoint[0]);
-				
-				showTooltip(item.pageX, item.pageY, item.datapoint[1]);
-			}
-		}
-		else {
-			$(\"#tooltip\").remove();
-			previousPoint = null;			
-		}
-	});
 });
 </script>
 ";
