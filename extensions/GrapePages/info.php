@@ -27,7 +27,7 @@ $ext['grapeStatColumn'] = "page";
 
 // Define functions.
 function GrapePagesDisplay() {
-	global $ext, $year, $month, $day, $hour, $minute, $display;
+	/*global $ext, $year, $month, $day, $hour, $minute, $display;
 	$content .= "<h3>Pages</h3>
 <table cellspacing=\"0\" class=\"twocol\">
 <tr class=\"subheader\">
@@ -37,13 +37,6 @@ function GrapePagesDisplay() {
 
 	$alt = 1;
 
-
-/*	while ($row = mysql_fetch_array($result)) {
-		$href_url = "http://" .$row['grapepage_url'];
-		$content .= "\n<tr class=\"alt" .$alt. "\">
-	<td>" .$row['grapepage_hits']. "</td>
-	<td><a href=\"" .$href_url. "\" target=\"_blank\">" .textcut($row['grapepage_title'], 50). "</a></td>
-</tr>";*/
 
 	$temp_minute = $minute;
 	$temp_hour = $hour;
@@ -94,7 +87,99 @@ function GrapePagesDisplay() {
 	
 	
 	$content .= "\n</table>";
+	return $content;*/
+
+	global $ext, $display;
+
+	$content = "
+		<h3>Pages</h3>		
+	";
+
+	// setup
+	$day = date('j');
+	$month = date('n');
+	$year = date('y');
+
+	$cdate = mktime(00, 00, 00, $month, $day, $year);
+	$arr = array();
+
+	// 30 days of data
+	for ($i = 0; $i < 30; $i++) {
+		$cdate = mktime(00, 00, 00, $month, $day - $i, $year);
+
+		$query = "SELECT * FROM " . SQL_PREFIX . "grapepage WHERE ";
+		$query .= " grapepage_year = '" . date('y', $cdate) . "' AND";
+		$query .= " grapepage_month = '" . date('n', $cdate) . "' AND";
+		$query .= " grapepage_day = '" . date('j', $cdate) . "'";
+
+		$r = mysql_query($query) or die (report_error("E_DB", mysql_error(), __LINE__, __FILE__));
+
+		while ($row = mysql_fetch_array($r)) {
+			$title = $row['grapepage_title'];
+			$url = $row['grapepage_url'];
+			
+			if (isset($arr["$title:::$url"])) {
+				$arr["$title:::$url"] += $row['grapepage_hits'];
+			}
+			else {
+				$arr["$title:::$url"] = $row['grapepage_hits'];
+			}
+		}
+	}
+
+	arsort($arr);
+
+
+	$i = 0;
+	$tmp = "<div class='pill-content'>";
+	foreach ($arr as $k => $hits) {
+		$e = explode(":::", $k);
+		$title = $e[0];
+		$url = $e[1];
+
+		if ($i % 15 == 0) {
+			$tmp .= "\n\t\t<div class='tab-pane" . ($i == 0 ? " active" : "") . "' id='cf" . (($i / 15) + 1) . "'>";
+
+			$tmp .= "\n\t\t\t<table class'threecol'>
+			<tr>
+				<th>Hits</th>
+				<th>Page</th>
+			</tr>";
+		}
+
+		$tmp .= "
+			<tr>
+				<td>$hits</td>
+				<td><a href=\"$url\">$title</a></td>
+			</tr>
+		";
+
+		if ($i % 15 == 14 && $i != 0) {
+			$tmp .= "</table></div>";
+		}
+
+		$i++;
+	}
+
+	if ($i % 15 != 14) {
+		$tmp .= "</table>\n\t</div>";
+	}
+
+	$i--;
+
+	$k = ($i / 15) + 1;
+	$t2 = "<ul class='tabs'>";
+	for ($e = 1; $e <= $k; $e++) {
+		$t2 .= "\n\t\t<li" . ($e == 1 ? " class='active'" : "") . "><a href='#cf$e'>$e</a></li>";
+	}
+	$t2 .= "\n\t</ul>\n\t";
+
+	$content .= $t2 . $tmp;
+	// close the table
+	$content .= "\n\t\t</div>";
+	
 	return $content;
+
 }
 
 function GrapePagesJavascript() {

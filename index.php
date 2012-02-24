@@ -158,8 +158,8 @@ function showTooltip(x, y, contents) {
                 $(\"#tooltip\").remove();
                 
                 var d = new Date(item.datapoint[0]);
-                
-                showTooltip(item.pageX, item.pageY, item.datapoint[1]);
+                var monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec' ]
+                showTooltip(item.pageX, item.pageY, d.getDate() + ' ' + monthNames[d.getMonth()] + ': ' + item.datapoint[1]);
             }
         }
         else {
